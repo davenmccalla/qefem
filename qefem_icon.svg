@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.0"
+   width="64"
+   height="64"
+   id="svg2383">
+  <defs
+     id="defs2385" />
+  <g
+     id="layer1"
+     style="display:inline">
+    <rect
+       width="64.181816"
+       height="64"
+       ry="21.272728"
+       x="-0.18181819"
+       y="-1.4210855e-14"
+       id="rect3189"
+       style="fill:#cccccc;fill-opacity:1" />
+  </g>
+  <g
+     id="layer4"
+     style="display:inline">
+    <text
+       x="5.0909085"
+       y="47.81818"
+       id="text2393"
+       xml:space="preserve"
+       style="font-size:56px;font-style:normal;font-weight:normal;fill:#000080;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"><tspan
+         x="5.0909085"
+         y="47.81818"
+         id="tspan2395">O</tspan></text>
+  </g>
+  <g
+     id="layer2"
+     style="display:inline">
+    <text
+       x="-9.5646982"
+       y="-43.688469"
+       transform="matrix(0.719675,-0.694758,-0.719675,-0.694758,0,0)"
+       id="text2398"
+       xml:space="preserve"
+       style="font-size:42.45500946px;font-style:normal;font-weight:normal;fill:#000080;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"><tspan
+         x="-9.5646982"
+         y="-43.688469"
+         id="tspan2400">f</tspan></text>
+  </g>
+  <g
+     id="layer3" />
+</svg>

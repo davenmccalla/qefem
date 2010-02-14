@@ -1,0 +1,26 @@
+Todo before first release:
+
+Todo:
+CTRL+C and CTRL+V should work
+The path in editor should be with \
+Changing path in path editor
+Xml config file
+S60 release
+Don't allow to resize to smaller
+Status pane
+If the file is read only it is not removed.
+Tooltip of the file should show the properties.
+Shortcuts should work.
+Menu items to OSX
+Multiselection
+Shortcut for editor or view
+Preferences in XML
+Allow drag and drop
+Implement file move
+Open terminal to that path in editor
+
+Ideas:
+Path history go back and forward
+Sorting by name size date
+3 tabs
+
