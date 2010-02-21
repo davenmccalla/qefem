@@ -98,6 +98,7 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
 
     lastClick = QTime::currentTime ();
     noDrive = false;
+    driveJustLoaded = false;
     QTimer *driveTimer = new QTimer(this);
     connect(driveTimer, SIGNAL(timeout()), this, SLOT(driveReload()));
     driveReload();    
@@ -124,10 +125,15 @@ void FMPanel::driveClicked( QListWidgetItem * item )
         lastClick = QTime::currentTime ();
         currentDir.clear();
         currentDir.append( path );
-        dirModel->setRootPath( currentDir );
-        dirList->setModel( dirModel );
-        dirList->setRootIndex(dirModel->index(currentDir));
-        setPathEditText( currentDir );
+        if( dirModel->rootPath() != currentDir )
+        {
+            mainW->startAnimation();
+            dirModel->setRootPath( currentDir );
+            dirList->setModel( dirModel );
+            dirList->setRootIndex(dirModel->index(currentDir));
+            setPathEditText( currentDir );
+            driveJustLoaded = true;
+        }
         noDrive = false;
     }
     else
@@ -634,6 +640,11 @@ void FMPanel::highlightMoved()
 
 void FMPanel::rowsChanged()
 {
+    if( driveJustLoaded )
+    {
+        driveJustLoaded = false;
+        return;
+    }
     if( dirList->hasFocus() )
     {
         dirList->selectionModel()->select(dirList->currentIndex(), QItemSelectionModel::Select);

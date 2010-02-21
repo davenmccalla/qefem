@@ -100,6 +100,7 @@ private:
     QVector<QPair<QProcess*,QPair<QString, bool > > > unzipVector;//delete thread,path,left or right panel
     MainWindow* mainW;
     bool left;
+    bool driveJustLoaded;
     FMFileSystemModel *dirModel;
     //QShortcut* enter;
     //QShortcut* returnKey;
