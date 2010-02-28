@@ -31,6 +31,52 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFlags f) : QWidget( parent, f ), left(aLeft)
 {
+    //setup variables
+    mainW = aMainW;
+    lastClick = QTime::currentTime ();
+    noDrive = false;
+    driveJustLoaded = false;
+    //setup layouts and lists
+    wholeLayout = new QVBoxLayout();
+    tab = new QTabWidget();
+    blist = new bookmarkListView();
+    hlist = new historyListView();
+    dlist = new driveListView();
+    dirList = new FMListView();
+    tab->addTab(dlist,"Drives");
+    tab->addTab(dirList,"Files");
+    tab->addTab(hlist,"History");
+    tab->addTab(blist,"Bookmarks");
+    tab->setCurrentIndex(1);
+    pathEdit = new QLineEdit();
+    wholeLayout->setContentsMargins( 0, 0, 0, 0 );
+    wholeLayout->setSpacing(0);
+    wholeLayout->addWidget( tab );
+    wholeLayout->addWidget( pathEdit );
+    setLayout( wholeLayout );
+    setVisible( true );
+    setPathEditText( QDir::homePath());
+    currentDir.clear();
+    currentDir.append(QDir::homePath());
+    currentFile.clear();
+    currentFile.append(QDir::homePath());
+    //setup signals and slots
+    connect(dlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( driveClicked( const QModelIndex & ) ));
+    connect(blist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
+    connect(hlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
+    connect(dirList, SIGNAL(clicked( const QModelIndex& )), this, SLOT( dirClicked( const QModelIndex & ) ));
+    connect(dirList, SIGNAL(activated( const QModelIndex& )), this, SLOT( dirDoubleClicked( const QModelIndex & ) ));
+    connect(dirList, SIGNAL(entered( const QModelIndex& )), this, SLOT( dirClicked( const QModelIndex & ) ));
+    connect(pathEdit, SIGNAL(editingFinished()),this,SLOT( editFinished() ));
+    connect(dirList, SIGNAL(keyUpOrDownPressed()),this,SLOT( highlightMoved() ));
+    connect(dirList, SIGNAL(copyFiles(const QStringList&)),this,SLOT( copy(const QStringList& ) ));
+    connect(dirList->model(), SIGNAL( rowChange()),this,SLOT(rowsChanged()));
+    connect(dirList->model(), SIGNAL( rootPathChanged ( const QString& )),this, SLOT( rootChanged ( const QString& ) ));
+}
+
+/*
+FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFlags f) : QWidget( parent, f ), left(aLeft)
+{
     mainW = aMainW;
     wholeLayout = new QVBoxLayout();
     listLayout = new QHBoxLayout();
@@ -103,16 +149,39 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     connect(driveTimer, SIGNAL(timeout()), this, SLOT(driveReload()));
     driveReload();    
     driveTimer->start( 5000 );
-}
+}*/
 
 FMPanel::~FMPanel()
 {
     delete listLayout;
 }
 
-void FMPanel::driveClicked( QListWidgetItem * item )
+void FMPanel::listClicked( const QModelIndex &index )
 {
-    mainW->startAnimation();
+    if( noDrive )
+        return;
+    const QStandardItemModel* model = qobject_cast<const QStandardItemModel*>( index.model() );
+    if( model != 0 )
+    {
+        lastClick = QTime::currentTime ();
+        QStandardItem* item = model->itemFromIndex(index);
+        qDebug()<<item->text();
+        setPathEditText( item->text() );
+        currentDir.clear();
+        currentDir.append( item->text() );
+        dirList->setRootPath( currentDir );
+        setPathEditText( currentDir );
+    }
+    tab->setCurrentIndex(1);
+}
+
+
+void FMPanel::driveClicked( const QModelIndex &index )
+{
+    const QStandardItemModel* model = qobject_cast<const QStandardItemModel*>( index.model() );
+    if( model == NULL )
+        return;
+    QStandardItem* item = model->itemFromIndex(index);
 #ifdef Q_WS_MAC
     QString path( item->whatsThis() );
 #else
@@ -125,19 +194,14 @@ void FMPanel::driveClicked( QListWidgetItem * item )
         lastClick = QTime::currentTime ();
         currentDir.clear();
         currentDir.append( path );
-        if( dirModel->rootPath() != currentDir )
-        {
-            mainW->startAnimation();
-            dirModel->setRootPath( currentDir );
-            dirList->setModel( dirModel );
-            dirList->setRootIndex(dirModel->index(currentDir));
-            setPathEditText( currentDir );
-            driveJustLoaded = true;
-        }
+        dirList->setRootPath( currentDir );
+        setPathEditText( currentDir );
+        driveJustLoaded = true;
         noDrive = false;
     }
     else
     {
+        //TODO: check this out on win
         QStandardItemModel* model = new QStandardItemModel( 1, 1 );
         QStandardItem* empty = new QStandardItem("No drive available.");
         currentDir.clear();
@@ -147,6 +211,7 @@ void FMPanel::driveClicked( QListWidgetItem * item )
         noDrive = true;
         mainW->stopAnimation();
     }
+    tab->setCurrentIndex(1);
     return;
 }
 
@@ -192,16 +257,14 @@ void FMPanel::dirDoubleClicked( const QModelIndex &  index )
                     QDir dirUp( model->filePath(index) );
                     currentDir.clear();
                     currentDir.append( dirUp.absolutePath()  );
-                    dirModel->setRootPath( currentDir );
-                    dirList->setRootIndex(dirModel->index(currentDir));
+                    dirList->setRootPath( currentDir );
                     setPathEditText( currentDir );
                     return;
                 }
             }
             currentDir.clear();
             currentDir.append( model->filePath(index) );
-            dirModel->setRootPath( currentDir );
-            dirList->setRootIndex(dirModel->index(currentDir));
+            dirList->setRootPath( currentDir );
             setPathEditText( currentDir );
             return;
         }
@@ -501,6 +564,9 @@ void FMPanel::reload()
     //QDirModel* model = qobject_cast<QDirModel*>( dirList->model() );
     //if( model != NULL )
     //    model->refresh( model->index( currentDir ) );
+    qDebug()<<"reload "<<left<<" "<<currentDir;
+    dirList->setRootPath(currentDir );
+    //dirList->update();
 }
 
 void FMPanel::driveReload()
@@ -682,7 +748,3 @@ void FMPanel::rootChanged ( const QString & newPath )
     mainW->stopAnimation();
 }
 
-FMFileSystemModel* FMPanel::model()
-{
-    return dirModel;
-}

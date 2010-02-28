@@ -260,6 +260,7 @@ void ControlPanel::delTaskFinished()
             QString text("Deletion of ");
             text.append( delVector[i].second.first );
             text.append(" finished.");
+            qDebug()<<text;
             //QToolTip::showText( QApplication::activeWindow()->pos(), text);
             delete delVector[i].first;
             if( delVector[i].second.second )
