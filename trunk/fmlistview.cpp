@@ -18,21 +18,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "fmlistview.h"
+#include "fmfilesystemmodel.h"
 #include <QDebug>
 #include <QShortcut>
 #include <QUrl>
 
 FMListView::FMListView( QWidget *parent) :
-    QListView(parent)
+    QTableView(parent)
 {    
     setDragEnabled ( true );
     setDragDropMode( QAbstractItemView::DragDrop );
     setAcceptDrops( true );
+    setSelectionMode( QAbstractItemView::ExtendedSelection );
+    dirModel = new FMFileSystemModel();
+    dirModel->setRootPath(QDir::homePath());
+    dirModel->setFilter( QDir::AllEntries );
+    dirModel->setResolveSymlinks(true);
+    setModel(dirModel);
+    setRootIndex(dirModel->index(QDir::homePath()));
+    setShowGrid(false);
+    hideRow(0);//hide the .
 }
 
 void FMListView::keyPressEvent( QKeyEvent * event )
 {
-    QListView::keyPressEvent( event );
+    QTableView::keyPressEvent( event );
     if(( event->key() == Qt::Key_Up )||( event->key() == Qt::Key_Down )
         ||( event->key() == Qt::Key_Home ) || ( event->key() == Qt::Key_End )
         ||( event->key() == Qt::Key_PageDown )||( event->key() == Qt::Key_PageUp ))
@@ -95,4 +105,18 @@ QStringList FMListView::selectedFiles()
         slist.append( index.data().toString() );
     }
     return slist;
+}
+
+void FMListView::setRootPath( QString& path )
+{
+    qDebug()<<"root path set";
+    dirModel->setRootPath( path );
+    setModel( dirModel );
+    setRootIndex(dirModel->index(path));
+    this->hideRow(0);
+    this->selectRow(1);
+    //selectionModel()->setCurrentIndex(model()->index( 0, 1, QModelIndex() ), QItemSelectionModel::Select);
+    //selectionModel()->select( model()->index( 0, 1, QModelIndex() ), QItemSelectionModel::Select );
+    scrollToTop();
+    repaint();
 }

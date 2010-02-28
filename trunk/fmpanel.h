@@ -21,6 +21,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #define FMPANEL_H
 
 #include "fmlistview.h"
+#include "bookmarklistview.h"
+#include "historylistview.h"
+#include "drivelistview.h"
 #include "fmfilesystemmodel.h"
 #include <QObject>
 #include <QWidget>
@@ -60,7 +63,6 @@ public:
     void setZipOutputDir( QString dir );
     QString curDir();
     QString curFile();
-    FMFileSystemModel* model();
 public slots:
     void reload();
     void driveReload();
@@ -73,18 +75,21 @@ public slots:
 signals:
     void copyFiles( const QStringList& files, const QString& dest, bool left );
 private slots:
-    void driveClicked( QListWidgetItem * item );
+    void listClicked( const QModelIndex &index );
+    void driveClicked( const QModelIndex &index);
     void dirClicked( const QModelIndex &  index );
     void dirDoubleClicked( const QModelIndex &  index );
     void editFinished();
     void highlightMoved();
-    //void backButtonClicked( bool checked );
 private:
     void setPathEditText(QString text);
     void focusInEvent ( QFocusEvent * event );
 private:
     QListWidget *driveList;
     FMListView *dirList;
+    bookmarkListView *blist;
+    historyListView *hlist;
+    driveListView *dlist;
     QHBoxLayout *listLayout;
     QVBoxLayout *wholeLayout;
     QVBoxLayout *leftLayout;
@@ -101,9 +106,7 @@ private:
     MainWindow* mainW;
     bool left;
     bool driveJustLoaded;
-    FMFileSystemModel *dirModel;
-    //QShortcut* enter;
-    //QShortcut* returnKey;
+    QTabWidget* tab;
 };
 
 #endif // FMPANEL_H
