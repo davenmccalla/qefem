@@ -50,14 +50,15 @@
  </data>
  <data>
   <variable>activebuildconfiguration</variable>
-  <value type="QString">Debug</value>
+  <value type="QString">Release</value>
  </data>
  <data>
   <variable>buildConfiguration-Debug</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <value key="QtVersionId" type="int">0</value>
-   <value key="ToolChain" type="int">0</value>
+   <value key="ToolChain" type="int">2</value>
+   <value key="addQDumper" type=""></value>
    <value key="buildConfiguration" type="int">2</value>
   </valuemap>
  </data>
@@ -66,6 +67,8 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
    <value key="QtVersionId" type="int">0</value>
+   <value key="ToolChain" type="int">2</value>
+   <value key="addQDumper" type=""></value>
    <value key="buildConfiguration" type="int">0</value>
   </valuemap>
  </data>
@@ -73,12 +76,152 @@
   <variable>buildconfiguration-Debug-buildstep0</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList">
+    <value type="QString">ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
+    <value type="QString">ANT_HOME=C:\APPS\ant_1.7.1</value>
+    <value type="QString">APPDATA=C:\Documents and Settings\kapinter\Application Data</value>
+    <value type="QString">APTLMHOST=@oupelic4.emea.nsn-net.net</value>
+    <value type="QString">ARMLMD_LICENSE_FILE=8224@oulic02.nmp.nokia.com;8224@salmg01.nmp.nokia.com;8224@salmg01.europe.nokia.com;8224@trelic01.europe.nokia.com;</value>
+    <value type="QString">ARMROOT=\</value>
+    <value type="QString">ARMV5VER=:ARM/Thumb C/C++ Compiler, RVCT2.2 [Build 686]</value>
+    <value type="QString">CLASSPATH=.;C:\Program Files\Java\jre1.6.0\lib\ext\QTJava.zip;c:\tools\jdk\lib\tools.jar;c:\Qt\QtJambi\qtjambi-4.4.0_01.jar;c:\Qt\QtJambi\qtjambi-examples-4.4.0_01.jar;c:\Qt\JambiMingw\</value>
+    <value type="QString">CMTHOME=C:\APPS\cmt</value>
+    <value type="QString">COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
+    <value type="QString">COMPUTERNAME=4FID13148</value>
+    <value type="QString">COMSPEC=C:\winnt\system32\cmd.exe</value>
+    <value type="QString">COPYCMD=/Y</value>
+    <value type="QString">CTCHOME=C:\APPS\ctc</value>
+    <value type="QString">CTC_AGENT_DEBUG=*</value>
+    <value type="QString">EPOCROOT=\</value>
+    <value type="QString">FLEXLM_BATCH=1</value>
+    <value type="QString">FLEXLM_TIMEOUT=900000</value>
+    <value type="QString">FP_NO_HOST_CHECK=NO</value>
+    <value type="QString">HOMEDRIVE=C:</value>
+    <value type="QString">HOMEPATH=\Documents and Settings\kapinter</value>
+    <value type="QString">JAVADIR=c:\Program Files\Java\jre1.6.0_06\</value>
+    <value type="QString">JAVA_5_HOME=C:\APPS\jdk_1.5.0_17</value>
+    <value type="QString">JAVA_HOME=C:\APPS\jdk_1.5.0_17</value>
+    <value type="QString">LM_LICENSE_FILE=C:\APPS\licenses\emea.dat;1700@saslmg02.nmp.nokia.com;C:\APPS\licenses\PCLint.dat;6969@saslmg04.nmp.nokia.com;1700@saslmg02.europe.nokia.com;6969@saslmg04.europe.nokia.com;</value>
+    <value type="QString">LOGONSERVER=\\OUWDC101</value>
+    <value type="QString">MWCSYM2INCLUDES=C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_Win32\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_X86;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C++\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_Extras\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_Extras\MSL_Win32\Include;C:\APPS\carbide\x86Build\Symbian_Support\Win32-x86 Support\Headers\Win32 SDK</value>
+    <value type="QString">MWSYM2LIBRARIES=C:\APPS\carbide\x86Build\Symbian_Support\Win32-x86 Support\Libraries\Win32 SDK;C:\APPS\carbide\x86Build\Symbian_Support\Runtime\Runtime_x86\Runtime_Win32\Libs</value>
+    <value type="QString">MWSYM2LIBRARYFILES=MSL_All_MSE_Symbian_D.lib;gdi32.lib;user32.lib;kernel32.lib;</value>
+    <value type="QString">NOKIA_LICENSE_FILE=C:\APPS\licenses\emea.dat;</value>
+    <value type="QString">NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString">OS=Windows_NT</value>
+    <value type="QString">PATH=E:\Qt\2010.01\mingw\bin;E:\Qt\2010.01\qt\bin;C:\Program Files\PC Connectivity Solution\;c:\apps\actperl\bin\;c:\apps\rvct22_686\bin;c:\apps\atool;\epoc32\tools;\epoc32\gcc\bin;c:\apps\ccm65\bin;c:\apps\carbide\x86Build\Symbian_Tools\Command_Line_Tools;C:\APPS\actpython\.;C:\Apps\carbide\x86Build\Symbian_Tools\Command_Line_Tools\Symbian_Tools\Command_Line_Tools;\projects\S60\epoc32\tools;\projects\S60\epoc32\gcc\bin;C:\WINNT\system32;C:\WINNT;C:\WINNT\System32\Wbem;C:\Program Files\Intel\Wireless\Bin;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\Subversion\bin;c:\Program Files\NetBeans 6.1\java2\ant\bin\;c:\tools\jdk\bin\;C:\APPS\cmt\;C:\APPS\cltools;C:\APPS\gracecli\bin;C:\APPS\wget;C:\APPS\understand\bin\pc-win95;C:\APPS\unzip;C:\Program Files\Common Files\Symbian\tools;C:\APPS\ant_1.7.1\bin;C:\APPS\jdk_1.5.0_17\bin;C:\APPS\pclint;C:\APPS\ctc;C:\APPS\sbs\bin;C:\APPS\codescanner;C:\APPS\symdec;C:\APPS\7zip;C:\APPS\bc;\epoc32\gcc_mingw\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\SlikSvn\bin\;</value>
+    <value type="QString">PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.py;.pyw</value>
+    <value type="QString">PERL=C:\APPS\actperl\bin\perl.exe</value>
+    <value type="QString">PROCESSOR_ARCHITECTURE=x86</value>
+    <value type="QString">PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 6, GenuineIntel</value>
+    <value type="QString">PROCESSOR_LEVEL=6</value>
+    <value type="QString">PROCESSOR_REVISION=0f06</value>
+    <value type="QString">PROGRAMFILES=C:\Program Files</value>
+    <value type="QString">QTDIR=E:/Qt/2010.01/qt</value>
+    <value type="QString">QTJAVA=C:\Program Files\Java\jre1.6.0\lib\ext\QTJava.zip</value>
+    <value type="QString">RVCT22BIN=C:\APPS\rvct22_686\bin</value>
+    <value type="QString">RVCT22INC=C:\APPS\rvct22_686\include</value>
+    <value type="QString">RVCT22LIB=C:\APPS\rvct22_686\lib</value>
+    <value type="QString">RVCT22_ASMOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">RVCT22_CCOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">RVCT22_LINKOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">SBS_HOME=C:\APPS\sbs</value>
+    <value type="QString">SESSIONNAME=Console</value>
+    <value type="QString">SYMSEE_VERSION=10.3.0</value>
+    <value type="QString">SYSTEMDRIVE=C:</value>
+    <value type="QString">SYSTEMROOT=C:\winnt</value>
+    <value type="QString">TEMP=C:\DOCUME~1\kapinter\LOCALS~1\Temp</value>
+    <value type="QString">TMP=C:\DOCUME~1\kapinter\LOCALS~1\Temp</value>
+    <value type="QString">USERDNSDOMAIN=NOE.NOKIA.COM</value>
+    <value type="QString">USERDOMAIN=NOE</value>
+    <value type="QString">USERNAME=kapinter</value>
+    <value type="QString">USERPROFILE=C:\Documents and Settings\kapinter</value>
+    <value type="QString">WINDIR=C:\winnt</value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">C:/Users/Qefem/Qefem.pro</value>
+    <value type="QString">-spec</value>
+    <value type="QString">win32-g++</value>
+    <value type="QString">-r</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString">e:/qt/2010.01/qt/bin/qmake.exe</value>
+   <value key="abstractProcess.enabled" type="bool">true</value>
+   <value key="abstractProcess.workingDirectory" type="QString">C:/Users/Qefem</value>
   </valuemap>
  </data>
  <data>
   <variable>buildconfiguration-Debug-buildstep1</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList">
+    <value type="QString">ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
+    <value type="QString">ANT_HOME=C:\APPS\ant_1.7.1</value>
+    <value type="QString">APPDATA=C:\Documents and Settings\kapinter\Application Data</value>
+    <value type="QString">APTLMHOST=@oupelic4.emea.nsn-net.net</value>
+    <value type="QString">ARMLMD_LICENSE_FILE=8224@oulic02.nmp.nokia.com;8224@salmg01.nmp.nokia.com;8224@salmg01.europe.nokia.com;8224@trelic01.europe.nokia.com;</value>
+    <value type="QString">ARMROOT=\</value>
+    <value type="QString">ARMV5VER=:ARM/Thumb C/C++ Compiler, RVCT2.2 [Build 686]</value>
+    <value type="QString">CLASSPATH=.;C:\Program Files\Java\jre1.6.0\lib\ext\QTJava.zip;c:\tools\jdk\lib\tools.jar;c:\Qt\QtJambi\qtjambi-4.4.0_01.jar;c:\Qt\QtJambi\qtjambi-examples-4.4.0_01.jar;c:\Qt\JambiMingw\</value>
+    <value type="QString">CMTHOME=C:\APPS\cmt</value>
+    <value type="QString">COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
+    <value type="QString">COMPUTERNAME=4FID13148</value>
+    <value type="QString">COMSPEC=C:\winnt\system32\cmd.exe</value>
+    <value type="QString">COPYCMD=/Y</value>
+    <value type="QString">CTCHOME=C:\APPS\ctc</value>
+    <value type="QString">CTC_AGENT_DEBUG=*</value>
+    <value type="QString">EPOCROOT=\</value>
+    <value type="QString">FLEXLM_BATCH=1</value>
+    <value type="QString">FLEXLM_TIMEOUT=900000</value>
+    <value type="QString">FP_NO_HOST_CHECK=NO</value>
+    <value type="QString">HOMEDRIVE=C:</value>
+    <value type="QString">HOMEPATH=\Documents and Settings\kapinter</value>
+    <value type="QString">JAVADIR=c:\Program Files\Java\jre1.6.0_06\</value>
+    <value type="QString">JAVA_5_HOME=C:\APPS\jdk_1.5.0_17</value>
+    <value type="QString">JAVA_HOME=C:\APPS\jdk_1.5.0_17</value>
+    <value type="QString">LM_LICENSE_FILE=C:\APPS\licenses\emea.dat;1700@saslmg02.nmp.nokia.com;C:\APPS\licenses\PCLint.dat;6969@saslmg04.nmp.nokia.com;1700@saslmg02.europe.nokia.com;6969@saslmg04.europe.nokia.com;</value>
+    <value type="QString">LOGONSERVER=\\OUWDC101</value>
+    <value type="QString">MWCSYM2INCLUDES=C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_Win32\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_X86;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C++\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_Extras\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_Extras\MSL_Win32\Include;C:\APPS\carbide\x86Build\Symbian_Support\Win32-x86 Support\Headers\Win32 SDK</value>
+    <value type="QString">MWSYM2LIBRARIES=C:\APPS\carbide\x86Build\Symbian_Support\Win32-x86 Support\Libraries\Win32 SDK;C:\APPS\carbide\x86Build\Symbian_Support\Runtime\Runtime_x86\Runtime_Win32\Libs</value>
+    <value type="QString">MWSYM2LIBRARYFILES=MSL_All_MSE_Symbian_D.lib;gdi32.lib;user32.lib;kernel32.lib;</value>
+    <value type="QString">NOKIA_LICENSE_FILE=C:\APPS\licenses\emea.dat;</value>
+    <value type="QString">NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString">OS=Windows_NT</value>
+    <value type="QString">PATH=E:\Qt\2010.01\mingw\bin;E:\Qt\2010.01\qt\bin;C:\Program Files\PC Connectivity Solution\;c:\apps\actperl\bin\;c:\apps\rvct22_686\bin;c:\apps\atool;\epoc32\tools;\epoc32\gcc\bin;c:\apps\ccm65\bin;c:\apps\carbide\x86Build\Symbian_Tools\Command_Line_Tools;C:\APPS\actpython\.;C:\Apps\carbide\x86Build\Symbian_Tools\Command_Line_Tools\Symbian_Tools\Command_Line_Tools;\projects\S60\epoc32\tools;\projects\S60\epoc32\gcc\bin;C:\WINNT\system32;C:\WINNT;C:\WINNT\System32\Wbem;C:\Program Files\Intel\Wireless\Bin;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\Subversion\bin;c:\Program Files\NetBeans 6.1\java2\ant\bin\;c:\tools\jdk\bin\;C:\APPS\cmt\;C:\APPS\cltools;C:\APPS\gracecli\bin;C:\APPS\wget;C:\APPS\understand\bin\pc-win95;C:\APPS\unzip;C:\Program Files\Common Files\Symbian\tools;C:\APPS\ant_1.7.1\bin;C:\APPS\jdk_1.5.0_17\bin;C:\APPS\pclint;C:\APPS\ctc;C:\APPS\sbs\bin;C:\APPS\codescanner;C:\APPS\symdec;C:\APPS\7zip;C:\APPS\bc;\epoc32\gcc_mingw\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\SlikSvn\bin\;</value>
+    <value type="QString">PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.py;.pyw</value>
+    <value type="QString">PERL=C:\APPS\actperl\bin\perl.exe</value>
+    <value type="QString">PROCESSOR_ARCHITECTURE=x86</value>
+    <value type="QString">PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 6, GenuineIntel</value>
+    <value type="QString">PROCESSOR_LEVEL=6</value>
+    <value type="QString">PROCESSOR_REVISION=0f06</value>
+    <value type="QString">PROGRAMFILES=C:\Program Files</value>
+    <value type="QString">QTDIR=E:/Qt/2010.01/qt</value>
+    <value type="QString">QTJAVA=C:\Program Files\Java\jre1.6.0\lib\ext\QTJava.zip</value>
+    <value type="QString">RVCT22BIN=C:\APPS\rvct22_686\bin</value>
+    <value type="QString">RVCT22INC=C:\APPS\rvct22_686\include</value>
+    <value type="QString">RVCT22LIB=C:\APPS\rvct22_686\lib</value>
+    <value type="QString">RVCT22_ASMOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">RVCT22_CCOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">RVCT22_LINKOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">SBS_HOME=C:\APPS\sbs</value>
+    <value type="QString">SESSIONNAME=Console</value>
+    <value type="QString">SYMSEE_VERSION=10.3.0</value>
+    <value type="QString">SYSTEMDRIVE=C:</value>
+    <value type="QString">SYSTEMROOT=C:\winnt</value>
+    <value type="QString">TEMP=C:\DOCUME~1\kapinter\LOCALS~1\Temp</value>
+    <value type="QString">TMP=C:\DOCUME~1\kapinter\LOCALS~1\Temp</value>
+    <value type="QString">USERDNSDOMAIN=NOE.NOKIA.COM</value>
+    <value type="QString">USERDOMAIN=NOE</value>
+    <value type="QString">USERNAME=kapinter</value>
+    <value type="QString">USERPROFILE=C:\Documents and Settings\kapinter</value>
+    <value type="QString">WINDIR=C:\winnt</value>
+   </valuelist>
+   <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
+   <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">-w</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString">E:/Qt/2010.01/mingw/bin/mingw32-make.exe</value>
+   <value key="abstractProcess.enabled" type="bool">true</value>
+   <value key="abstractProcess.workingDirectory" type="QString">C:/Users/Qefem</value>
   </valuemap>
  </data>
  <data>
@@ -95,18 +238,163 @@
   <variable>buildconfiguration-Release-buildstep0</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList">
+    <value type="QString">ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
+    <value type="QString">ANT_HOME=C:\APPS\ant_1.7.1</value>
+    <value type="QString">APPDATA=C:\Documents and Settings\kapinter\Application Data</value>
+    <value type="QString">APTLMHOST=@oupelic4.emea.nsn-net.net</value>
+    <value type="QString">ARMLMD_LICENSE_FILE=8224@oulic02.nmp.nokia.com;8224@salmg01.nmp.nokia.com;8224@salmg01.europe.nokia.com;8224@trelic01.europe.nokia.com;</value>
+    <value type="QString">ARMROOT=\</value>
+    <value type="QString">ARMV5VER=:ARM/Thumb C/C++ Compiler, RVCT2.2 [Build 686]</value>
+    <value type="QString">CLASSPATH=.;C:\Program Files\Java\jre1.6.0\lib\ext\QTJava.zip;c:\tools\jdk\lib\tools.jar;c:\Qt\QtJambi\qtjambi-4.4.0_01.jar;c:\Qt\QtJambi\qtjambi-examples-4.4.0_01.jar;c:\Qt\JambiMingw\</value>
+    <value type="QString">CMTHOME=C:\APPS\cmt</value>
+    <value type="QString">COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
+    <value type="QString">COMPUTERNAME=4FID13148</value>
+    <value type="QString">COMSPEC=C:\winnt\system32\cmd.exe</value>
+    <value type="QString">COPYCMD=/Y</value>
+    <value type="QString">CTCHOME=C:\APPS\ctc</value>
+    <value type="QString">CTC_AGENT_DEBUG=*</value>
+    <value type="QString">EPOCROOT=\</value>
+    <value type="QString">FLEXLM_BATCH=1</value>
+    <value type="QString">FLEXLM_TIMEOUT=900000</value>
+    <value type="QString">FP_NO_HOST_CHECK=NO</value>
+    <value type="QString">HOMEDRIVE=C:</value>
+    <value type="QString">HOMEPATH=\Documents and Settings\kapinter</value>
+    <value type="QString">JAVADIR=c:\Program Files\Java\jre1.6.0_06\</value>
+    <value type="QString">JAVA_5_HOME=C:\APPS\jdk_1.5.0_17</value>
+    <value type="QString">JAVA_HOME=C:\APPS\jdk_1.5.0_17</value>
+    <value type="QString">LM_LICENSE_FILE=C:\APPS\licenses\emea.dat;1700@saslmg02.nmp.nokia.com;C:\APPS\licenses\PCLint.dat;6969@saslmg04.nmp.nokia.com;1700@saslmg02.europe.nokia.com;6969@saslmg04.europe.nokia.com;</value>
+    <value type="QString">LOGONSERVER=\\OUWDC101</value>
+    <value type="QString">MWCSYM2INCLUDES=C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_Win32\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_X86;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C++\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_Extras\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_Extras\MSL_Win32\Include;C:\APPS\carbide\x86Build\Symbian_Support\Win32-x86 Support\Headers\Win32 SDK</value>
+    <value type="QString">MWSYM2LIBRARIES=C:\APPS\carbide\x86Build\Symbian_Support\Win32-x86 Support\Libraries\Win32 SDK;C:\APPS\carbide\x86Build\Symbian_Support\Runtime\Runtime_x86\Runtime_Win32\Libs</value>
+    <value type="QString">MWSYM2LIBRARYFILES=MSL_All_MSE_Symbian_D.lib;gdi32.lib;user32.lib;kernel32.lib;</value>
+    <value type="QString">NOKIA_LICENSE_FILE=C:\APPS\licenses\emea.dat;</value>
+    <value type="QString">NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString">OS=Windows_NT</value>
+    <value type="QString">PATH=E:\Qt\2010.01\mingw\bin;E:\Qt\2010.01\qt\bin;C:\Program Files\PC Connectivity Solution\;c:\apps\actperl\bin\;c:\apps\rvct22_686\bin;c:\apps\atool;\epoc32\tools;\epoc32\gcc\bin;c:\apps\ccm65\bin;c:\apps\carbide\x86Build\Symbian_Tools\Command_Line_Tools;C:\APPS\actpython\.;C:\Apps\carbide\x86Build\Symbian_Tools\Command_Line_Tools\Symbian_Tools\Command_Line_Tools;\projects\S60\epoc32\tools;\projects\S60\epoc32\gcc\bin;C:\WINNT\system32;C:\WINNT;C:\WINNT\System32\Wbem;C:\Program Files\Intel\Wireless\Bin;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\Subversion\bin;c:\Program Files\NetBeans 6.1\java2\ant\bin\;c:\tools\jdk\bin\;C:\APPS\cmt\;C:\APPS\cltools;C:\APPS\gracecli\bin;C:\APPS\wget;C:\APPS\understand\bin\pc-win95;C:\APPS\unzip;C:\Program Files\Common Files\Symbian\tools;C:\APPS\ant_1.7.1\bin;C:\APPS\jdk_1.5.0_17\bin;C:\APPS\pclint;C:\APPS\ctc;C:\APPS\sbs\bin;C:\APPS\codescanner;C:\APPS\symdec;C:\APPS\7zip;C:\APPS\bc;\epoc32\gcc_mingw\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\SlikSvn\bin\;</value>
+    <value type="QString">PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.py;.pyw</value>
+    <value type="QString">PERL=C:\APPS\actperl\bin\perl.exe</value>
+    <value type="QString">PROCESSOR_ARCHITECTURE=x86</value>
+    <value type="QString">PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 6, GenuineIntel</value>
+    <value type="QString">PROCESSOR_LEVEL=6</value>
+    <value type="QString">PROCESSOR_REVISION=0f06</value>
+    <value type="QString">PROGRAMFILES=C:\Program Files</value>
+    <value type="QString">QTDIR=E:/Qt/2010.01/qt</value>
+    <value type="QString">QTJAVA=C:\Program Files\Java\jre1.6.0\lib\ext\QTJava.zip</value>
+    <value type="QString">RVCT22BIN=C:\APPS\rvct22_686\bin</value>
+    <value type="QString">RVCT22INC=C:\APPS\rvct22_686\include</value>
+    <value type="QString">RVCT22LIB=C:\APPS\rvct22_686\lib</value>
+    <value type="QString">RVCT22_ASMOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">RVCT22_CCOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">RVCT22_LINKOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">SBS_HOME=C:\APPS\sbs</value>
+    <value type="QString">SESSIONNAME=Console</value>
+    <value type="QString">SYMSEE_VERSION=10.3.0</value>
+    <value type="QString">SYSTEMDRIVE=C:</value>
+    <value type="QString">SYSTEMROOT=C:\winnt</value>
+    <value type="QString">TEMP=C:\DOCUME~1\kapinter\LOCALS~1\Temp</value>
+    <value type="QString">TMP=C:\DOCUME~1\kapinter\LOCALS~1\Temp</value>
+    <value type="QString">USERDNSDOMAIN=NOE.NOKIA.COM</value>
+    <value type="QString">USERDOMAIN=NOE</value>
+    <value type="QString">USERNAME=kapinter</value>
+    <value type="QString">USERPROFILE=C:\Documents and Settings\kapinter</value>
+    <value type="QString">WINDIR=C:\winnt</value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">C:/Users/Qefem/Qefem.pro</value>
+    <value type="QString">-spec</value>
+    <value type="QString">win32-g++</value>
+    <value type="QString">-r</value>
+    <value type="QString">CONFIG+=release</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString">e:/qt/2010.01/qt/bin/qmake.exe</value>
+   <value key="abstractProcess.enabled" type="bool">true</value>
+   <value key="abstractProcess.workingDirectory" type="QString">C:/Users/Qefem</value>
   </valuemap>
  </data>
  <data>
   <variable>buildconfiguration-Release-buildstep1</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList">
+    <value type="QString">ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
+    <value type="QString">ANT_HOME=C:\APPS\ant_1.7.1</value>
+    <value type="QString">APPDATA=C:\Documents and Settings\kapinter\Application Data</value>
+    <value type="QString">APTLMHOST=@oupelic4.emea.nsn-net.net</value>
+    <value type="QString">ARMLMD_LICENSE_FILE=8224@oulic02.nmp.nokia.com;8224@salmg01.nmp.nokia.com;8224@salmg01.europe.nokia.com;8224@trelic01.europe.nokia.com;</value>
+    <value type="QString">ARMROOT=\</value>
+    <value type="QString">ARMV5VER=:ARM/Thumb C/C++ Compiler, RVCT2.2 [Build 686]</value>
+    <value type="QString">CLASSPATH=.;C:\Program Files\Java\jre1.6.0\lib\ext\QTJava.zip;c:\tools\jdk\lib\tools.jar;c:\Qt\QtJambi\qtjambi-4.4.0_01.jar;c:\Qt\QtJambi\qtjambi-examples-4.4.0_01.jar;c:\Qt\JambiMingw\</value>
+    <value type="QString">CMTHOME=C:\APPS\cmt</value>
+    <value type="QString">COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
+    <value type="QString">COMPUTERNAME=4FID13148</value>
+    <value type="QString">COMSPEC=C:\winnt\system32\cmd.exe</value>
+    <value type="QString">COPYCMD=/Y</value>
+    <value type="QString">CTCHOME=C:\APPS\ctc</value>
+    <value type="QString">CTC_AGENT_DEBUG=*</value>
+    <value type="QString">EPOCROOT=\</value>
+    <value type="QString">FLEXLM_BATCH=1</value>
+    <value type="QString">FLEXLM_TIMEOUT=900000</value>
+    <value type="QString">FP_NO_HOST_CHECK=NO</value>
+    <value type="QString">HOMEDRIVE=C:</value>
+    <value type="QString">HOMEPATH=\Documents and Settings\kapinter</value>
+    <value type="QString">JAVADIR=c:\Program Files\Java\jre1.6.0_06\</value>
+    <value type="QString">JAVA_5_HOME=C:\APPS\jdk_1.5.0_17</value>
+    <value type="QString">JAVA_HOME=C:\APPS\jdk_1.5.0_17</value>
+    <value type="QString">LM_LICENSE_FILE=C:\APPS\licenses\emea.dat;1700@saslmg02.nmp.nokia.com;C:\APPS\licenses\PCLint.dat;6969@saslmg04.nmp.nokia.com;1700@saslmg02.europe.nokia.com;6969@saslmg04.europe.nokia.com;</value>
+    <value type="QString">LOGONSERVER=\\OUWDC101</value>
+    <value type="QString">MWCSYM2INCLUDES=C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_Win32\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C\MSL_X86;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_C++\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_Extras\MSL_Common\Include;C:\APPS\carbide\x86Build\Symbian_Support\MSL\MSL_Extras\MSL_Win32\Include;C:\APPS\carbide\x86Build\Symbian_Support\Win32-x86 Support\Headers\Win32 SDK</value>
+    <value type="QString">MWSYM2LIBRARIES=C:\APPS\carbide\x86Build\Symbian_Support\Win32-x86 Support\Libraries\Win32 SDK;C:\APPS\carbide\x86Build\Symbian_Support\Runtime\Runtime_x86\Runtime_Win32\Libs</value>
+    <value type="QString">MWSYM2LIBRARYFILES=MSL_All_MSE_Symbian_D.lib;gdi32.lib;user32.lib;kernel32.lib;</value>
+    <value type="QString">NOKIA_LICENSE_FILE=C:\APPS\licenses\emea.dat;</value>
+    <value type="QString">NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString">OS=Windows_NT</value>
+    <value type="QString">PATH=E:\Qt\2010.01\mingw\bin;E:\Qt\2010.01\qt\bin;C:\Program Files\PC Connectivity Solution\;c:\apps\actperl\bin\;c:\apps\rvct22_686\bin;c:\apps\atool;\epoc32\tools;\epoc32\gcc\bin;c:\apps\ccm65\bin;c:\apps\carbide\x86Build\Symbian_Tools\Command_Line_Tools;C:\APPS\actpython\.;C:\Apps\carbide\x86Build\Symbian_Tools\Command_Line_Tools\Symbian_Tools\Command_Line_Tools;\projects\S60\epoc32\tools;\projects\S60\epoc32\gcc\bin;C:\WINNT\system32;C:\WINNT;C:\WINNT\System32\Wbem;C:\Program Files\Intel\Wireless\Bin;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\Subversion\bin;c:\Program Files\NetBeans 6.1\java2\ant\bin\;c:\tools\jdk\bin\;C:\APPS\cmt\;C:\APPS\cltools;C:\APPS\gracecli\bin;C:\APPS\wget;C:\APPS\understand\bin\pc-win95;C:\APPS\unzip;C:\Program Files\Common Files\Symbian\tools;C:\APPS\ant_1.7.1\bin;C:\APPS\jdk_1.5.0_17\bin;C:\APPS\pclint;C:\APPS\ctc;C:\APPS\sbs\bin;C:\APPS\codescanner;C:\APPS\symdec;C:\APPS\7zip;C:\APPS\bc;\epoc32\gcc_mingw\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\SlikSvn\bin\;</value>
+    <value type="QString">PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.py;.pyw</value>
+    <value type="QString">PERL=C:\APPS\actperl\bin\perl.exe</value>
+    <value type="QString">PROCESSOR_ARCHITECTURE=x86</value>
+    <value type="QString">PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 6, GenuineIntel</value>
+    <value type="QString">PROCESSOR_LEVEL=6</value>
+    <value type="QString">PROCESSOR_REVISION=0f06</value>
+    <value type="QString">PROGRAMFILES=C:\Program Files</value>
+    <value type="QString">QTDIR=E:/Qt/2010.01/qt</value>
+    <value type="QString">QTJAVA=C:\Program Files\Java\jre1.6.0\lib\ext\QTJava.zip</value>
+    <value type="QString">RVCT22BIN=C:\APPS\rvct22_686\bin</value>
+    <value type="QString">RVCT22INC=C:\APPS\rvct22_686\include</value>
+    <value type="QString">RVCT22LIB=C:\APPS\rvct22_686\lib</value>
+    <value type="QString">RVCT22_ASMOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">RVCT22_CCOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">RVCT22_LINKOPT=--licretry --fastlicense --sitelicense</value>
+    <value type="QString">SBS_HOME=C:\APPS\sbs</value>
+    <value type="QString">SESSIONNAME=Console</value>
+    <value type="QString">SYMSEE_VERSION=10.3.0</value>
+    <value type="QString">SYSTEMDRIVE=C:</value>
+    <value type="QString">SYSTEMROOT=C:\winnt</value>
+    <value type="QString">TEMP=C:\DOCUME~1\kapinter\LOCALS~1\Temp</value>
+    <value type="QString">TMP=C:\DOCUME~1\kapinter\LOCALS~1\Temp</value>
+    <value type="QString">USERDNSDOMAIN=NOE.NOKIA.COM</value>
+    <value type="QString">USERDOMAIN=NOE</value>
+    <value type="QString">USERNAME=kapinter</value>
+    <value type="QString">USERPROFILE=C:\Documents and Settings\kapinter</value>
+    <value type="QString">WINDIR=C:\winnt</value>
+   </valuelist>
+   <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
+   <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">-w</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString">E:/Qt/2010.01/mingw/bin/mingw32-make.exe</value>
+   <value key="abstractProcess.enabled" type="bool">true</value>
+   <value key="abstractProcess.workingDirectory" type="QString">C:/Users/Qefem</value>
   </valuemap>
  </data>
  <data>
   <variable>buildconfiguration-Release-cleanstep0</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
+   <value key="cleanConfig" type="bool">true</value>
+   <valuelist key="makeargs" type="QVariantList">
+    <value type="QString">clean</value>
+   </valuelist>
   </valuemap>
  </data>
  <data>

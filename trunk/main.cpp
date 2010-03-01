@@ -18,10 +18,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include <QtGui/QApplication>
+#include <QDir>
+#include <QFile>
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
+    //create .Qefem dir and files if necessary
+    QString dirName(QDir::homePath());
+    dirName.append("/.Qefem");
+    QDir dir( dirName );
+    if( !dir.exists() )
+    {
+        dir.mkdir( dirName );
+    }
     QApplication a(argc, argv);
     MainWindow w;
     w.show();

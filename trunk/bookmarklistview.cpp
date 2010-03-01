@@ -1,33 +1,33 @@
 #include "bookmarklistview.h"
 #include <QStandardItemModel>
 #include <QDir>
+#include <QFile>
 #include <QTimer>
 
 bookmarkListView::bookmarkListView(QWidget *parent) :
     QListView(parent)
 {
-//for testing purposes
-#ifdef Q_WS_MAC
-    QFileInfoList list = QDir("/Volumes/").entryInfoList( QDir::Dirs | QDir::NoDotAndDotDot );
-#endif
-#ifdef Q_WS_WIN
-    QFileInfoList list = QDir::drives();
-#endif
+    QString fileName(QDir::homePath());
+    fileName.append("/.Qefem/.bookmarks");
+    QFile file(fileName);
     QStandardItemModel* model = new QStandardItemModel();
-    model->setColumnCount(1);
-    model->setRowCount(list.count());
-    for( int i=0; i<list.count(); i++ )
+    if( !file.open(QIODevice::ReadWrite | QIODevice::Text) )
     {
-#ifdef Q_WS_MAC
-        QStandardItem *item = new QStandardItem(list[i].filePath());
-        item->setWhatsThis( list[i].filePath () );
-        item->setToolTip( list[i].fileName() );
-        model->setItem(i, 0, item);
-#endif
-#ifdef Q_WS_WIN
-        QStandardItem *item = new QStandardItem(list[i].absolutePath());
-        model->setItem(i, 0, item);
-#endif
+        model->setColumnCount(1);
+        model->setRowCount(1);
+        QStandardItem *item = new QStandardItem("No bookmarks set.");
+        model->setItem(0, 0, item);
     }
+    else
+    {
+        model->setColumnCount(1);
+        while (!file.atEnd())
+        {
+            QByteArray line = file.readLine();
+            QStandardItem *item = new QStandardItem( QString(line) );
+            model->appendRow( item );
+        }
+    }
+    file.close();
     setModel( model );
 }

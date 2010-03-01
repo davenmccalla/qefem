@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QDebug>
 #include <QApplication>
 #include <QClipboard>
+#include <QLibraryInfo>
 
 #include "mainwindow.h"
 
@@ -30,10 +31,11 @@ extern void qt_set_sequence_auto_mnemonic(bool b);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-{
+{    
 #ifdef Q_WS_MAC
     qt_set_sequence_auto_mnemonic( true );
 #endif
+    qDebug()<<QLibraryInfo::location( QLibraryInfo::PluginsPath );
     contentWidget = new QWidget( this );
     contentWidget->setWindowFlags( Qt::SubWindow );
     wholeLayout = new QVBoxLayout();

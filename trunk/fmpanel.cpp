@@ -153,7 +153,7 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
 
 FMPanel::~FMPanel()
 {
-    delete listLayout;
+    delete wholeLayout;
 }
 
 void FMPanel::listClicked( const QModelIndex &index )
