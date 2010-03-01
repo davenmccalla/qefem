@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QDebug>
 #include <QShortcut>
 #include <QUrl>
+#include <QHeaderView>
 
 FMListView::FMListView( QWidget *parent) :
     QTableView(parent)
@@ -37,7 +38,14 @@ FMListView::FMListView( QWidget *parent) :
     setModel(dirModel);
     setRootIndex(dirModel->index(QDir::homePath()));
     setShowGrid(false);
+    horizontalHeader()->hide();
+    verticalHeader()->hide();
+    verticalHeader()->setDefaultSectionSize( 18 );
+    horizontalHeader()->setDefaultSectionSize( width() );
     hideRow(0);//hide the .
+    hideColumn(1);
+    hideColumn(2);
+    hideColumn(3);
 }
 
 void FMListView::keyPressEvent( QKeyEvent * event )
