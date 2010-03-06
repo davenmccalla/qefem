@@ -33,7 +33,7 @@ FMListView::FMListView( QWidget *parent) :
     setSelectionMode( QAbstractItemView::ExtendedSelection );
     dirModel = new FMFileSystemModel();
     dirModel->setRootPath(QDir::homePath());
-    dirModel->setFilter( QDir::AllEntries );
+    dirModel->setFilter( QDir::AllEntries | QDir::Hidden );
     dirModel->setResolveSymlinks(true);
     setModel(dirModel);
     setRootIndex(dirModel->index(QDir::homePath()));

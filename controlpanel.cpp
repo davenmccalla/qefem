@@ -42,6 +42,7 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     delButton = new QPushButton( "&Del" );
     zipButton = new QPushButton( "&Zip" );
     mkdirButton = new QPushButton( "&Mkdir" );
+    bookmarkButton = new QPushButton( "&Bookmark" );
     statusButton = new QPushButton( "&Status" );
     animation = new QLabel();
     movie = new QMovie(":/images/spiral.gif");
@@ -56,6 +57,7 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     commandLayout->addWidget( delButton );
     commandLayout->addWidget( mkdirButton );
     commandLayout->addWidget( zipButton );
+    commandLayout->addWidget( bookmarkButton );
     commandLayout->addWidget( statusButton );
     //add events
     connect(cpButton, SIGNAL(clicked( bool )), this, SLOT( cpButtonClicked( bool ) ));
@@ -64,6 +66,7 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     connect(zipButton, SIGNAL(clicked( bool )), this, SLOT( zipButtonClicked( bool ) ));
     connect(mkdirButton, SIGNAL(clicked( bool )), this, SLOT( mkdirButtonClicked( bool ) ));
     connect(statusButton, SIGNAL(clicked( bool )), this, SLOT( statusButtonClicked( bool ) ));
+    connect(bookmarkButton, SIGNAL(clicked( bool )), this, SLOT( bookmarkButtonClicked( bool ) ));
     setLayout( commandLayout );
     setVisible( true );
     statusOn = false;
@@ -72,6 +75,51 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
 
 ControlPanel::~ControlPanel()
 {
+}
+
+void ControlPanel::bookmarkButtonClicked( bool /*checked*/ )
+{
+    QString path;
+    if( leftPanel->lastFocus() > rightPanel->lastFocus() )
+    {
+        if( leftPanel->curFile().isEmpty() || QFileInfo( leftPanel->curFile() ).isFile() )
+        {
+            path.append( leftPanel->curDir() );
+            leftPanel->addBookmark( path);
+            rightPanel->addBookmark( path );
+        }
+        else
+        {
+            path.append( leftPanel->curFile() );
+            leftPanel->addBookmark( path );
+            rightPanel->addBookmark( path );
+        }
+    }
+    else
+    {
+        if( rightPanel->curFile().isEmpty() || QFileInfo( rightPanel->curFile() ).isFile() )
+        {
+            path.append( rightPanel->curDir() );
+            leftPanel->addBookmark( rightPanel->curDir() );
+            rightPanel->addBookmark( rightPanel->curDir() );
+        }
+        else
+        {
+            path.append( rightPanel->curFile() );
+            leftPanel->addBookmark( path );
+            rightPanel->addBookmark( path );
+        }
+    }    
+    QString fileName(QDir::homePath());
+    fileName.append("/.Qefem/.bookmarks");
+    QFile file(fileName);
+    if( file.open(QIODevice::Append | QIODevice::Text) )
+    {
+        file.write(qPrintable(path));
+        file.write("\n");
+        file.flush();
+        file.close();
+    }
 }
 
 void ControlPanel::cpButtonClicked( bool /*checked*/ )
@@ -91,7 +139,6 @@ void ControlPanel::cpButtonClicked( bool /*checked*/ )
         if( list.count() > 0 )
             copyFiles( list, leftPanel->curDir(), false );
     }
-
 }
 
 

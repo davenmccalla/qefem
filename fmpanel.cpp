@@ -748,3 +748,7 @@ void FMPanel::rootChanged ( const QString & newPath )
     mainW->stopAnimation();
 }
 
+void FMPanel::addBookmark( const QString& path )
+{
+    blist->addBookmark( path );
+}

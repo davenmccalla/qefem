@@ -55,6 +55,7 @@ private slots:
     void zipButtonClicked( bool checked );
     void mkdirButtonClicked( bool checked );
     void statusButtonClicked( bool checked );
+    void bookmarkButtonClicked( bool checked );
 public:
     void copyDirs( const QString& dirName, const QString& dest, bool left );
     void copyFiles( const QStringList& files, const QString& dest, bool left );
@@ -70,6 +71,7 @@ private:
     QPushButton *zipButton;
     QPushButton *mkdirButton;
     QPushButton *statusButton;
+    QPushButton *bookmarkButton;
     FMPanel* leftPanel;
     FMPanel* rightPanel;
     MainWindow* mainW;
