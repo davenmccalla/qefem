@@ -63,6 +63,7 @@ public:
     void setZipOutputDir( QString dir );
     QString curDir();
     QString curFile();
+    void addBookmark( const QString& path );
 public slots:
     void reload();
     void driveReload();
