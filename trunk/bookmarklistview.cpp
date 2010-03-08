@@ -12,21 +12,22 @@ bookmarkListView::bookmarkListView(QWidget *parent) :
     fileName.append("/.Qefem/.bookmarks");
     QFile file(fileName);
     QStandardItemModel* model = new QStandardItemModel();
-    if( !file.open(QIODevice::ReadOnly | QIODevice::Text) )
+    model->setColumnCount(2);
+    if( !file.exists() )
     {
-        model->setColumnCount(1);
-        model->setRowCount(1);
-        QStandardItem *item = new QStandardItem("No bookmarks set.");
-        model->setItem(0, 0, item);
+        this->setToolTip("No bookmark set.");
+    }
+    else if( !file.open(QIODevice::ReadOnly | QIODevice::Text) )
+    {
+        this->setToolTip("Failed to open bookmarks file.");
     }
     else
     {
-        model->setColumnCount(1);
         while (!file.atEnd())
         {
             QByteArray line = file.readLine();
             line.chop(1);
-            QStandardItem *item = new QStandardItem( QString(line) );
+            QStandardItem *item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), QString(line) );
             model->appendRow( item );
         }
     }
@@ -39,7 +40,7 @@ void bookmarkListView::addBookmark( const QString& path )
     QStandardItemModel* mod = qobject_cast<QStandardItemModel*>( model() );
     if( mod != NULL )
     {
-        QStandardItem *item = new QStandardItem( path );
+        QStandardItem *item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), path );
         mod->appendRow( item );
     }
 }
