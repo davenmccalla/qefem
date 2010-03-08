@@ -12,7 +12,7 @@ bookmarkListView::bookmarkListView(QWidget *parent) :
     fileName.append("/.Qefem/.bookmarks");
     QFile file(fileName);
     QStandardItemModel* model = new QStandardItemModel();
-    if( !file.open(QIODevice::ReadWrite | QIODevice::Text) )
+    if( !file.open(QIODevice::ReadOnly | QIODevice::Text) )
     {
         model->setColumnCount(1);
         model->setRowCount(1);

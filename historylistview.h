@@ -7,12 +7,15 @@ class historyListView : public QListView
 {
 Q_OBJECT
 public:
-    explicit historyListView(QWidget *parent = 0);
-
+    explicit historyListView( bool left, QWidget *parent = 0 );
+    ~historyListView();
+    void addHistoryItem(const QString &path);
 signals:
 
 public slots:
 
+private:
+    bool mleft;
 };
 
 #endif // HISTORYLISTVIEW_H
