@@ -40,7 +40,7 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     wholeLayout = new QVBoxLayout();
     tab = new QTabWidget();
     blist = new bookmarkListView();
-    hlist = new historyListView();
+    hlist = new historyListView( left );
     dlist = new driveListView();
     dirList = new FMListView();
     tab->addTab(dlist,"Drives");
@@ -746,6 +746,7 @@ void FMPanel::rootChanged ( const QString & newPath )
 {
     qDebug()<<"root changed "<<newPath;
     mainW->stopAnimation();
+    hlist->addHistoryItem( newPath );
 }
 
 void FMPanel::addBookmark( const QString& path )

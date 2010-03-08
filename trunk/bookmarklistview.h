@@ -7,7 +7,7 @@ class bookmarkListView : public QListView
 {
 Q_OBJECT
 public:
-    explicit bookmarkListView(QWidget *parent = 0);
+    explicit bookmarkListView(QWidget *parent = 0);    
     void addBookmark( const QString& path );
 signals:
 
