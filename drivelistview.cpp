@@ -36,13 +36,13 @@ void driveListView::driveReload()
         {
             drives.append( list[i] );
     #ifdef Q_WS_MAC
-            QStandardItem *item = new QStandardItem(list[i].fileName());
+            QStandardItem *item = new QStandardItem(style()->standardIcon( QStyle::SP_DriveHDIcon ), list[i].fileName());
             item->setWhatsThis( list[i].filePath () );
             item->setToolTip( list[i].fileName() );
             model->setItem(i, 0, item);
     #endif
     #ifdef Q_WS_WIN
-            QStandardItem *item = new QStandardItem(list[i].absolutePath());
+            QStandardItem *item = new QStandardItem(style()->standardIcon( QStyle::SP_DriveHDIcon ),list[i].absolutePath());
             model->setItem(i, 0, item);
     #endif
         }

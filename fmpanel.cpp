@@ -219,13 +219,36 @@ void FMPanel::dirClicked( const QModelIndex &  index )
 {
     if( noDrive )
         return;
-    const FMFileSystemModel* model = qobject_cast<const FMFileSystemModel*>( index.model() );
+    const QStandardItemModel* model = qobject_cast<const QStandardItemModel*>( index.model() );
     if( model != 0 )
     {
         lastClick = QTime::currentTime ();
-        setPathEditText( model->filePath(index) );
+        QStandardItem* item = model->itemFromIndex( index );
+        QString path( dirList->getRootDir() );
+        path.append("/");
+        QString dirs( item->data(Qt::DisplayRole ).toString() );
+        if( dirs == ".." )
+        {
+            QDir dir( path);
+            if( dir.cdUp() )
+            {
+                path.clear();
+                path.append( dir.canonicalPath () );
+            }
+            else
+            {
+                return;
+            }
+
+        }
+        else
+        {
+            path.append( item->data(Qt::DisplayRole ).toString());
+        }
+        dirList->setRootPath( path );
+        setPathEditText( path );
         currentFile.clear();
-        currentFile.append( model->filePath(index) );
+        currentFile.append( path );
     }
 }
 

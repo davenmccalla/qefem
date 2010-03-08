@@ -28,7 +28,7 @@ historyListView::historyListView( bool left, QWidget *parent) :
         {
             QByteArray line = file.readLine();
             line.chop(1);
-            QStandardItem *item = new QStandardItem( QString(line) );
+            QStandardItem *item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), QString(line) );
             model->appendRow( item );
         }
     }
@@ -73,7 +73,7 @@ void historyListView::addHistoryItem(const QString &path)
     QStandardItemModel* mod = qobject_cast<QStandardItemModel*>( model() );
     if( mod != NULL )
     {
-        QStandardItem *item = new QStandardItem( path );
+        QStandardItem *item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), path );
         mod->appendRow( item );
         if( mod->rowCount() > 128 )
         {

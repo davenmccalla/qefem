@@ -21,17 +21,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #define QFMLISTVIEW_H
 
 #include "fmfilesystemmodel.h"
-#include <QTableView>
+#include <QListView>
 #include <QKeyEvent>
 #include <QObject>
 
-class FMListView : public QTableView
+class FMListView : public QListView
 {
 Q_OBJECT
 public:
     explicit FMListView(QWidget *parent = 0);
     QStringList selectedFiles();
     void setRootPath( QString& path );
+    QString getRootDir();
 protected:
     void keyPressEvent( QKeyEvent * event );
     void dropEvent( QDropEvent * e );
@@ -42,7 +43,7 @@ signals:
     void copyFiles( const QStringList& files );
 public slots:
 protected:
-    FMFileSystemModel *dirModel;
+    QString rootDir;
 };
 
 #endif // QFMLISTVIEW_H

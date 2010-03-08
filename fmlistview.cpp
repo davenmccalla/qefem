@@ -23,34 +23,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QShortcut>
 #include <QUrl>
 #include <QHeaderView>
+#include <QStandardItemModel>
 
 FMListView::FMListView( QWidget *parent) :
-    QTableView(parent)
+    QListView(parent)
 {    
     setDragEnabled ( true );
     setDragDropMode( QAbstractItemView::DragDrop );
     setAcceptDrops( true );
     setSelectionMode( QAbstractItemView::ExtendedSelection );
-    dirModel = new FMFileSystemModel();
-    dirModel->setRootPath(QDir::homePath());
-    dirModel->setFilter( QDir::AllEntries | QDir::Hidden );
-    dirModel->setResolveSymlinks(true);
-    setModel(dirModel);
-    setRootIndex(dirModel->index(QDir::homePath()));
-    setShowGrid(false);
-    horizontalHeader()->hide();
-    verticalHeader()->hide();
-    verticalHeader()->setDefaultSectionSize( 18 );
-    horizontalHeader()->setDefaultSectionSize( width() );
-    hideRow(0);//hide the .
-    hideColumn(1);
-    hideColumn(2);
-    hideColumn(3);
+    setEditTriggers( QAbstractItemView::NoEditTriggers );
+    QString home( QDir::homePath() );
+    setRootPath( home );
 }
 
 void FMListView::keyPressEvent( QKeyEvent * event )
 {
-    QTableView::keyPressEvent( event );
+    QListView::keyPressEvent( event );
     if(( event->key() == Qt::Key_Up )||( event->key() == Qt::Key_Down )
         ||( event->key() == Qt::Key_Home ) || ( event->key() == Qt::Key_End )
         ||( event->key() == Qt::Key_PageDown )||( event->key() == Qt::Key_PageUp ))
@@ -117,14 +106,41 @@ QStringList FMListView::selectedFiles()
 
 void FMListView::setRootPath( QString& path )
 {
-    qDebug()<<"root path set";
-    dirModel->setRootPath( path );
-    setModel( dirModel );
-    setRootIndex(dirModel->index(path));
-    this->hideRow(0);
-    this->selectRow(1);
-    //selectionModel()->setCurrentIndex(model()->index( 0, 1, QModelIndex() ), QItemSelectionModel::Select);
-    //selectionModel()->select( model()->index( 0, 1, QModelIndex() ), QItemSelectionModel::Select );
-    scrollToTop();
-    repaint();
+    qDebug()<<"root path set "<<path;
+    QDir dir( path );
+    rootDir.clear();
+    rootDir.append( path );
+    QStringList dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
+    QStandardItemModel* oldmod = qobject_cast<QStandardItemModel*>( model() );
+    QStandardItemModel* mod = new QStandardItemModel();
+    QStandardItem *itemUp = new QStandardItem( style()->standardIcon( QStyle::SP_ArrowUp ), ".." );
+    mod->appendRow( itemUp );
+    for( int i = 0; i < dirs.count(); i++ )
+    {
+        QString full( path );
+        full.append("/");
+        full.append( dirs[i] );
+        QFileInfo inf( full );
+        QStandardItem *item = NULL;
+        if( inf.isDir() || inf.isBundle() )
+        {
+            item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), dirs[i] );
+        }
+        else //if( inf.isFile() )
+        {
+            item = new QStandardItem( style()->standardIcon( QStyle::SP_FileIcon ), dirs[i] );
+        }
+        if( item != NULL )
+            mod->appendRow( item );
+    }
+    this->setModel( mod );
+    if( oldmod != NULL )
+    {
+        delete oldmod;
+    }
+}
+
+QString FMListView::getRootDir()
+{
+    return rootDir;
 }
