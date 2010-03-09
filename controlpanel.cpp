@@ -283,14 +283,14 @@ void ControlPanel::copyTaskFinished()
             text.append(" finished.");
             //QToolTip::showText( QApplication::activeWindow()->pos(), text);
             delete copyVector[i].first;
-            if( copyVector[i].second.second )
+            /*if( copyVector[i].second.second )
             {
                 leftPanel->reload();
             }
             else
             {
                 rightPanel->reload();
-            }
+            }*/
             copyVector.remove(i);
             i--;
         }
@@ -310,14 +310,14 @@ void ControlPanel::delTaskFinished()
             qDebug()<<text;
             //QToolTip::showText( QApplication::activeWindow()->pos(), text);
             delete delVector[i].first;
-            if( delVector[i].second.second )
+            /*if( delVector[i].second.second )
             {
                 leftPanel->reload();
             }
             else
             {
                 rightPanel->reload();
-            }
+            }*/
             delVector.remove(i);
             i--;
         }

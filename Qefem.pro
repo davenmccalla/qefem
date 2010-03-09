@@ -10,7 +10,6 @@ SOURCES += main.cpp \
     copytask.cpp \
     deletetask.cpp \
     fmlistview.cpp \
-    fmfilesystemmodel.cpp \
     drivelistview.cpp \
     bookmarklistview.cpp \
     historylistview.cpp
@@ -20,7 +19,6 @@ HEADERS += mainwindow.h \
     copytask.h \
     deletetask.h \
     fmlistview.h \
-    fmfilesystemmodel.h \
     drivelistview.h \
     bookmarklistview.h \
     historylistview.h
