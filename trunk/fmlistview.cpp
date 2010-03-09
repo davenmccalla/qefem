@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QStandardItemModel>
 
 FMListView::FMListView( QWidget *parent) :
-    QListView(parent)
+    QListView(parent), fileList(NULL)
 {    
     setDragEnabled ( true );
     setDragDropMode( QAbstractItemView::DragDrop );
@@ -35,6 +35,14 @@ FMListView::FMListView( QWidget *parent) :
     setEditTriggers( QAbstractItemView::NoEditTriggers );
     QString home( QDir::homePath() );
     setRootPath( home );
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->start(500);
+}
+
+FMListView::~FMListView()
+{
+    delete timer;
 }
 
 void FMListView::keyPressEvent( QKeyEvent * event )
@@ -104,31 +112,32 @@ QStringList FMListView::selectedFiles()
     return slist;
 }
 
-void FMListView::setRootPath( QString& path )
+void FMListView::setRootPath( const QString& path )
 {
     qDebug()<<"root path set "<<path;
     QDir dir( path );
     rootDir.clear();
     rootDir.append( path );
-    QStringList dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
+    QStringList *dirs = new QStringList();
+    *dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
     QStandardItemModel* oldmod = qobject_cast<QStandardItemModel*>( model() );
     QStandardItemModel* mod = new QStandardItemModel();
     QStandardItem *itemUp = new QStandardItem( style()->standardIcon( QStyle::SP_ArrowUp ), ".." );
     mod->appendRow( itemUp );
-    for( int i = 0; i < dirs.count(); i++ )
+    for( int i = 0; i < dirs->count(); i++ )
     {
         QString full( path );
         full.append("/");
-        full.append( dirs[i] );
+        full.append( dirs->at(i) );
         QFileInfo inf( full );
         QStandardItem *item = NULL;
         if( inf.isDir() || inf.isBundle() )
         {
-            item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), dirs[i] );
+            item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), dirs->at(i) );
         }
         else //if( inf.isFile() )
         {
-            item = new QStandardItem( style()->standardIcon( QStyle::SP_FileIcon ), dirs[i] );
+            item = new QStandardItem( style()->standardIcon( QStyle::SP_FileIcon ), dirs->at(i) );
         }
         if( item != NULL )
             mod->appendRow( item );
@@ -138,9 +147,38 @@ void FMListView::setRootPath( QString& path )
     {
         delete oldmod;
     }
+    delete fileList;
+    fileList = dirs;
+    emit rootPathChanged( rootDir );
 }
 
 QString FMListView::getRootDir()
 {
     return rootDir;
+}
+
+void FMListView::update()
+{
+    QDir dir( rootDir );
+    QStringList *dirs = new QStringList();
+    *dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
+    if( dirs->count() != fileList->count() )
+    {
+        QString temp( rootDir );
+        setRootPath( temp );
+        delete dirs;
+        return;
+    }
+    for( int i=0; i < dirs->count(); i++)
+    {
+        if( dirs->at(i) != fileList->at(i) )
+        {
+            QString temp( rootDir );
+            setRootPath( temp );
+            delete dirs;
+            return;
+        }
+    }
+    delete dirs;
+    return;
 }
