@@ -115,9 +115,17 @@ QStringList FMListView::selectedFiles()
 void FMListView::setRootPath( const QString& path )
 {
     qDebug()<<"root path set "<<path;
+    bool changed = true;
+    if( path == rootDir )
+    {
+        changed = false;
+    }
+    else
+    {
+        rootDir.clear();
+        rootDir.append( path );
+    }
     QDir dir( path );
-    rootDir.clear();
-    rootDir.append( path );
     QStringList *dirs = new QStringList();
     *dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
     QStandardItemModel* oldmod = qobject_cast<QStandardItemModel*>( model() );
@@ -149,7 +157,10 @@ void FMListView::setRootPath( const QString& path )
     }
     delete fileList;
     fileList = dirs;
-    emit rootPathChanged( rootDir );
+    if( changed )
+    {
+        emit rootPathChanged( rootDir );
+    }
 }
 
 QString FMListView::getRootDir()

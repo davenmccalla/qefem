@@ -81,6 +81,7 @@ FMPanel::~FMPanel()
 
 void FMPanel::listClicked( const QModelIndex &index )
 {
+    tab->setCurrentIndex(1);
     if( noDrive )
         return;
     const QStandardItemModel* model = qobject_cast<const QStandardItemModel*>( index.model() );
@@ -95,7 +96,6 @@ void FMPanel::listClicked( const QModelIndex &index )
         dirList->setRootPath( currentDir );
         setPathEditText( currentDir );
     }
-    tab->setCurrentIndex(1);
 }
 
 
@@ -148,7 +148,10 @@ void FMPanel::dirClicked( const QModelIndex &  index )
         lastClick = QTime::currentTime ();
         QStandardItem* item = model->itemFromIndex( index );
         QString path( dirList->getRootDir() );
-        path.append("/");
+        if( path.at(path.size()-1)!='/')
+        {
+            path.append("/");
+        }
         path.append( item->data(Qt::DisplayRole ).toString());
         setPathEditText( path );
         currentFile.clear();
@@ -166,7 +169,10 @@ void FMPanel::dirDoubleClicked( const QModelIndex &  index )
         lastClick = QTime::currentTime ();
         QStandardItem* item = model->itemFromIndex( index );
         QString path( dirList->getRootDir() );
-        path.append("/");
+        if( path.at(path.size()-1)!='/')
+        {
+            path.append("/");
+        }
         QString dirs( item->data(Qt::DisplayRole ).toString() );
         if( dirs == ".." )
         {
@@ -277,7 +283,6 @@ void FMPanel::dirDoubleClicked( const QModelIndex &  index )
                 QString url("file:///");
                 url.append( inf.filePath() );
                 qDebug()<<url;
-                //QDesktopServices::openUrl( QString("file://C:\\mudras-Yoga_in_your_hands.pdf" ) );
                 QDesktopServices::openUrl( url );
             }
         }
@@ -680,9 +685,20 @@ void FMPanel::rootChanged ( const QString & newPath )
     qDebug()<<"root changed "<<newPath;
     mainW->stopAnimation();
     hlist->addHistoryItem( newPath );
+    currentDir.clear();
+    currentDir.append( newPath );
+    currentFile.clear();
+    currentFile.append( newPath );
+    setPathEditText( newPath );
 }
 
 void FMPanel::addBookmark( const QString& path )
 {
+    #ifdef Q_WS_WIN
+    QString temp( path );
+    temp.replace( QString("/"), QString("\\"));
+    blist->addBookmark( temp );
+    #else
     blist->addBookmark( path );
+    #endif
 }
