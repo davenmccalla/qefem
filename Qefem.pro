@@ -24,4 +24,5 @@ HEADERS += mainwindow.h \
     historylistview.h
 RESOURCES += qefem.qrc
 win32:RC_FILE = qefem.rc
-OTHER_FILES += readme.txt
+OTHER_FILES += readme.txt \
+    bugstofix.txt

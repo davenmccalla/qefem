@@ -1,0 +1,8 @@
+TODO:
+
+* the scrolling should move the highlight too
+
+FIXED:
+
+* after directory entry nothing is selected and when bookmark is pressed some old path is added
+* changeing the drive extra slash is added on win

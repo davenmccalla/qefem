@@ -74,7 +74,7 @@ void historyListView::addHistoryItem(const QString &path)
     if( mod != NULL )
     {
         QStandardItem *item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), path );
-        mod->appendRow( item );
+        mod->insertRow( 0, item);
         if( mod->rowCount() > 128 )
         {
             mod->removeRow( 0 );
