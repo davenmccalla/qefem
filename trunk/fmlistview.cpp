@@ -24,13 +24,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QHeaderView>
 #include <QStandardItemModel>
 #include <QDir>
+#ifdef Q_WS_WIN
+#include <windows.h>
+#endif
 
 FMListView::FMListView( QWidget *parent) :
     QListView(parent), fileList(NULL)
 {    
+    freeSpace.clear();
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO)&& !defined(Q_WS_HILDON)
     setDragEnabled ( true );
     setDragDropMode( QAbstractItemView::DragDrop );
     setAcceptDrops( true );
+#endif    
     setSelectionMode( QAbstractItemView::ExtendedSelection );
     setEditTriggers( QAbstractItemView::NoEditTriggers );
     QString home( QDir::homePath() );
@@ -113,7 +119,7 @@ QStringList FMListView::selectedFiles()
 }
 
 void FMListView::setRootPath( const QString& path )
-{
+{    
     qDebug()<<"root path set "<<path;
     bool changed = true;
     if( path == rootDir )
@@ -125,12 +131,16 @@ void FMListView::setRootPath( const QString& path )
         rootDir.clear();
         rootDir.append( path );
     }
-    QDir dir( path );
+    QDir dir( path );    
     QStringList *dirs = new QStringList();
     *dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
     QStandardItemModel* oldmod = qobject_cast<QStandardItemModel*>( model() );
-    QStandardItemModel* mod = new QStandardItemModel();
-    QStandardItem *itemUp = new QStandardItem( style()->standardIcon( QStyle::SP_ArrowUp ), ".." );
+    QStandardItemModel* mod = new QStandardItemModel();    
+    getFreeSpace( path );
+    QString firstLine("..");
+    firstLine.append("\t");
+    firstLine.append(freeSpace);
+    QStandardItem *itemUp = new QStandardItem( style()->standardIcon( QStyle::SP_ArrowUp ), firstLine );
     mod->appendRow( itemUp );
     for( int i = 0; i < dirs->count(); i++ )
     {
@@ -149,18 +159,18 @@ void FMListView::setRootPath( const QString& path )
         }
         if( item != NULL )
             mod->appendRow( item );
-    }
+    }    
     this->setModel( mod );
     if( oldmod != NULL )
     {
         delete oldmod;
-    }
+    }    
     delete fileList;
     fileList = dirs;
     if( changed )
-    {
+    {        
         emit rootPathChanged( rootDir );
-    }
+    }    
 }
 
 QString FMListView::getRootDir()
@@ -172,7 +182,7 @@ void FMListView::update()
 {
     QDir dir( rootDir );
     QStringList *dirs = new QStringList();
-    *dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
+    *dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot, QDir::DirsFirst | QDir::Type );
     if( dirs->count() != fileList->count() )
     {
         QString temp( rootDir );
@@ -193,3 +203,33 @@ void FMListView::update()
     delete dirs;
     return;
 }
+
+#ifdef Q_WS_WIN
+void FMListView::getFreeSpace(const QString& path)
+{
+    quint64 availUser, total, avail;
+    QFileInfo fi(path);
+    QString dir = QDir::toNativeSeparators(fi.absoluteDir().canonicalPath());
+    freeSpace.clear();
+    if(GetDiskFreeSpaceExW((LPCWSTR)dir.utf16(),
+        (PULARGE_INTEGER)&availUser,
+        (PULARGE_INTEGER)&total,
+        (PULARGE_INTEGER)&avail) != 0)
+    {
+        availUser = availUser / 1048576;
+        total = total / 1048576;
+        avail = avail / 1048576;
+        qDebug()<<"availUser "<<availUser<<"total "<<total<<"avail "<<avail;
+        freeSpace.append(QString::number(availUser) );
+        freeSpace.append(" mb/ ");
+        freeSpace.append(QString::number(total) );
+        freeSpace.append(" mb free");
+    }
+}
+
+//#elif
+#else
+void FMListView::getFreeSpace(const QString& path)
+{
+}
+#endif

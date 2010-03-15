@@ -1,3 +1,8 @@
+FEATURE REQUESTS:
+
+* Show free space
+* Check free space before copying a file
+
 TODO:
 
 * the scrolling should move the highlight too

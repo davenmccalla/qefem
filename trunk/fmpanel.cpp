@@ -41,13 +41,21 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     tab = new QTabWidget();
     blist = new bookmarkListView();
     hlist = new historyListView( left );
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) 
     dlist = new driveListView();
+#endif    
     dirList = new FMListView();
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
     tab->addTab(dlist,"Drives");
+#endif    
     tab->addTab(dirList,"Files");
     tab->addTab(hlist,"History");
     tab->addTab(blist,"Bookmarks");
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) 
+    tab->setCurrentIndex(0);
+#else
     tab->setCurrentIndex(1);
+#endif    
     pathEdit = new QLineEdit();
     wholeLayout->setContentsMargins( 0, 0, 0, 0 );
     wholeLayout->setSpacing(0);
@@ -70,7 +78,7 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     connect(pathEdit, SIGNAL(editingFinished()),this,SLOT( editFinished() ));
     connect(dirList, SIGNAL(keyUpOrDownPressed()),this,SLOT( highlightMoved() ));
     connect(dirList, SIGNAL(copyFiles(const QStringList&)),this,SLOT( copy(const QStringList& ) ));
-    connect(dirList->model(), SIGNAL( rowChange()),this,SLOT(rowsChanged()));
+    //connect(dirList->model(), SIGNAL( rowChange()),this,SLOT(rowsChanged()));
     connect(dirList, SIGNAL( rootPathChanged ( const QString& )),this, SLOT( rootChanged ( const QString& ) ));
 }
 
@@ -81,7 +89,11 @@ FMPanel::~FMPanel()
 
 void FMPanel::listClicked( const QModelIndex &index )
 {
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) 
+    tab->setCurrentIndex(0);
+#else
     tab->setCurrentIndex(1);
+#endif    
     if( noDrive )
         return;
     const QStandardItemModel* model = qobject_cast<const QStandardItemModel*>( index.model() );
@@ -174,7 +186,7 @@ void FMPanel::dirDoubleClicked( const QModelIndex &  index )
             path.append("/");
         }
         QString dirs( item->data(Qt::DisplayRole ).toString() );
-        if( dirs == ".." )
+        if(( dirs[0] == '.' )&&( dirs[1] == '.' )&&( dirs[2] == '\t' ))
         {
             QDir dir( path);
             if( dir.cdUp() )
@@ -683,12 +695,16 @@ void FMPanel::focusInEvent( QFocusEvent * /*event*/ )
 void FMPanel::rootChanged ( const QString & newPath )
 {
     qDebug()<<"root changed "<<newPath;
+
     mainW->stopAnimation();
+
     hlist->addHistoryItem( newPath );
+
     currentDir.clear();
     currentDir.append( newPath );
     currentFile.clear();
     currentFile.append( newPath );
+
     setPathEditText( newPath );
 }
 

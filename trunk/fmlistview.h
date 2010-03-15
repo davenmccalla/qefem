@@ -39,6 +39,7 @@ protected:
     void dropEvent( QDropEvent * e );
     void dragEnterEvent( QDragEnterEvent * event );
     void dragMoveEvent(QDragMoveEvent *event);
+    void getFreeSpace(const QString& path);
 signals:
     void keyUpOrDownPressed();
     void copyFiles( const QStringList& files );
@@ -49,6 +50,7 @@ protected:
     QString rootDir;
     QStringList* fileList;
     QTimer* timer;
+    QString freeSpace;
 };
 
 #endif // QFMLISTVIEW_H
