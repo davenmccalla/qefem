@@ -40,9 +40,15 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     cpButton = new QPushButton( "&Copy" );
     rnButton = new QPushButton( "&Rename" );
     delButton = new QPushButton( "&Del" );
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
     zipButton = new QPushButton( "&Zip" );
+#endif
     mkdirButton = new QPushButton( "&Mkdir" );
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
+    bookmarkButton = new QPushButton( "&Bmark" );
+#else    
     bookmarkButton = new QPushButton( "&Bookmark" );
+#endif    
     statusButton = new QPushButton( "&Status" );
     animation = new QLabel();
     movie = new QMovie(":/images/spiral.gif");
@@ -56,17 +62,28 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     commandLayout->addWidget( rnButton );
     commandLayout->addWidget( delButton );
     commandLayout->addWidget( mkdirButton );
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
     commandLayout->addWidget( zipButton );
+#endif    
     commandLayout->addWidget( bookmarkButton );
     commandLayout->addWidget( statusButton );
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
+    exitButton = new QPushButton( "E&xit" );
+    commandLayout->addWidget( exitButton );
+#endif    
     //add events
     connect(cpButton, SIGNAL(clicked( bool )), this, SLOT( cpButtonClicked( bool ) ));
     connect(rnButton, SIGNAL(clicked( bool )), this, SLOT( rnButtonClicked( bool ) ));
     connect(delButton, SIGNAL(clicked( bool )), this, SLOT( delButtonClicked( bool ) ));
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
     connect(zipButton, SIGNAL(clicked( bool )), this, SLOT( zipButtonClicked( bool ) ));
+#endif
     connect(mkdirButton, SIGNAL(clicked( bool )), this, SLOT( mkdirButtonClicked( bool ) ));
     connect(statusButton, SIGNAL(clicked( bool )), this, SLOT( statusButtonClicked( bool ) ));
     connect(bookmarkButton, SIGNAL(clicked( bool )), this, SLOT( bookmarkButtonClicked( bool ) ));
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
+    connect(exitButton, SIGNAL(clicked( bool )), this, SLOT( exitButtonClicked( bool ) ));
+#endif
     setLayout( commandLayout );
     setVisible( true );
     statusOn = false;
@@ -75,6 +92,7 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
 
 ControlPanel::~ControlPanel()
 {
+    delete commandLayout;
 }
 
 void ControlPanel::bookmarkButtonClicked( bool /*checked*/ )
@@ -218,6 +236,11 @@ void ControlPanel::statusButtonClicked( bool /*checked*/ )
     }
 }
 
+void ControlPanel::exitButtonClicked( bool /*checked*/ )
+{
+    QCoreApplication::exit(0);
+}
+
 void ControlPanel::copyDirs(const QString& dirName, const QString& dest, bool left )
 {
     CopyTask *ct = new CopyTask( dirName, dest, CopyTask::Dir );
@@ -356,8 +379,11 @@ void ControlPanel::disableButtons()
     cpButton->setDisabled( true );
     rnButton->setDisabled( true );
     delButton->setDisabled( true );
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
     zipButton->setDisabled( true );
+#endif    
     mkdirButton->setDisabled( true );
+    bookmarkButton->setDisabled( true );
 }
 
 void ControlPanel::enableButtons()
@@ -365,8 +391,11 @@ void ControlPanel::enableButtons()
     cpButton->setEnabled( true );
     rnButton->setEnabled( true );
     delButton->setEnabled( true );
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
     zipButton->setEnabled( true );
+#endif
     mkdirButton->setEnabled( true );
+    bookmarkButton->setEnabled( true );
 }
 
 void ControlPanel::stopAnimation()

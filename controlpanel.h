@@ -28,8 +28,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QLabel>
 #include <QMovie>
 #include "fmpanel.h"
-#include "CopyTask.h"
-#include "DeleteTask.h"
+#include "copytask.h"
+#include "deletetask.h"
 //#include "mainwindow.h"
 
 class MainWindow;
@@ -56,6 +56,7 @@ private slots:
     void mkdirButtonClicked( bool checked );
     void statusButtonClicked( bool checked );
     void bookmarkButtonClicked( bool checked );
+    void exitButtonClicked( bool checked );
 public:
     void copyDirs( const QString& dirName, const QString& dest, bool left );
     void copyFiles( const QStringList& files, const QString& dest, bool left );
@@ -72,6 +73,7 @@ private:
     QPushButton *mkdirButton;
     QPushButton *statusButton;
     QPushButton *bookmarkButton;
+    QPushButton *exitButton;
     FMPanel* leftPanel;
     FMPanel* rightPanel;
     MainWindow* mainW;

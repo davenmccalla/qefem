@@ -32,6 +32,7 @@ extern void qt_set_sequence_auto_mnemonic(bool b);
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {    
+//qDebug()<<__FILE__<<__LINE__;
 #ifdef Q_WS_MAC
     qt_set_sequence_auto_mnemonic( true );
 #endif
@@ -45,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     wholeLayout->setSpacing(2);
     listLayout->setSpacing(2);
     rightPanel = new FMPanel( this, false, contentWidget );
-    leftPanel = new FMPanel( this, true, contentWidget );    
+    leftPanel = new FMPanel( this, true, contentWidget );        
     alt1 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_1),
                               this);
     connect( alt1, SIGNAL(activated()), this, SLOT(alt1Pressed()));
@@ -57,25 +58,28 @@ MainWindow::MainWindow(QWidget *parent)
     connect( ctrlC, SIGNAL(activated()), this, SLOT(ctrlCPressed()));
     ctrlV = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V),
                               this);
-    connect( ctrlV, SIGNAL(activated()), this, SLOT(ctrlVPressed()));
+    connect( ctrlV, SIGNAL(activated()), this, SLOT(ctrlVPressed()));    
     listLayout->addWidget( leftPanel );
-    listLayout->addWidget( rightPanel );
-    controlPanel = new ControlPanel( this, leftPanel, rightPanel );
+    listLayout->addWidget( rightPanel );    
+    controlPanel = new ControlPanel( this, leftPanel, rightPanel );    
     wholeLayout->addWidget( controlPanel );
     wholeLayout->addLayout( listLayout );
-    contentWidget->setLayout( wholeLayout );
-    contentWidget->setMinimumSize(600,320);
-    this->setMinimumSize(600,320);
-    //setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
+    contentWidget->setLayout( wholeLayout );    
     statusList = new QListWidget( contentWidget );
-    statusList->setVisible( false );
-    //statusBrowser = new QTextBrowser( contentWidget );
-    //statusBrowser->setVisible( false );
-    setGeometry(100,100,600,320);
-    //connect( &statusTimer, SIGNAL(timeout()), this, SLOT(updateStatus()));
+    statusList->setVisible( false );    
+#if defined(Q_WS_WIN)||defined(Q_WS_MAC)
+    contentWidget->setMinimumSize(600,320);
+    setMinimumSize(600,320);
+    setGeometry(100,100,900,480);    
+#endif
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
+    setWindowState(Qt::WindowFullScreen);
+    setGeometry(0,0,800,480);    
+#endif               
     rightPanel->setDirListFocus();
+//signals slots        
     connect(rightPanel, SIGNAL(copyFiles( const QStringList&, const QString& , bool )),this,SLOT( copyFiles( const QStringList&, const QString& , bool ) ));
-    connect(leftPanel, SIGNAL(copyFiles( const QStringList&, const QString& , bool )),this,SLOT(copyFiles( const QStringList&, const QString& , bool ) ));
+    connect(leftPanel, SIGNAL(copyFiles( const QStringList&, const QString& , bool )),this,SLOT(copyFiles( const QStringList&, const QString& , bool ) ));    
 }
 
 MainWindow::~MainWindow()

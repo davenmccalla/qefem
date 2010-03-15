@@ -26,6 +26,10 @@ void driveListView::driveReload()
 #ifdef Q_WS_WIN
     QFileInfoList list = QDir::drives();
 #endif
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
+    QFileInfoList list = QDir::drives();
+#endif
+        
     if( list != drives )
     {
         drives.clear();
