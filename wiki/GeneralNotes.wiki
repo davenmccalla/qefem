@@ -1,10 +1,15 @@
-
 = Introduction =
 
 Qt based filemanager with two panels. The file actions are running in a separate thread, 
 the spinning icon on the left indicates running actions.
 
 NOTE: To use zip functionality on Win please install 7z from www.7-zip.org.
+
+= New features in 0.5 =
+
+  * History tab (the last 128 dirs are saved into home dir/.Qefem/.lhistory or .rhistory depending on left or right panel)
+  * Bookmark tab ( bookmarks are saved to home dir/.Qefem/.bookmarks )
+  * Drive tab removed from Maemo release (compiles and works on Maemo)
 
 = Features =
 
@@ -27,7 +32,10 @@ NOTE: To use zip functionality on Win please install 7z from www.7-zip.org.
 
 = Plans =
 
+  *  Maemo release
   *  Linux release
+  *  network drive support
+  *  checking the aviable size before copy
   *  Changing path in path editor
   *  CTRL-X support
   *  Xml config file
@@ -35,11 +43,8 @@ NOTE: To use zip functionality on Win please install 7z from www.7-zip.org.
   *  Shortcut for editor or view or for opening a terminal
   *  Preferences in XML
   *  Implement file move
-  *  Path history go back and forward and history list
   *  Sorting by name size date
-  *  List tabs in each panel
-  *  Adding error console to see errors
-  *  MeeGo (Maemo) release
+  *  adding error console to see errors
   *  ?S60 release?
 
 = Development blog =
