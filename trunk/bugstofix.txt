@@ -1,13 +1,17 @@
 FEATURE REQUESTS:
 
-* Show free space
 * Check free space before copying a file
 
 TODO:
 
+* in some media type makes no sense to check free space or it is really slow the refresh rate should be changed
+* add shortcut for bookmark
+* add shortcuts for tabs
+* check shortcut on maemo
 * the scrolling should move the highlight too
 
 FIXED:
 
+* Show free space
 * after directory entry nothing is selected and when bookmark is pressed some old path is added
-* changeing the drive extra slash is added on win
+* changing the drive extra slash is added on win
