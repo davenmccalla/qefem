@@ -402,6 +402,7 @@
     <value type="QString">ARMROOT=\</value>
     <value type="QString">ARMV5VER=:ARM/Thumb C/C++ Compiler, RVCT2.2 [Build 686]</value>
     <value type="QString">CLASSPATH=.;C:\Program Files\Java\jre1.6.0\lib\ext\QTJava.zip;c:\tools\jdk\lib\tools.jar;c:\Qt\QtJambi\qtjambi-4.4.0_01.jar;c:\Qt\QtJambi\qtjambi-examples-4.4.0_01.jar;c:\Qt\JambiMingw\</value>
+    <value type="QString">CLIENTNAME=Console</value>
     <value type="QString">CMTHOME=C:\APPS\cmt</value>
     <value type="QString">COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
     <value type="QString">COMPUTERNAME=4FID13148</value>
