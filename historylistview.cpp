@@ -70,10 +70,18 @@ historyListView::~historyListView()
 
 void historyListView::addHistoryItem(const QString &path)
 {
+#ifdef Q_WS_WIN
+    QString temp( path );
+    temp.replace( QString("/"), QString("\\"));
+#endif
     QStandardItemModel* mod = qobject_cast<QStandardItemModel*>( model() );
     if( mod != NULL )
     {
+#ifdef Q_WS_WIN
+        QStandardItem *item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), temp );
+#else
         QStandardItem *item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), path );
+#endif
         mod->insertRow( 0, item);
         if( mod->rowCount() > 128 )
         {
