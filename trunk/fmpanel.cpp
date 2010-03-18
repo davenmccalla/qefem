@@ -402,6 +402,21 @@ void FMPanel::editFinished()
     {
         case None:
         {
+            QString dirName( pathEdit->text() );
+            QFileInfo finfo( dirName );
+            if( finfo.exists() && finfo.isDir() )
+            {
+                currentFile.clear();
+                currentFile.append( dirName );
+                currentDir.clear();
+                currentDir.append( dirName );
+                dirList->setRootPath( dirName );
+            }
+            else
+            {
+                setPathEditText( currentDir );
+            }
+            dirList->setFocus();
             return;
         }
         case Rename:
