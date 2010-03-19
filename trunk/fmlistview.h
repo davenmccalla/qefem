@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QKeyEvent>
 #include <QObject>
 #include <QTimer>
+#include <QFileSystemWatcher>
 
 class FMListView : public QListView
 {
@@ -32,7 +33,6 @@ public:
     explicit FMListView(QWidget *parent = 0);
     ~FMListView();
     QStringList selectedFiles();
-    void setRootPath( const QString& path );
     QString getRootDir();
 protected:
     void keyPressEvent( QKeyEvent * event );
@@ -45,12 +45,12 @@ signals:
     void copyFiles( const QStringList& files );
     void rootPathChanged ( const QString& );
 public slots:
-    void update();
+    void setRootPath( const QString& path );
 protected:
     QString rootDir;
     QStringList* fileList;
-    QTimer* timer;
     QString freeSpace;
+    QFileSystemWatcher watcher;
 };
 
 #endif // QFMLISTVIEW_H

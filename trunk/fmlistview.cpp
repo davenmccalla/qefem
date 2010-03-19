@@ -41,14 +41,11 @@ FMListView::FMListView( QWidget *parent) :
     setEditTriggers( QAbstractItemView::NoEditTriggers );
     QString home( QDir::homePath() );
     setRootPath( home );
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(500);
+    connect( &watcher, SIGNAL(directoryChanged( const QString& )), this, SLOT(setRootPath(const QString&)) );
 }
 
 FMListView::~FMListView()
 {
-    delete timer;
 }
 
 void FMListView::keyPressEvent( QKeyEvent * event )
@@ -128,8 +125,10 @@ void FMListView::setRootPath( const QString& path )
     }
     else
     {
+        watcher.removePath( rootDir );
         rootDir.clear();
         rootDir.append( path );
+        watcher.addPath( rootDir );
     }
     QDir dir( path );    
     QStringList *dirs = new QStringList();
@@ -176,32 +175,6 @@ void FMListView::setRootPath( const QString& path )
 QString FMListView::getRootDir()
 {
     return rootDir;
-}
-
-void FMListView::update()
-{
-    QDir dir( rootDir );
-    QStringList *dirs = new QStringList();
-    *dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot, QDir::DirsFirst | QDir::Type );
-    if( dirs->count() != fileList->count() )
-    {
-        QString temp( rootDir );
-        setRootPath( temp );
-        delete dirs;
-        return;
-    }
-    for( int i=0; i < dirs->count(); i++)
-    {
-        if( dirs->at(i) != fileList->at(i) )
-        {
-            QString temp( rootDir );
-            setRootPath( temp );
-            delete dirs;
-            return;
-        }
-    }
-    delete dirs;
-    return;
 }
 
 #ifdef Q_WS_WIN
