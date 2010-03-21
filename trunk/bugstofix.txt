@@ -1,17 +1,24 @@
 FEATURE REQUESTS:
 
 * Check free space before copying a file
+* Settings (Show hidden files, Enter boundle on OSX, set editor, move to trash etc.)
+* remove path editor from Maemo, there is now use for it, maybe with shortcut
+* write help
+* implement move functionality for files and directories
 
 TODO:
 
-* in some media type makes no sense to check free space or it is really slow the refresh rate should be changed
 * add shortcut for bookmark
 * add shortcuts for tabs
-* check shortcut on maemo
 * the scrolling should move the highlight too
+* Show free space on OSX and Linux
+* add cancelation to editing
+* on OSX execute the boundled directory
 
 FIXED:
 
+* in some media type makes no sense to check free space or it is really slow the refresh rate should be changed -> solved with QFileSystemWatcher
+* check shortcut on maemo
 * Show free space
 * after directory entry nothing is selected and when bookmark is pressed some old path is added
 * changing the drive extra slash is added on win
