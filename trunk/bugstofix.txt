@@ -8,6 +8,7 @@ FEATURE REQUESTS:
 
 TODO:
 
+* if ".." is selected then the size is displayed in the path editor
 * add shortcut for bookmark
 * add shortcuts for tabs
 * the scrolling should move the highlight too

@@ -159,7 +159,7 @@ void FMListView::setRootPath( const QString& path )
         if( item != NULL )
             mod->appendRow( item );
     }    
-    this->setModel( mod );
+    setModel( mod );
     if( oldmod != NULL )
     {
         delete oldmod;
@@ -168,6 +168,8 @@ void FMListView::setRootPath( const QString& path )
     fileList = dirs;
     if( changed )
     {        
+        curIndex = model()->index(0,0);
+        selectionModel()->setCurrentIndex( curIndex, QItemSelectionModel::Select );
         emit rootPathChanged( rootDir );
     }    
 }
@@ -206,3 +208,24 @@ void FMListView::getFreeSpace(const QString& path)
 {
 }
 #endif
+
+void FMListView::focusInEvent( QFocusEvent * event )
+{    
+    if( !selectionList.isEmpty() )
+    {
+        foreach (QModelIndex index, selectionList)
+            selectionModel()->select( index, QItemSelectionModel::Select );
+    }
+    else
+    {
+        curIndex = model()->index(0,0);
+    }
+    selectionModel()->setCurrentIndex( curIndex, QItemSelectionModel::Select );
+}
+
+void FMListView::focusOutEvent( QFocusEvent * event )
+{
+    selectionList = selectedIndexes();
+    curIndex = selectionModel()->currentIndex();
+    selectionModel()->clear();
+}
