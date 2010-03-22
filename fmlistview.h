@@ -40,6 +40,8 @@ protected:
     void dragEnterEvent( QDragEnterEvent * event );
     void dragMoveEvent(QDragMoveEvent *event);
     void getFreeSpace(const QString& path);
+    void focusInEvent( QFocusEvent * event );
+    void focusOutEvent( QFocusEvent * event );
 signals:
     void keyUpOrDownPressed();
     void copyFiles( const QStringList& files );
@@ -51,6 +53,8 @@ protected:
     QStringList* fileList;
     QString freeSpace;
     QFileSystemWatcher watcher;
+    QModelIndexList selectionList;
+    QModelIndex curIndex;
 };
 
 #endif // QFMLISTVIEW_H
