@@ -27,9 +27,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #ifdef Q_WS_WIN
 #include <windows.h>
 #endif
+#ifdef Q_WS_MAC
+#include <QTimer>
+#endif
 
 FMListView::FMListView( QWidget *parent) :
-    QListView(parent), fileList(NULL)
+    QListView(parent)
 {    
     freeSpace.clear();
 #if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO)&& !defined(Q_WS_HILDON)
@@ -42,6 +45,7 @@ FMListView::FMListView( QWidget *parent) :
     QString home( QDir::homePath() );
     setRootPath( home );
     connect( &watcher, SIGNAL(directoryChanged( const QString& )), this, SLOT(setRootPath(const QString&)) );
+    selectionModel()->clear();
 }
 
 FMListView::~FMListView()
@@ -105,12 +109,22 @@ void FMListView::dragMoveEvent(QDragMoveEvent *event)
 
 QStringList FMListView::selectedFiles()
 {
-    QModelIndexList list = selectedIndexes();
     QModelIndex index;
     QStringList slist;
-    foreach( index, list)
+    if( this->hasFocus() )
     {
-        slist.append( index.data().toString() );
+        QModelIndexList list = selectedIndexes();
+        foreach( index, list)
+        {
+            slist.append( index.data().toString() );
+        }
+    }
+    else
+    {
+        foreach( index, selectionList)
+        {
+            slist.append( index.data().toString() );
+        }
     }
     return slist;
 }
@@ -119,6 +133,7 @@ void FMListView::setRootPath( const QString& path )
 {    
     qDebug()<<"root path set "<<path;
     bool changed = true;
+    selectionList.clear();
     if( path == rootDir )
     {
         changed = false;
@@ -131,47 +146,47 @@ void FMListView::setRootPath( const QString& path )
         watcher.addPath( rootDir );
     }
     QDir dir( path );    
-    QStringList *dirs = new QStringList();
-    *dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
-    QStandardItemModel* oldmod = qobject_cast<QStandardItemModel*>( model() );
-    QStandardItemModel* mod = new QStandardItemModel();    
+    QStringList dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
+    QStandardItemModel* mod = qobject_cast<QStandardItemModel*>( model() );
+    if( mod == NULL )
+    {
+        mod = new QStandardItemModel();
+        setModel( mod );
+    }
+    mod->clear();
     getFreeSpace( path );
     QString firstLine("..");
     firstLine.append("\t");
     firstLine.append(freeSpace);
     QStandardItem *itemUp = new QStandardItem( style()->standardIcon( QStyle::SP_ArrowUp ), firstLine );
     mod->appendRow( itemUp );
-    for( int i = 0; i < dirs->count(); i++ )
+    for( int i = 0; i < dirs.count(); i++ )
     {
         QString full( path );
         full.append("/");
-        full.append( dirs->at(i) );
+        full.append( dirs.at(i) );
         QFileInfo inf( full );
         QStandardItem *item = NULL;
         if( inf.isDir() || inf.isBundle() )
         {
-            item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), dirs->at(i) );
+            item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), dirs.at(i) );
         }
         else //if( inf.isFile() )
         {
-            item = new QStandardItem( style()->standardIcon( QStyle::SP_FileIcon ), dirs->at(i) );
+            item = new QStandardItem( style()->standardIcon( QStyle::SP_FileIcon ), dirs.at(i) );
         }
         if( item != NULL )
             mod->appendRow( item );
-    }    
-    setModel( mod );
-    if( oldmod != NULL )
-    {
-        delete oldmod;
-    }    
-    delete fileList;
-    fileList = dirs;
+    }
     if( changed )
     {        
         curIndex = model()->index(0,0);
         selectionModel()->setCurrentIndex( curIndex, QItemSelectionModel::Select );
         emit rootPathChanged( rootDir );
-    }    
+    }
+    #ifdef Q_WS_MAC
+    QTimer::singleShot(100, this, SLOT(lateUpdate));
+    #endif
 }
 
 QString FMListView::getRootDir()
@@ -211,10 +226,13 @@ void FMListView::getFreeSpace(const QString& path)
 
 void FMListView::focusInEvent( QFocusEvent * event )
 {    
+    if( selectionModel() == NULL )
+        return;
     if( !selectionList.isEmpty() )
     {
-        foreach (QModelIndex index, selectionList)
+        foreach (QModelIndex index, selectionList){
             selectionModel()->select( index, QItemSelectionModel::Select );
+        }
     }
     else
     {
@@ -229,3 +247,10 @@ void FMListView::focusOutEvent( QFocusEvent * event )
     curIndex = selectionModel()->currentIndex();
     selectionModel()->clear();
 }
+
+#ifdef Q_WS_MAC
+void FMListView::lateUpdate()
+{
+    setRootPath( rootDir );
+}
+#endif

@@ -8,6 +8,7 @@ FEATURE REQUESTS:
 
 TODO:
 
+* on OSX, Linux and Maemo show free space
 * if ".." is selected then the size is displayed in the path editor
 * add shortcut for bookmark
 * add shortcuts for tabs
@@ -23,3 +24,6 @@ FIXED:
 * Show free space
 * after directory entry nothing is selected and when bookmark is pressed some old path is added
 * changing the drive extra slash is added on win
+
+REMINDER:
+* macdeployqt Qefem.app -dmg -verbose=3

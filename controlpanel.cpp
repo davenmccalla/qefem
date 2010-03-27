@@ -297,6 +297,7 @@ void ControlPanel::copyFile( const QString& file, const QString& dest, bool left
 
 void ControlPanel::copyTaskFinished()
 {
+    qDebug()<<__FILE__<<__LINE__;
     for(int i=0; i < copyVector.size(); i++ )
     {
         if( copyVector[i].first->isFinished() )
@@ -323,6 +324,7 @@ void ControlPanel::copyTaskFinished()
 
 void ControlPanel::delTaskFinished()
 {
+    qDebug()<<__FILE__<<__LINE__;
     for(int i=0; i < delVector.size(); i++ )
     {
         if( delVector[i].first->isFinished() )
