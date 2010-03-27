@@ -650,11 +650,7 @@ QString FMPanel::curFile()
 void FMPanel::setDirListFocus()
 {
     dirList->setFocus(Qt::ShortcutFocusReason);
-    lastClick = QTime::currentTime ();
-    //QModelIndex topLeft = dirList->model()->index(0, 0 );
-    //QModelIndex bottomRight = dirList->model()->index(dirList->model()->rowCount()-1,10);
-    //QItemSelection selection(topLeft, bottomRight);
-    //dirList->selectionModel()->select(selection, QItemSelectionModel::Select);
+    lastClick = QTime::currentTime();
 }
 
 void FMPanel::selectionChanged()

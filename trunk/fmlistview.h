@@ -48,9 +48,11 @@ signals:
     void rootPathChanged ( const QString& );
 public slots:
     void setRootPath( const QString& path );
+#ifdef Q_WS_MAC
+    void lateUpdate();
+#endif
 protected:
     QString rootDir;
-    QStringList* fileList;
     QString freeSpace;
     QFileSystemWatcher watcher;
     QModelIndexList selectionList;
