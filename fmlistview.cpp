@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #endif
 #ifdef Q_WS_MAC
 #include <QTimer>
+#include <QProcess>
 #endif
 
 FMListView::FMListView( QWidget *parent) :
@@ -221,6 +222,24 @@ void FMListView::getFreeSpace(const QString& path)
 #else
 void FMListView::getFreeSpace(const QString& path)
 {
+    QProcess df;
+         df.start("df", QStringList() << "-g"<<"-t"<<path);
+         if (!df.waitForStarted())
+             return;
+
+         if (!df.waitForFinished())
+             return;
+
+         df.readLine();
+         QString res( df.readLine() );
+         QStringList data = res.split(' ', QString::SkipEmptyParts);
+         //qDebug()<<"df output :"<<data;
+         freeSpace.clear();
+         freeSpace.append( data[3] );
+         freeSpace.append(" gb/ ");
+         freeSpace.append( data[2] );
+         freeSpace.append(" gb free ");
+         freeSpace.append( data[4] );
 }
 #endif
 
