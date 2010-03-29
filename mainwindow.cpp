@@ -53,8 +53,28 @@ MainWindow::MainWindow(QWidget *parent)
     alt2 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_2),
                               this);
     connect( alt2, SIGNAL(activated()), this, SLOT(alt2Pressed()));
-    ctrlC = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C),
+    alt3 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_3),
                               this);
+    connect( alt3, SIGNAL(activated()), this, SLOT(alt3Pressed()));
+    alt4 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_4),
+                              this);
+    connect( alt4, SIGNAL(activated()), this, SLOT(alt4Pressed()));
+    alt5 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_5),
+                              this);
+    connect( alt5, SIGNAL(activated()), this, SLOT(alt5Pressed()));
+    alt6 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_6),
+                              this);
+    connect( alt6, SIGNAL(activated()), this, SLOT(alt6Pressed()));
+    alt7 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_7),
+                              this);
+    connect( alt7, SIGNAL(activated()), this, SLOT(alt7Pressed()));
+    alt8 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_8),
+                              this);
+    connect( alt8, SIGNAL(activated()), this, SLOT(alt8Pressed()));
+
+
+    ctrlC = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C),
+                              this);    
     connect( ctrlC, SIGNAL(activated()), this, SLOT(ctrlCPressed()));
     ctrlV = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V),
                               this);
@@ -157,16 +177,44 @@ QString MainWindow::rightCurrentFile()
     return rightPanel->curFile();
 }
 
-void MainWindow::alt1Pressed()
+void MainWindow::alt3Pressed()
 {
     leftPanel->setDirListFocus();
-    //qDebug()<<"alt+1 pressed";
+}
+
+void MainWindow::alt4Pressed()
+{
+    rightPanel->setDirListFocus();
+}
+
+void MainWindow::alt5Pressed()
+{
+    leftPanel->setHistoryFocus();
+}
+
+void MainWindow::alt6Pressed()
+{
+    rightPanel->setHistoryFocus();
+}
+
+void MainWindow::alt7Pressed()
+{
+    leftPanel->setBookmarkFocus();
+}
+
+void MainWindow::alt8Pressed()
+{
+    rightPanel->setBookmarkFocus();
+}
+
+void MainWindow::alt1Pressed()
+{
+    leftPanel->setDriveListFocus();
 }
 
 void MainWindow::alt2Pressed()
 {
-    rightPanel->setDirListFocus();
-    //qDebug()<<"alt+2 pressed";
+    rightPanel->setDriveListFocus();
 }
 
 void MainWindow::copyFiles( const QStringList& files, const QString& dest, bool left )

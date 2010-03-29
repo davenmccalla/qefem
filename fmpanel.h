@@ -49,6 +49,9 @@ public:
     ~FMPanel();
     QStringList getStatus();
     void setDirListFocus();
+    void setDriveListFocus();
+    void setBookmarkFocus();
+    void setHistoryFocus();
 public:
     enum EditMode{ None, Rename, MkDir, Zip, Create };
 public:
