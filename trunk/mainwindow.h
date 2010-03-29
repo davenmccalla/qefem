@@ -49,6 +49,12 @@ public slots:
     void updateStatus( );
     void alt1Pressed();
     void alt2Pressed();
+    void alt3Pressed();
+    void alt4Pressed();
+    void alt5Pressed();
+    void alt6Pressed();
+    void alt7Pressed();
+    void alt8Pressed();
     void copyFiles( const QStringList& files, const QString& dest, bool left );
     void ctrlCPressed();
     void ctrlVPressed();
@@ -66,6 +72,12 @@ private:
     QTimer statusTimer;
     QShortcut* alt1;
     QShortcut* alt2;
+    QShortcut* alt3;
+    QShortcut* alt4;
+    QShortcut* alt5;
+    QShortcut* alt6;
+    QShortcut* alt7;
+    QShortcut* alt8;
     QShortcut* ctrlC;
     QShortcut* ctrlV;
 };

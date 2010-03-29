@@ -70,8 +70,11 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     currentFile.append(QDir::homePath());
     //setup signals and slots
     connect(dlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( driveClicked( const QModelIndex & ) ));
+    connect(dlist, SIGNAL(activated( const QModelIndex& )), this, SLOT( driveClicked( const QModelIndex & ) ));
     connect(blist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
+    connect(blist, SIGNAL(activated( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
     connect(hlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
+    connect(hlist, SIGNAL(activated( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
     connect(dirList, SIGNAL(clicked( const QModelIndex& )), this, SLOT( dirClicked( const QModelIndex & ) ));
     connect(dirList, SIGNAL(activated( const QModelIndex& )), this, SLOT( dirDoubleClicked( const QModelIndex & ) ));
     connect(dirList, SIGNAL(entered( const QModelIndex& )), this, SLOT( dirClicked( const QModelIndex & ) ));
@@ -651,6 +654,42 @@ void FMPanel::setDirListFocus()
 {
     dirList->setFocus(Qt::ShortcutFocusReason);
     lastClick = QTime::currentTime();
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)
+    tab->setCurrentIndex(0);
+#else
+    tab->setCurrentIndex(1);
+#endif
+}
+
+void FMPanel::setDriveListFocus()
+{
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+    dirList->setFocus(Qt::ShortcutFocusReason);
+    lastClick = QTime::currentTime();
+    tab->setCurrentIndex(0);
+#endif
+}
+
+void FMPanel::setHistoryFocus()
+{
+    dirList->setFocus(Qt::ShortcutFocusReason);
+    lastClick = QTime::currentTime();
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)
+    tab->setCurrentIndex(1);
+#else
+    tab->setCurrentIndex(2);
+#endif
+}
+
+void FMPanel::setBookmarkFocus()
+{
+    dirList->setFocus(Qt::ShortcutFocusReason);
+    lastClick = QTime::currentTime();
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)
+    tab->setCurrentIndex(2);
+#else
+    tab->setCurrentIndex(3);
+#endif
 }
 
 void FMPanel::selectionChanged()
