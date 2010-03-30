@@ -8,7 +8,7 @@ To use zip functionality on Win please install 7z from www.7-zip.org.
 New features:
 - Tabs are getting shortcuts ALT+1 Left drive tab, ALT+2 Right drive list, ALT+3 Right file list, ALT+4 Left file list, ALT+5 Right History tab, ALT+6 Right History tab, ALT+7 Left Bookmarks tab, ALT+8 Right Bookmarks tab
 - Free space is shown
-- Changing path in path editor
+- Changing path from path editor works
 
 Features:
 - History tab (the last 128 dirs are saved into home dir/.Qefem/.lhistory or .rhistory depending on left or right panel)
@@ -34,5 +34,7 @@ Planned Todos:
 - Sorting by name size date
 - adding error console to see errors
 - ?S60 release?
+- Implement quick search, when name type starts it moves the highlight
+- Help system
 
 
