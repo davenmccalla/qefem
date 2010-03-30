@@ -167,7 +167,14 @@ void FMPanel::dirClicked( const QModelIndex &  index )
         {
             path.append("/");
         }
-        path.append( item->data(Qt::DisplayRole ).toString());
+        if( index.row() == 0 )
+        {
+            path.append( ".." );
+        }
+        else
+        {
+            path.append( item->data(Qt::DisplayRole ).toString());
+        }
         setPathEditText( path );
         currentFile.clear();
         currentFile.append( path );
