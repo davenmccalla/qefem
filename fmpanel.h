@@ -85,7 +85,7 @@ private slots:
     void editFinished();
     void highlightMoved();
 private:
-    void setPathEditText(QString text);
+    void setPathEditText(const QString text);
     void focusInEvent ( QFocusEvent * event );
 private:
     QListWidget *driveList;
