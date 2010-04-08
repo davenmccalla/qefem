@@ -26,10 +26,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QDir>
 #ifdef Q_WS_WIN
 #include <windows.h>
+#else
+#include <QProcess>
 #endif
 #ifdef Q_WS_MAC
 #include <QTimer>
-#include <QProcess>
 #endif
 
 FMListView::FMListView( QWidget *parent) :
@@ -42,9 +43,12 @@ FMListView::FMListView( QWidget *parent) :
     setAcceptDrops( true );
 #endif    
     setSelectionMode( QAbstractItemView::ExtendedSelection );
+    
     setEditTriggers( QAbstractItemView::NoEditTriggers );
     QString home( QDir::homePath() );
+    
     setRootPath( home );
+    
     connect( &watcher, SIGNAL(directoryChanged( const QString& )), this, SLOT(setRootPath(const QString&)) );
     selectionModel()->clear();
 }
@@ -135,6 +139,7 @@ void FMListView::setRootPath( const QString& path )
     qDebug()<<"root path set "<<path;
     bool changed = true;
     selectionList.clear();
+
     if( path == rootDir )
     {
         changed = false;
@@ -171,10 +176,12 @@ void FMListView::setRootPath( const QString& path )
         if( inf.isDir() || inf.isBundle() )
         {
             item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), dirs.at(i) );
+
         }
         else //if( inf.isFile() )
         {
             item = new QStandardItem( style()->standardIcon( QStyle::SP_FileIcon ), dirs.at(i) );
+
         }
         if( item != NULL )
             mod->appendRow( item );
@@ -218,10 +225,10 @@ void FMListView::getFreeSpace(const QString& path)
     }
 }
 
-//#elif
-#else
+#elif defined(Q_WS_MAC)
 void FMListView::getFreeSpace(const QString& path)
 {
+
     QProcess df;
          df.start("df", QStringList() << "-g"<<"-t"<<path);
          if (!df.waitForStarted())
@@ -233,7 +240,30 @@ void FMListView::getFreeSpace(const QString& path)
          df.readLine();
          QString res( df.readLine() );
          QStringList data = res.split(' ', QString::SkipEmptyParts);
-         //qDebug()<<"df output :"<<data;
+         qDebug()<<"df output :"<<data;
+         freeSpace.clear();
+         freeSpace.append( data[3] );
+         freeSpace.append(" gb/ ");
+         freeSpace.append( data[2] );
+         freeSpace.append(" gb free ");
+         freeSpace.append( data[4] );
+}
+#elif defined(Q_OS_LINUX)
+void FMListView::getFreeSpace(const QString& path)
+{
+
+    QProcess df;
+         df.start("df", QStringList() <<"-h"<<path);
+         if (!df.waitForStarted())
+             return;
+
+         if (!df.waitForFinished())
+             return;
+
+         df.readLine();
+         QString res( df.readLine() );
+         QStringList data = res.split(' ', QString::SkipEmptyParts);
+         qDebug()<<"df output :"<<data;
          freeSpace.clear();
          freeSpace.append( data[3] );
          freeSpace.append(" gb/ ");

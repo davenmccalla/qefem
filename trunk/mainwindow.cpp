@@ -87,13 +87,15 @@ MainWindow::MainWindow(QWidget *parent)
     contentWidget->setLayout( wholeLayout );    
     statusList = new QListWidget( contentWidget );
     statusList->setVisible( false );    
-#if defined(Q_WS_WIN)||defined(Q_WS_MAC)
+#if defined(Q_WS_WIN)||defined(Q_WS_MAC)||defined(Q_WS_X11)
     contentWidget->setMinimumSize(600,320);
     setMinimumSize(600,320);
     setGeometry(100,100,900,480);    
 #endif
 #if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
     setWindowState(Qt::WindowFullScreen);
+    contentWidget->setMinimumSize(800,480);
+    setMinimumSize(800,480);
     setGeometry(0,0,800,480);    
 #endif               
     rightPanel->setDirListFocus();

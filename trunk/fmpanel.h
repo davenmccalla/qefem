@@ -92,7 +92,9 @@ private:
     FMListView *dirList;
     bookmarkListView *blist;
     historyListView *hlist;
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
     driveListView *dlist;
+#endif
     QHBoxLayout *listLayout;
     QVBoxLayout *wholeLayout;
     QVBoxLayout *leftLayout;
