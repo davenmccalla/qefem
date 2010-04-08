@@ -41,17 +41,17 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     tab = new QTabWidget();
     blist = new bookmarkListView();
     hlist = new historyListView( left );
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) 
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
     dlist = new driveListView();
 #endif    
     dirList = new FMListView();
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
     tab->addTab(dlist,"Drives");
 #endif    
     tab->addTab(dirList,"Files");
     tab->addTab(hlist,"History");
     tab->addTab(blist,"Bookmarks");
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) 
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) || defined(Q_OS_LINUX) 
     tab->setCurrentIndex(0);
 #else
     tab->setCurrentIndex(1);
@@ -69,8 +69,10 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     currentFile.clear();
     currentFile.append(QDir::homePath());
     //setup signals and slots
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
     connect(dlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( driveClicked( const QModelIndex & ) ));
     connect(dlist, SIGNAL(activated( const QModelIndex& )), this, SLOT( driveClicked( const QModelIndex & ) ));
+#endif
     connect(blist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
     connect(blist, SIGNAL(activated( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
     connect(hlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
@@ -92,7 +94,7 @@ FMPanel::~FMPanel()
 
 void FMPanel::listClicked( const QModelIndex &index )
 {
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) 
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) || defined(Q_OS_LINUX)
     tab->setCurrentIndex(0);
 #else
     tab->setCurrentIndex(1);
@@ -105,11 +107,11 @@ void FMPanel::listClicked( const QModelIndex &index )
         lastClick = QTime::currentTime ();
         QStandardItem* item = model->itemFromIndex(index);
         qDebug()<<item->text();
-        setPathEditText( item->text() );
+        //setPathEditText( item->text() );
         currentDir.clear();
         currentDir.append( item->text() );
         dirList->setRootPath( currentDir );
-        setPathEditText( currentDir );
+        //setPathEditText( currentDir );
     }
 }
 
@@ -477,7 +479,7 @@ void FMPanel::editFinished()
         case Zip:
         {
             mode = None;
-#ifdef Q_WS_MAC
+#if defined(Q_WS_MAC) || defined(Q_OS_LINUX)
             //TODO: there is a problem with updates cause the zip can take a lot of time
             QString output;
             output.append( zipOutputDir );
@@ -661,7 +663,7 @@ void FMPanel::setDirListFocus()
 {
     dirList->setFocus(Qt::ShortcutFocusReason);
     lastClick = QTime::currentTime();
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) || defined(Q_OS_LINUX)
     tab->setCurrentIndex(0);
 #else
     tab->setCurrentIndex(1);
@@ -670,7 +672,7 @@ void FMPanel::setDirListFocus()
 
 void FMPanel::setDriveListFocus()
 {
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
     dirList->setFocus(Qt::ShortcutFocusReason);
     lastClick = QTime::currentTime();
     tab->setCurrentIndex(0);
@@ -681,7 +683,7 @@ void FMPanel::setHistoryFocus()
 {
     dirList->setFocus(Qt::ShortcutFocusReason);
     lastClick = QTime::currentTime();
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)|| defined(Q_OS_LINUX)
     tab->setCurrentIndex(1);
 #else
     tab->setCurrentIndex(2);
@@ -692,7 +694,7 @@ void FMPanel::setBookmarkFocus()
 {
     dirList->setFocus(Qt::ShortcutFocusReason);
     lastClick = QTime::currentTime();
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)|| defined(Q_OS_LINUX)
     tab->setCurrentIndex(2);
 #else
     tab->setCurrentIndex(3);
@@ -701,7 +703,7 @@ void FMPanel::setBookmarkFocus()
 
 void FMPanel::selectionChanged()
 {
-    qDebug()<<"selection changed.";
+    //qDebug()<<"selection changed.";
     dirClicked( dirList->currentIndex() );
 }
 
