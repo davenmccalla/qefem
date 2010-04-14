@@ -21,8 +21,14 @@ NOTE: To use zip functionality on Win please install 7z from www.7-zip.org.
 
 = Shortcuts =
 
-  *  ALT+1 switches to left panel
-  *  ALT+2 switches to right panel
+  *  ALT+1 Left drive tab
+  *  ALT+2 Right drive list
+  *  ALT+3 Right file list
+  *  ALT+4 Left file list
+  *  ALT+5 Right History tab
+  *  ALT+6 Right History tab
+  *  ALT+7 Left Bookmarks tab
+  *  ALT+8 Right Bookmarks tab
   *  ALT+c copy
   *  ALT+r rename
   *  ALT+d delete
@@ -33,7 +39,6 @@ NOTE: To use zip functionality on Win please install 7z from www.7-zip.org.
 = Plans =
 
   *  Maemo release
-  *  Linux release
   *  network drive support
   *  checking the aviable size before copy
   *  Changing path in path editor
