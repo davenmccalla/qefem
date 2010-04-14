@@ -5,21 +5,29 @@ FEATURE REQUESTS:
 * remove path editor from Maemo, there is now use for it, maybe with shortcut
 * write help
 * implement move functionality for files and directories
+* add file view and edit
+* add sorting to file list
+* open a terminal or command line here  
+* open in editor
+* fast scroll with starting by typing the name
 
 TODO:
 
 * Directory cant be renamed
-* on OSX, Linux and Maemo show free space
+* on Maemo show free space
+* add cancelation to editing
+* on OSX execute the boundled directory
+* the mouse over a is shown in edit path on scroll
+* some files are not executing on double click
+* history stops working after a while
+
+FIXED:
+
 * if ".." is selected then the size is displayed in the path editor
 * add shortcut for bookmark
 * add shortcuts for tabs
 * the scrolling should move the highlight too
-* Show free space on OSX and Linux
-* add cancelation to editing
-* on OSX execute the boundled directory
-
-FIXED:
-
+* on OSX, Linux show free space
 * in some media type makes no sense to check free space or it is really slow the refresh rate should be changed -> solved with QFileSystemWatcher
 * check shortcut on maemo
 * Show free space

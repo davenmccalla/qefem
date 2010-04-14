@@ -85,7 +85,7 @@ void historyListView::addHistoryItem(const QString &path)
         mod->insertRow( 0, item);
         if( mod->rowCount() > 128 )
         {
-            mod->removeRow( 0 );
+            mod->removeRow( 128 );
         }
     }
 }
