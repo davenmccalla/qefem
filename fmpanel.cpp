@@ -106,7 +106,7 @@ void FMPanel::listClicked( const QModelIndex &index )
     {
         lastClick = QTime::currentTime ();
         QStandardItem* item = model->itemFromIndex(index);
-        qDebug()<<item->text();
+        //qDebug()<<item->text();
         //setPathEditText( item->text() );
         currentDir.clear();
         currentDir.append( item->text() );
@@ -263,7 +263,7 @@ void FMPanel::dirDoubleClicked( const QModelIndex &  index )
                 out.append(mainW->leftCurrentDir());
             }
             args<<"-o"<<"-qq"<<inf.filePath()<<"-d"<<out;
-            qDebug()<<args;
+            //qDebug()<<args;
             QProcess* proc = new QProcess();
             proc->setWorkingDirectory( currentDir );
             connect( proc, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( unzipTaskFinished( int , QProcess::ExitStatus ) ));
@@ -290,7 +290,7 @@ void FMPanel::dirDoubleClicked( const QModelIndex &  index )
                 out.append(mainW->leftCurrentDir());
             }
             args<<"x"<<"-bd"<<"-y"<<out<<inf.filePath();
-            qDebug()<<args;
+            //qDebug()<<args;
             QProcess* proc = new QProcess();
             proc->setWorkingDirectory( currentDir );
             connect( proc, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( unzipTaskFinished( int , QProcess::ExitStatus ) ));
@@ -306,7 +306,7 @@ void FMPanel::dirDoubleClicked( const QModelIndex &  index )
             {
                 QString url("file:///");
                 url.append( inf.filePath() );
-                qDebug()<<url;
+                //qDebug()<<url;
                 QDesktopServices::openUrl( url );
             }
         }
@@ -439,7 +439,7 @@ void FMPanel::editFinished()
                 fileName.append("/");
             fileName.append( pathEdit->text() );
             dirList->setFocus();
-            qDebug()<<"Renaming from"<<file.fileName()<<" to "<<fileName;
+            //qDebug()<<"Renaming from"<<file.fileName()<<" to "<<fileName;
             if( !file.rename( fileName ) )
             {
                 //QToolTip::showText( pathEdit->window()->pos(), "Renaming file failed!");
@@ -461,10 +461,10 @@ void FMPanel::editFinished()
             //TODO: check this on win with drives
             newPath.append("/");
             newPath.append( pathEdit->text() );
-            qDebug()<<"Creating dir :"<<newPath;
+            //qDebug()<<"Creating dir :"<<newPath;
             if( !newdir.mkdir( newPath ) )
             {
-                qDebug()<<"Creating dir failed :"<<newPath;
+                //qDebug()<<"Creating dir failed :"<<newPath;
                 //QToolTip::showText( window()->pos(), "Creating dir failed!");
             }
             else
@@ -495,7 +495,7 @@ void FMPanel::editFinished()
             }
             QStringList args;            
             args<<"-r"<<"-u"<<output<<shortF;
-            qDebug()<<args;
+            //qDebug()<<args;
             QProcess* proc = new QProcess();
             proc->setWorkingDirectory( currentDir );
             connect( proc, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( zipTaskFinished( int , QProcess::ExitStatus ) ));
@@ -516,7 +516,7 @@ void FMPanel::editFinished()
             //args<<"a"<<"-r"<<"-y"<<output<<fileInfo.fileName();
             //args<<"a"<<"-r"<<"-y"<<output<<fileInfo.canonicalFilePath();
             args<<"a"<<"-r"<<"-y"<<output<<selectedFiles();
-            qDebug()<<args;
+            //qDebug()<<args;
             QProcess* proc = new QProcess();
             proc->setWorkingDirectory( currentDir );
             connect( proc, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( zipTaskFinished( int , QProcess::ExitStatus ) ));
@@ -541,14 +541,14 @@ void FMPanel::reload()
     //QDirModel* model = qobject_cast<QDirModel*>( dirList->model() );
     //if( model != NULL )
     //    model->refresh( model->index( currentDir ) );
-    //qDebug()<<"reload "<<left<<" "<<currentDir;
+    ////qDebug()<<"reload "<<left<<" "<<currentDir;
     //dirList->setRootPath(currentDir );
     //dirList->update();
 }
 
 void FMPanel::driveReload()
 {
-    //qDebug()<<"driveReload";
+    ////qDebug()<<"driveReload";
 #ifdef Q_WS_MAC
     QFileInfoList list = QDir("/Volumes/").entryInfoList( QDir::Dirs | QDir::NoDotAndDotDot );
 #else
@@ -556,7 +556,7 @@ void FMPanel::driveReload()
 #endif
     if( list != drives )
     {
-        qDebug()<<"drives changed.";
+        //qDebug()<<"drives changed.";
         drives.clear();
         driveList->clear();
         for( int i=0; i<list.count(); i++ )
@@ -587,7 +587,7 @@ QString FMPanel::getCurrentDir()
 
 void FMPanel::zipTaskFinished( int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/ )
 {
-    qDebug()<<"Zip finished.";
+    //qDebug()<<"Zip finished.";
     for(int i=0; i < zipVector.size(); i++ )
     {
         if( zipVector[i].first->state() == 0 )
@@ -606,7 +606,7 @@ void FMPanel::zipTaskFinished( int /*exitCode*/, QProcess::ExitStatus /*exitStat
 
 void FMPanel::unzipTaskFinished( int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/ )
 {
-    qDebug()<<"Unzip finished.";
+    //qDebug()<<"Unzip finished.";
     for(int i=0; i < unzipVector.size(); i++ )
     {
         if( unzipVector[i].first->state() == 0 )
@@ -703,13 +703,13 @@ void FMPanel::setBookmarkFocus()
 
 void FMPanel::selectionChanged()
 {
-    //qDebug()<<"selection changed.";
+    ////qDebug()<<"selection changed.";
     dirClicked( dirList->currentIndex() );
 }
 
 void FMPanel::highlightMoved()
 {
-    //qDebug()<<"HL moved.";
+    ////qDebug()<<"HL moved.";
     dirClicked( dirList->currentIndex() );
 }
 
@@ -747,13 +747,13 @@ void FMPanel::copy( const QStringList& files )
 
 void FMPanel::focusInEvent( QFocusEvent * /*event*/ )
 {
-    qDebug()<<"focusInEvent";
+    //qDebug()<<"focusInEvent";
     lastClick = QTime::currentTime ();
 }
 
 void FMPanel::rootChanged ( const QString & newPath )
 {
-    qDebug()<<"root changed "<<newPath;
+    //qDebug()<<"root changed "<<newPath;
 
     mainW->stopAnimation();
 

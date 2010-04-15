@@ -294,3 +294,15 @@ void MainWindow::ctrlVPressed()
         }
     }
 }
+
+void MainWindow::keyPressEvent( QKeyEvent * event )
+{
+    switch (event->key()) {
+    case Qt::Key_F1:
+    case Qt::Key_Help:
+        qDebug()<<"Help!!!";
+        break;
+    default:
+        QMainWindow::keyPressEvent(event);
+    }
+}

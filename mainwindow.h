@@ -60,6 +60,7 @@ public slots:
     void ctrlVPressed();
 protected:
     void resizeEvent( QResizeEvent * event );
+    void keyPressEvent( QKeyEvent * event );
 private:
     QVBoxLayout *wholeLayout;
     QHBoxLayout *listLayout;
