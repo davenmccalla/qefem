@@ -186,15 +186,15 @@ void FMListView::setRootPath( const QString& path )
         if( item != NULL )
             mod->appendRow( item );
     }
-    if( changed )
+    if(( changed )&&( this->hasFocus() ))
     {        
         curIndex = model()->index(0,0);
         selectionModel()->setCurrentIndex( curIndex, QItemSelectionModel::Select );
         emit rootPathChanged( rootDir );
     }
-    #ifdef Q_WS_MAC
-    QTimer::singleShot(100, this, SLOT(lateUpdate));
-    #endif
+#ifdef Q_WS_MAC
+QTimer::singleShot(100, this, SLOT(lateUpdate()));
+#endif
 }
 
 QString FMListView::getRootDir()
@@ -240,7 +240,7 @@ void FMListView::getFreeSpace(const QString& path)
          df.readLine();
          QString res( df.readLine() );
          QStringList data = res.split(' ', QString::SkipEmptyParts);
-         qDebug()<<"df output :"<<data;
+         //qDebug()<<"df output :"<<data;
          freeSpace.clear();
          freeSpace.append( data[3] );
          freeSpace.append(" gb/ ");
@@ -300,6 +300,45 @@ void FMListView::focusOutEvent( QFocusEvent * event )
 #ifdef Q_WS_MAC
 void FMListView::lateUpdate()
 {
-    setRootPath( rootDir );
+    QDir dir( rootDir );
+    QStringList dirs = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot,QDir::DirsFirst | QDir::Type);
+    QStandardItemModel* mod = qobject_cast<QStandardItemModel*>( model() );
+    if( mod == NULL )
+    {
+        mod = new QStandardItemModel();
+        setModel( mod );
+    }
+    mod->clear();
+    QString firstLine("..");
+    firstLine.append("\t");
+    firstLine.append(freeSpace);
+    QStandardItem *itemUp = new QStandardItem( style()->standardIcon( QStyle::SP_ArrowUp ), firstLine );
+    mod->appendRow( itemUp );
+    for( int i = 0; i < dirs.count(); i++ )
+    {
+        QString full( rootDir );
+        full.append("/");
+        full.append( dirs.at(i) );
+        QFileInfo inf( full );
+        QStandardItem *item = NULL;
+        if( inf.isDir() || inf.isBundle() )
+        {
+            item = new QStandardItem( style()->standardIcon( QStyle::SP_DirIcon ), dirs.at(i) );
+
+        }
+        else //if( inf.isFile() )
+        {
+            item = new QStandardItem( style()->standardIcon( QStyle::SP_FileIcon ), dirs.at(i) );
+
+        }
+        if( item != NULL )
+            mod->appendRow( item );
+    }
+    if( this->hasFocus() )
+    {
+        curIndex = model()->index(0,0);
+        selectionModel()->setCurrentIndex( curIndex, QItemSelectionModel::Select );
+    }
+    //qDebug()<<"lateupdate";
 }
 #endif
