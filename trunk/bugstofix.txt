@@ -35,4 +35,13 @@ FIXED:
 * changing the drive extra slash is added on win
 
 REMINDER:
+package making on mac:
 * macdeployqt Qefem.app -dmg -verbose=3
+
+package making on ubuntu:
+dpkg-deb --build debian
+
+package making on maemo:
+http://wiki.forum.nokia.com/index.php/Creating_Debian_packages_for_Maemo_5_Qt_applications_and_showing_in_the_application_menu
+copy binary to DEBIAN/usr/bin
+dpkg-deb -b QefemApplication
