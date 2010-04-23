@@ -10,9 +10,11 @@ FEATURE REQUESTS:
 * open a terminal or command line here  
 * open in editor
 * fast scroll with starting by typing the name
+* command queue functionality
 
 TODO:
-
+* Terminal opening on Linux and OSX
+* File editing on Linux and OSX
 * Directory cant be renamed
 * on Maemo show free space
 * add cancelation to editing

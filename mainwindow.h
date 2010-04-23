@@ -55,6 +55,8 @@ public slots:
     void alt6Pressed();
     void alt7Pressed();
     void alt8Pressed();
+    void altEPressed();
+    void altTPressed();
     void copyFiles( const QStringList& files, const QString& dest, bool left );
     void ctrlCPressed();
     void ctrlVPressed();
@@ -79,6 +81,8 @@ private:
     QShortcut* alt6;
     QShortcut* alt7;
     QShortcut* alt8;
+    QShortcut* altE;
+    QShortcut* altT;
     QShortcut* ctrlC;
     QShortcut* ctrlV;
 };
