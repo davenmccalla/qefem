@@ -72,6 +72,13 @@ MainWindow::MainWindow(QWidget *parent)
                               this);
     connect( alt8, SIGNAL(activated()), this, SLOT(alt8Pressed()));
 
+    altE = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_E),
+                              this);
+    connect( altE, SIGNAL(activated()), this, SLOT(altEPressed()));
+
+    altT = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_T),
+                              this);
+    connect( altT, SIGNAL(activated()), this, SLOT(altTPressed()));
 
     ctrlC = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C),
                               this);    
@@ -304,5 +311,62 @@ void MainWindow::keyPressEvent( QKeyEvent * event )
         break;
     default:
         QMainWindow::keyPressEvent(event);
+    }
+}
+
+void  MainWindow::altEPressed()
+{
+    QStringList list;
+    if( leftPanel->lastFocus() > rightPanel->lastFocus() )
+    {
+        QFileInfo fileToOpen( leftPanel->curFile() );
+        if( fileToOpen.isFile() )
+        {
+            list<<leftPanel->curFile();
+        }
+    }
+    else
+    {
+        QFileInfo fileToOpen( rightPanel->curFile() );
+        if( fileToOpen.isFile() )
+        {
+            list<<rightPanel->curFile();
+        }
+    }
+    if( list.count() > 0 )
+    {
+    #if defined(Q_WS_WIN)
+        QProcess::startDetached( "notepad.exe", list );
+    #endif
+    #if defined(Q_WS_MAC)
+        //TODO: add file opening on OSX
+    #endif
+    }
+}
+
+void  MainWindow::altTPressed()
+{
+    qDebug()<<"altT";
+    QStringList list;
+    QString dir;
+    dir.clear();
+    if( leftPanel->lastFocus() > rightPanel->lastFocus() )
+    {
+            dir.append( leftPanel->curDir() );
+            qDebug()<<"altT2";
+    }
+    else
+    {
+            dir.append( rightPanel->curDir() );
+            qDebug()<<"altT3";
+    }
+    if( dir.length() > 0 )
+    {
+    #if defined(Q_WS_WIN)
+        QProcess::startDetached( "cmd.exe", list, dir );
+    #endif
+    #if defined(Q_WS_MAC)
+        //TODO: add terminal opening on OSX
+    #endif
     }
 }
