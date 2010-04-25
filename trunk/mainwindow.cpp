@@ -339,26 +339,24 @@ void  MainWindow::altEPressed()
         QProcess::startDetached( "notepad.exe", list );
     #endif
     #if defined(Q_WS_MAC)
-        //TODO: add file opening on OSX
+        list.insert( 0, "-e");
+        QProcess::startDetached( "open", list );
     #endif
     }
 }
 
 void  MainWindow::altTPressed()
 {
-    qDebug()<<"altT";
     QStringList list;
     QString dir;
     dir.clear();
     if( leftPanel->lastFocus() > rightPanel->lastFocus() )
     {
             dir.append( leftPanel->curDir() );
-            qDebug()<<"altT2";
     }
     else
     {
             dir.append( rightPanel->curDir() );
-            qDebug()<<"altT3";
     }
     if( dir.length() > 0 )
     {
@@ -366,6 +364,13 @@ void  MainWindow::altTPressed()
         QProcess::startDetached( "cmd.exe", list, dir );
     #endif
     #if defined(Q_WS_MAC)
+        list.append( "-n" );
+        list.append("/Applications/Utilities/Terminal.app");
+        //list.append("--args");
+        //list.append("cd");
+        //4list.append(dir);
+        //list.append("&");
+        QProcess::startDetached( "open", list, dir );
         //TODO: add terminal opening on OSX
     #endif
     }

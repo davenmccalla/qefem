@@ -13,8 +13,8 @@ FEATURE REQUESTS:
 * command queue functionality
 
 TODO:
-* Terminal opening on Linux and OSX
-* File editing on Linux and OSX
+* Terminal opening on Linux
+* File editing on Linux
 * Directory cant be renamed
 * on Maemo show free space
 * add cancelation to editing
@@ -24,7 +24,8 @@ TODO:
 * history stops working after a while
 
 FIXED:
-
+* Terminal opening on OSX
+* File editing on OSX
 * if ".." is selected then the size is displayed in the path editor
 * add shortcut for bookmark
 * add shortcuts for tabs
