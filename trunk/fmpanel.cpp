@@ -68,6 +68,13 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     currentDir.append(QDir::homePath());
     currentFile.clear();
     currentFile.append(QDir::homePath());
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(Q_OS_LINUX)
+    tab->setToolTip("Drive tab shows the drives. Files tab shows the files. History shows the last 128 visited directories. Bookmark tab shows bookmarks.");
+#else
+    tab->setToolTip("Files tab shows the files. History shows the last 128 visited directories. Bookmark tab shows bookmarks.");
+#endif
+#endif
     //setup signals and slots
 #if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
     connect(dlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( driveClicked( const QModelIndex & ) ));
