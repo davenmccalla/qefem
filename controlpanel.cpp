@@ -50,6 +50,24 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     bookmarkButton = new QPushButton( "&Bookmark" );
 #endif    
     statusButton = new QPushButton( "&Status" );
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+    //animation->setToolTip("When this animation is rotating its indicating that some file operation is going on.");
+    cpButton->setToolTip("This copies the selected file or directory to the other panels current directory.");
+    rnButton->setToolTip("This renames the selected file, directory or multiple file renaming doesn't work.");
+    delButton->setToolTip("This deletes the selected file or directory, if it is not locked.");
+    mkdirButton->setToolTip("This creates a directory in the active panel.");
+    zipButton->setToolTip("This zips the selected files or directories to the other panel, if zip is installed on OSX or Linux and 7z on Windows.");
+    bookmarkButton->setToolTip("This bookmarks the selected directory or the current directory. Those can be activeted through the bookmarks tab. The bookmarks are stored in home dir/.Qefem/.bookmarks text file.");
+    statusButton->setToolTip("This opens the status view where all the ongoing operations are listed.");
+    //animation->setWhatsThis("When this animation is rotating its indicating that some file operation is going on.");
+    cpButton->setWhatsThis("This copies the selected file or directory to the other panels current directory.");
+    rnButton->setWhatsThis("This renames the selected file, directory or multiple file renaming doesn't work.");
+    delButton->setWhatsThis("This deletes the selected file or directory, if it is not locked.");
+    mkdirButton->setWhatsThis("This creates a directory in the active panel.");
+    zipButton->setWhatsThis("This zips the selected files or directories to the other panel, if zip is installed on OSX or Linux and 7z on Windows.");
+    bookmarkButton->setWhatsThis("This bookmarks the selected directory or the current directory. Those can be activeted through the bookmarks tab. The bookmarks are stored in home dir/.Qefem/.bookmarks text file.");
+    statusButton->setWhatsThis("This opens the status view where all the ongoing operations are listed.");
+#endif
     animation = new QLabel();
     movie = new QMovie(":/images/spiral.gif");
     animation->setMinimumSize( 22, 22);
