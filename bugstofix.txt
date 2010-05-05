@@ -1,5 +1,4 @@
 FEATURE REQUESTS:
-
 * Check free space before copying a file
 * Settings (Show hidden files, Enter boundle on OSX, set editor, move to trash etc.)
 * remove path editor from Maemo, there is now use for it, maybe with shortcut
@@ -7,16 +6,17 @@ FEATURE REQUESTS:
 * implement move functionality for files and directories
 * add file view and edit
 * add sorting to file list
-* open a terminal or command line here  
+* open a terminal or command line here
 * open in editor
 * fast scroll with starting by typing the name
 * command queue functionality
 
 TODO:
-* Terminal opening on Linux
-* File editing on Linux
+* overwrite dialog move to main thread
+* CTRL+A causes problems with the ..
+* Terminal opening on LINUX
+* File editing on LINUX
 * Directory cant be renamed
-* on Maemo show free space
 * add cancelation to editing
 * on OSX execute the boundled directory
 * the mouse over a is shown in edit path on scroll
