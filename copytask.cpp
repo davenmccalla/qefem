@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QDebug>
 #include <QApplication>
 #include <QToolTip>
+#include <QMessageBox>
 
 CopyTask::CopyTask(const QString& dirName, const QString& dest, CopyMode mode ) : copyMode( mode )
 {
@@ -31,6 +32,7 @@ CopyTask::CopyTask(const QString& dirName, const QString& dest, CopyMode mode ) 
     else
         srcFile.append( dirName );
     destination.append( dest );
+    yesToAll = false;
 }
 
 CopyTask::CopyTask(const QStringList& files, const QString& dest)
@@ -38,6 +40,7 @@ CopyTask::CopyTask(const QStringList& files, const QString& dest)
     copyMode = List;
     srcList = files;
     destination.append( dest );
+    yesToAll = false;
 }
 
 CopyTask::~CopyTask( )
@@ -138,7 +141,41 @@ void CopyTask::copyFiles( const QString homeDir, const QStringList& files, const
 
 void CopyTask::copyFile( const QString& file, const QString& dest )
 {
+    if( file == dest )
+        return;
     qDebug()<<"Copy file from: "<<file<<" dest: "<<dest;
+//This causes many crashes should be moved to the main thread
+    QFileInfo inf( dest );
+    if( inf.exists() )
+    {
+        if( yesToAll )
+        {
+            QFile::remove( dest );
+        }
+        else{
+            QMessageBox msgBox;
+            msgBox.setText( dest );
+            msgBox.setInformativeText("Do you want to overwrite it?");
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No );
+            msgBox.setDefaultButton(QMessageBox::Yes);
+            int ret = msgBox.exec();
+            wait();
+            if( ret == QMessageBox::No )
+            {
+                return;
+            }
+            else if( ret == QMessageBox::Yes )
+            {
+                QFile::remove( dest );
+            }
+            else if( ret == QMessageBox::YesToAll )
+            {
+                QFile::remove( dest );
+                yesToAll = true;
+            }
+        }
+    }
+//<- till here
     QFile fileToCopy( file );
     if( !fileToCopy.copy( dest ) )
     {

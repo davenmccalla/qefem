@@ -44,6 +44,7 @@ private:
     QStringList srcList;
     QString srcDir;
     QString srcFile;
+    bool yesToAll;
 };
 
 #endif // COPYTASK_H
