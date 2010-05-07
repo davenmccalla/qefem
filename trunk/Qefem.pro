@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     fmlistview.cpp \
     drivelistview.cpp \
     bookmarklistview.cpp \
-    historylistview.cpp
+    historylistview.cpp \
+    global.cpp
 HEADERS += mainwindow.h \
     fmpanel.h \
     controlpanel.h \
@@ -21,7 +22,8 @@ HEADERS += mainwindow.h \
     fmlistview.h \
     drivelistview.h \
     bookmarklistview.h \
-    historylistview.h
+    historylistview.h \
+    global.h
 RESOURCES += qefem.qrc
 win32:RC_FILE = qefem.rc
 OTHER_FILES += readme.txt \

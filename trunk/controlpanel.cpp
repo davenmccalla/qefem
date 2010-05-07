@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "mainwindow.h"
 #include "copytask.h"
 #include "deletetask.h"
+#include "global.h"
 #include <QDir>
 #include <QProcess>
 #include <QDebug>
@@ -262,6 +263,7 @@ void ControlPanel::exitButtonClicked( bool /*checked*/ )
 void ControlPanel::copyDirs(const QString& dirName, const QString& dest, bool left )
 {
     CopyTask *ct = new CopyTask( dirName, dest, CopyTask::Dir );
+    connect( ct, SIGNAL(askOverwrite( const QString& )), this, SLOT( askCopyOverwrite( const QString& ) ));
     connect( ct, SIGNAL(finished()), this, SLOT( copyTaskFinished() ));
     copyVector.append( QPair<CopyTask *,QPair<QString, bool> >( ct, QPair<QString, bool>( dirName, left)) );
     ct->start();
@@ -273,6 +275,7 @@ void ControlPanel::copyFiles( const QStringList& files, const QString& dest, boo
     if( files.count() == 0 )
         return;
     CopyTask *ct = new CopyTask( files, dest );
+    connect( ct, SIGNAL(askOverwrite( const QString& )), this, SLOT( askCopyOverwrite( const QString& ) ));
     connect( ct, SIGNAL(finished()), this, SLOT( copyTaskFinished() ));
     copyVector.append( QPair<CopyTask *,QPair<QString, bool> >( ct, QPair<QString, bool>( files[0], left)) );
     ct->start();
@@ -307,6 +310,7 @@ void ControlPanel::deleteFiles( const QStringList& files, bool left )
 void ControlPanel::copyFile( const QString& file, const QString& dest, bool left )
 {
     CopyTask *ct = new CopyTask( file, dest, CopyTask::File );
+    connect( ct, SIGNAL(askOverwrite( const QString& )), this, SLOT( askCopyOverwrite( const QString& ) ));
     connect( ct, SIGNAL(finished()), this, SLOT( copyTaskFinished() ));
     copyVector.append( QPair<CopyTask *,QPair<QString, bool> >( ct, QPair<QString, bool>( file, left)) );
     ct->start();
@@ -426,4 +430,17 @@ void ControlPanel::stopAnimation()
 void ControlPanel::startAnimation()
 {
     movie->start();
+}
+
+void ControlPanel::askCopyOverwrite( const QString& path )
+{
+    qDebug()<<__FILE__<<__LINE__;
+    QMessageBox msgBox;
+    msgBox.setText( path );
+    msgBox.setInformativeText("Do you want to overwrite it?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No );
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    copyOverwriteAnswer = msgBox.exec();
+    copyOverwriteAnswered.wakeAll();
+    qDebug()<<__FILE__<<__LINE__;
 }

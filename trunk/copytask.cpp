@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "copytask.h"
+#include "global.h"
 #include <QFile>
 #include <QDir>
 #include <QDebug>
@@ -144,7 +145,6 @@ void CopyTask::copyFile( const QString& file, const QString& dest )
     if( file == dest )
         return;
     qDebug()<<"Copy file from: "<<file<<" dest: "<<dest;
-//This causes many crashes should be moved to the main thread
     QFileInfo inf( dest );
     if( inf.exists() )
     {
@@ -152,14 +152,13 @@ void CopyTask::copyFile( const QString& file, const QString& dest )
         {
             QFile::remove( dest );
         }
-        else{
-            QMessageBox msgBox;
-            msgBox.setText( dest );
-            msgBox.setInformativeText("Do you want to overwrite it?");
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No );
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            wait();
+        else
+        {
+            copyOverwriteMutex.lock();
+            emit askOverwrite( dest );
+            copyOverwriteAnswered.wait( &copyOverwriteMutex );
+            int ret = copyOverwriteAnswer;
+            copyOverwriteMutex.unlock();
             if( ret == QMessageBox::No )
             {
                 return;
@@ -175,7 +174,6 @@ void CopyTask::copyFile( const QString& file, const QString& dest )
             }
         }
     }
-//<- till here
     QFile fileToCopy( file );
     if( !fileToCopy.copy( dest ) )
     {
