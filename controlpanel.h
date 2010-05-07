@@ -48,6 +48,7 @@ public:
 public slots:
     void copyTaskFinished();
     void delTaskFinished();
+    void askCopyOverwrite( const QString& path );
 private slots:
     void cpButtonClicked( bool checked );
     void rnButtonClicked( bool checked );

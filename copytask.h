@@ -23,9 +23,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QThread>
 #include <QString>
 #include <QStringList>
+#include <QtCore>
+
 
 class CopyTask : public QThread
 {
+    Q_OBJECT
 public:
     enum CopyMode{ Dir, List, File };
 public:
@@ -38,6 +41,8 @@ private:
     void copyFiles( const QString homeDir, const QStringList& files, const QString& dest );
     void copyFile( const QString& file, const QString& dest );
     void copyFiles( const QStringList& files, const QString& dest );
+signals:
+    void askOverwrite( const QString& path );
 private:
     CopyMode copyMode;
     QString destination;
