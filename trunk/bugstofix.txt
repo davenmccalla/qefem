@@ -16,7 +16,6 @@ TODO:
 * CTRL+A causes problems with the ..
 * Terminal opening on LINUX
 * File editing on LINUX
-* Directory cant be renamed
 * add cancelation to editing
 * on OSX execute the boundled directory
 * the mouse over a is shown in edit path on scroll
@@ -24,6 +23,7 @@ TODO:
 * history stops working after a while
 
 FIXED:
+* Directory cant be renamed
 * Terminal opening on OSX
 * File editing on OSX
 * if ".." is selected then the size is displayed in the path editor
