@@ -375,11 +375,7 @@ void FMPanel::setEditMode( EditMode emode )
         case Rename:
         {
             QFileInfo fInfo( pathEdit->text() );
-            if( !fInfo.isFile() )
-            {
-                //QToolTip::showText( window()->pos(), "Please select a file!");
-            }
-            else
+            if( fInfo.isFile() || fInfo.isDir() )
             {
                 currentFile.clear();
                 currentFile.append( pathEdit->text() );
@@ -440,21 +436,47 @@ void FMPanel::editFinished()
         }
         case Rename:
         {
-            QFile file( currentFile );
-            QString fileName( currentDir );
-            if( fileName.at(fileName.size()-1) != '/')
-                fileName.append("/");
-            fileName.append( pathEdit->text() );
-            dirList->setFocus();
-            //qDebug()<<"Renaming from"<<file.fileName()<<" to "<<fileName;
-            if( !file.rename( fileName ) )
+            QFileInfo info( currentFile );
+            if( info.isDir() )
             {
-                //QToolTip::showText( pathEdit->window()->pos(), "Renaming file failed!");
-                setPathEditText( file.fileName() );
+                QDir dir( currentFile );
+                QString fileName( currentDir );
+                if( fileName.at(fileName.size()-1) != '/')
+                    fileName.append("/");
+                fileName.append( pathEdit->text() );
+                dirList->setFocus();
+                //qDebug()<<"Renaming from"<<file.fileName()<<" to "<<fileName;
+                if( !dir.rename( currentFile, fileName ) )
+                {
+                    QMessageBox msgBox;
+                    msgBox.setText( currentFile );
+                    msgBox.setInformativeText("Renaming failed.");
+                    msgBox.setStandardButtons(QMessageBox::Ok);
+                    msgBox.setDefaultButton(QMessageBox::Ok);
+                    setPathEditText( currentFile );
+                }
+                else
+                {
+                    setPathEditText( fileName  );
+                }
             }
-            else
+            else if( info.isFile() )
             {
-                setPathEditText( file.fileName() );
+                QFile file( currentFile );
+                QString fileName( currentDir );
+                if( fileName.at(fileName.size()-1) != '/')
+                    fileName.append("/");
+                fileName.append( pathEdit->text() );
+                dirList->setFocus();
+                //qDebug()<<"Renaming from"<<file.fileName()<<" to "<<fileName;
+                if( !file.rename( fileName ) )
+                {
+                    setPathEditText( currentFile );
+                }
+                else
+                {
+                    setPathEditText( file.fileName() );
+                }
             }
             reload();
             mainW->updateStatus();
