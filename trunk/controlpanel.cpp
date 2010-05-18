@@ -434,7 +434,6 @@ void ControlPanel::startAnimation()
 
 void ControlPanel::askCopyOverwrite( const QString& path )
 {
-    qDebug()<<__FILE__<<__LINE__;
     QMessageBox msgBox;
     msgBox.setText( path );
     msgBox.setInformativeText("Do you want to overwrite it?");
@@ -442,5 +441,4 @@ void ControlPanel::askCopyOverwrite( const QString& path )
     msgBox.setDefaultButton(QMessageBox::Yes);
     copyOverwriteAnswer = msgBox.exec();
     copyOverwriteAnswered.wakeAll();
-    qDebug()<<__FILE__<<__LINE__;
 }

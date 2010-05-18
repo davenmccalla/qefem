@@ -8,12 +8,10 @@ FEATURE REQUESTS:
 * add sorting to file list
 * open a terminal or command line here
 * open in editor
-* fast scroll with starting by typing the name
 * command queue functionality
 
 TODO:
-* overwrite dialog move to main thread
-* CTRL+A causes problems with the ..
+* Drag and drop with files doesn't work just with urls
 * Terminal opening on LINUX
 * File editing on LINUX
 * add cancelation to editing
@@ -23,6 +21,9 @@ TODO:
 * history stops working after a while
 
 FIXED:
+* CTRL+A causes problems with the ..
+* fast scroll with starting by typing the name
+* overwrite dialog move to main thread
 * Directory cant be renamed
 * Terminal opening on OSX
 * File editing on OSX

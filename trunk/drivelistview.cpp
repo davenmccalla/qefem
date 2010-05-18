@@ -10,6 +10,8 @@ driveListView::driveListView(QWidget *parent) :
     connect(driveTimer, SIGNAL(timeout()), this, SLOT(driveReload()));
     driveReload();
     driveTimer->start( 5000 );
+    setSelectionMode( QAbstractItemView::NoSelection );
+    setEditTriggers( QAbstractItemView::NoEditTriggers );
 }
 
 driveListView::~driveListView()
