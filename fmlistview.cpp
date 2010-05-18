@@ -71,8 +71,8 @@ void FMListView::keyPressEvent( QKeyEvent * event )
 
 void FMListView::dropEvent( QDropEvent* e )
 {
-    qDebug()<<"dropEvent";
-    qDebug()<< e->mimeData()->urls()[0].toString();
+    //qDebug()<<"dropEvent";
+    //qDebug()<< e->mimeData()->urls()[0].toString();
     QStringList files;
     int i;
     for( i=0; i < e->mimeData()->urls().count(); i++ )
@@ -86,7 +86,7 @@ void FMListView::dropEvent( QDropEvent* e )
             file.remove( 0, 7 );
             #endif
             files.append( file );
-            qDebug()<<file;
+            //qDebug()<<file;
         }
     }
     if( i > 0 )
@@ -119,6 +119,10 @@ QStringList FMListView::selectedFiles()
     if( this->hasFocus() )
     {
         QModelIndexList list = selectedIndexes();
+        if( list.at(0).data().toString().at(0)=='.' && list.at(0).data().toString().at(1)=='.' )
+        {
+            list.removeFirst();
+        }
         foreach( index, list)
         {
             slist.append( index.data().toString() );
@@ -128,7 +132,17 @@ QStringList FMListView::selectedFiles()
     {
         foreach( index, selectionList)
         {
-            slist.append( index.data().toString() );
+            if( index.row() == 0 )
+            {
+                if( !(index.data().toString().at(0)=='.' && index.data().toString().at(1)=='.') )
+                {
+                    slist.append( index.data().toString() );
+                }
+            }
+            else
+            {
+                slist.append( index.data().toString() );
+            }
         }
     }
     return slist;
@@ -136,7 +150,7 @@ QStringList FMListView::selectedFiles()
 
 void FMListView::setRootPath( const QString& path )
 {    
-    qDebug()<<"root path set "<<path;
+    //qDebug()<<"root path set "<<path;
     bool changed = true;
     selectionList.clear();
 
@@ -217,7 +231,7 @@ void FMListView::getFreeSpace(const QString& path)
         availUser = availUser / 1048576;
         total = total / 1048576;
         avail = avail / 1048576;
-        qDebug()<<"availUser "<<availUser<<"total "<<total<<"avail "<<avail;
+        //qDebug()<<"availUser "<<availUser<<"total "<<total<<"avail "<<avail;
         freeSpace.append(QString::number(availUser) );
         freeSpace.append(" mb/ ");
         freeSpace.append(QString::number(total) );
@@ -263,7 +277,7 @@ void FMListView::getFreeSpace(const QString& path)
          df.readLine();
          QString res( df.readLine() );
          QStringList data = res.split(' ', QString::SkipEmptyParts);
-         qDebug()<<"df output :"<<data;
+         //qDebug()<<"df output :"<<data;
          freeSpace.clear();
          freeSpace.append( data[3] );
          freeSpace.append(" gb/ ");

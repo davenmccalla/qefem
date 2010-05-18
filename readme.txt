@@ -42,7 +42,6 @@ Planned Todos:
 - Sorting by name size date
 - adding error console to see errors
 - ?S60 release?
-- Implement quick search, when name type starts it moves the highlight
 - Help system
 - Add queue functionality
 
