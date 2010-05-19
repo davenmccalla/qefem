@@ -41,6 +41,7 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     cpButton = new QPushButton( "&Copy" );
     rnButton = new QPushButton( "&Rename" );
     delButton = new QPushButton( "&Del" );
+    searchButton = new QPushButton( "&Find" );
 #if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
     zipButton = new QPushButton( "&Zip" );
 #endif
@@ -68,6 +69,7 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     zipButton->setWhatsThis("This zips the selected files or directories to the other panel, if zip is installed on OSX or Linux and 7z on Windows.");
     bookmarkButton->setWhatsThis("This bookmarks the selected directory or the current directory. Those can be activeted through the bookmarks tab. The bookmarks are stored in home dir/.Qefem/.bookmarks text file.");
     statusButton->setWhatsThis("This opens the status view where all the ongoing operations are listed.");
+    searchButton->setWhatsThis("This starts a search in the current folder, wildcharacters can be used. The result is listed in found tab");
 #endif
     animation = new QLabel();
     movie = new QMovie(":/images/spiral.gif");
@@ -85,6 +87,7 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     commandLayout->addWidget( zipButton );
 #endif    
     commandLayout->addWidget( bookmarkButton );
+    commandLayout->addWidget( searchButton );
     commandLayout->addWidget( statusButton );
 #if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
     exitButton = new QPushButton( "E&xit" );
@@ -100,6 +103,7 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     connect(mkdirButton, SIGNAL(clicked( bool )), this, SLOT( mkdirButtonClicked( bool ) ));
     connect(statusButton, SIGNAL(clicked( bool )), this, SLOT( statusButtonClicked( bool ) ));
     connect(bookmarkButton, SIGNAL(clicked( bool )), this, SLOT( bookmarkButtonClicked( bool ) ));
+    connect(searchButton, SIGNAL(clicked( bool )), this, SLOT( searchButtonClicked( bool ) ));
 #if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
     connect(exitButton, SIGNAL(clicked( bool )), this, SLOT( exitButtonClicked( bool ) ));
 #endif
@@ -254,6 +258,21 @@ void ControlPanel::statusButtonClicked( bool /*checked*/ )
         statusOn = true;
     }
 }
+
+void ControlPanel::searchButtonClicked( bool /*checked*/ )
+{
+    movie->start();
+    if( leftPanel->lastFocus() > rightPanel->lastFocus() )
+    {
+        leftPanel->setEditMode( FMPanel::Search );
+    }
+    else
+    {
+        rightPanel->setEditMode( FMPanel::Search );
+    }
+
+}
+
 
 void ControlPanel::exitButtonClicked( bool /*checked*/ )
 {

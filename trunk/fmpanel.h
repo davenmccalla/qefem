@@ -53,7 +53,7 @@ public:
     void setBookmarkFocus();
     void setHistoryFocus();
 public:
-    enum EditMode{ None, Rename, MkDir, Zip, Create };
+    enum EditMode{ None, Rename, MkDir, Zip, Create, Search };
 public:
     //TODO: later multiply selection
     QString selectedFile();
@@ -79,6 +79,7 @@ signals:
     void copyFiles( const QStringList& files, const QString& dest, bool left );
 private slots:
     void listClicked( const QModelIndex &index );
+    void foundListClicked( QListWidgetItem *item );
     void driveClicked( const QModelIndex &index);
     void dirClicked( const QModelIndex &  index );
     void dirDoubleClicked( const QModelIndex &  index );
@@ -92,6 +93,7 @@ private:
     FMListView *dirList;
     bookmarkListView *blist;
     historyListView *hlist;
+    QListWidget *foundList;
 #if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
     driveListView *dlist;
 #endif

@@ -11,6 +11,7 @@ FEATURE REQUESTS:
 * command queue functionality
 
 TODO:
+* Find functionality to other thread
 * Drag and drop with files doesn't work just with urls
 * Terminal opening on LINUX
 * File editing on LINUX
