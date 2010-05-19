@@ -45,6 +45,9 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     hlist = new historyListView( left );
     hlist->setSelectionMode( QAbstractItemView::NoSelection );
     hlist->setEditTriggers( QAbstractItemView::NoEditTriggers );
+    foundList = new QListWidget( this );
+    foundList->setSelectionMode( QAbstractItemView::NoSelection );
+    foundList->setEditTriggers( QAbstractItemView::NoEditTriggers );    
 #if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
     dlist = new driveListView();
 #endif    
@@ -55,6 +58,7 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     tab->addTab(dirList,"Files");
     tab->addTab(hlist,"History");
     tab->addTab(blist,"Bookmarks");
+    tab->addTab(foundList,"Found");
 #if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) || defined(Q_OS_LINUX) 
     tab->setCurrentIndex(0);
 #else
@@ -88,6 +92,8 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     connect(blist, SIGNAL(activated( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
     connect(hlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
     connect(hlist, SIGNAL(activated( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
+    connect(foundList, SIGNAL(itemDoubleClicked ( QListWidgetItem *)), this, SLOT( foundListClicked( QListWidgetItem * ) ));
+    connect(foundList, SIGNAL(itemClicked ( QListWidgetItem *)), this, SLOT( foundListClicked( QListWidgetItem * ) ));
     connect(dirList, SIGNAL(clicked( const QModelIndex& )), this, SLOT( dirClicked( const QModelIndex & ) ));
     connect(dirList, SIGNAL(activated( const QModelIndex& )), this, SLOT( dirDoubleClicked( const QModelIndex & ) ));
     connect(dirList, SIGNAL(entered( const QModelIndex& )), this, SLOT( dirClicked( const QModelIndex & ) ));
@@ -126,6 +132,27 @@ void FMPanel::listClicked( const QModelIndex &index )
     }
 }
 
+void FMPanel::foundListClicked( QListWidgetItem *item )
+{
+#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) || defined(Q_OS_LINUX)
+    tab->setCurrentIndex(0);
+#else
+    tab->setCurrentIndex(1);
+#endif
+    if( noDrive )
+        return;
+    if( item != NULL )
+    {
+        lastClick = QTime::currentTime ();
+        QFileInfo inf(item->text());
+        qDebug()<<item->text();
+        setPathEditText( item->text() );
+        currentDir.clear();
+        currentDir.append( inf.absoluteDir().absolutePath() );
+        dirList->setRootPath( inf.absoluteDir().absolutePath() );
+        //setPathEditText( currentDir );
+    }
+}
 
 void FMPanel::driveClicked( const QModelIndex &index )
 {
@@ -407,6 +434,14 @@ void FMPanel::setEditMode( EditMode emode )
             pathEdit->selectAll();
             break;
         }
+        case Search:
+        {
+            //TODO generate dir names
+            pathEdit->setText("*.*");
+            pathEdit->setFocus();
+            pathEdit->selectAll();
+            break;
+        }
         case Create:
             break;
         default:
@@ -564,6 +599,70 @@ void FMPanel::editFinished()
         }
         case Create:
             break;
+        case Search:
+        {
+            mode = None;
+    #if defined(Q_WS_MAC) || defined(Q_OS_LINUX)
+            //TODO: implement find functionality
+            /*QString output;
+            output.append( zipOutputDir );
+            output.append("/");
+            output.append(pathEdit->text());
+            QStringList selF = selectedFiles();
+            QStringList shortF;
+            QString name;
+            foreach( name, selF)
+            {
+                QFileInfo fileInfo( name );
+                shortF.append( fileInfo.fileName() );
+            }
+            QStringList args;
+            args<<"-r"<<"-u"<<output<<shortF;
+            //qDebug()<<args;
+            QProcess* proc = new QProcess();
+            proc->setWorkingDirectory( currentDir );
+            connect( proc, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( zipTaskFinished( int , QProcess::ExitStatus ) ));
+            zipVector.append(QPair<QProcess *,QPair<QString, bool> >( proc, QPair<QString, bool>( output, true)) );
+            proc->start( "zip", args );
+            reload();
+            setPathEditText( currentDir );
+            dirList->setFocus();*/
+    #endif
+    #ifdef Q_WS_WIN
+            //TODO: there is a problem with updates cause the zip can take a lot of time
+            QFileInfo fileInfo( currentFile );
+            QStringList args;
+            args<<"/c"<<"dir"<<"/b"<<"/s"<<pathEdit->text();
+            qDebug()<<args;
+            QProcess* proc = new QProcess();
+            proc->setReadChannel( QProcess::StandardOutput );
+            proc->setReadChannelMode( QProcess::SeparateChannels );
+            proc->setWorkingDirectory( currentDir );
+            connect( proc, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( zipTaskFinished( int , QProcess::ExitStatus ) ));
+            //zipVector.append(QPair<QProcess *,QPair<QString, bool> >( proc, QPair<QString, bool>( output, true)) );
+            proc->start( "cmd.exe", args );
+            if(!proc->waitForFinished())
+            {
+                 qDebug() << "Dir failed:" << proc->errorString();
+            }
+            else
+            {
+                QString result = proc->readAll();
+                QStringList list = result.split("\n");
+                list.removeLast();
+                for( int i=0; i<list.count(); i++ )
+                {
+                    list[i].chop(1);
+                }
+                foundList->clear();
+                foundList->addItems( list );
+            }
+            setPathEditText( currentDir );
+            dirList->setFocus();
+    #endif
+            mainW->updateStatus();
+            break;
+        }
     }
     mode = None;
     return;
