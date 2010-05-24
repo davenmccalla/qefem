@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "bookmarklistview.h"
 #include "historylistview.h"
 #include "drivelistview.h"
+#include "findTask.h"
 #include <QObject>
 #include <QWidget>
 #include <QHBoxLayout>
@@ -71,10 +72,12 @@ public slots:
     void driveReload();
     void zipTaskFinished( int exitCode, QProcess::ExitStatus exitStatus );
     void unzipTaskFinished( int exitCode, QProcess::ExitStatus exitStatus );
+    void findTaskFinished( );
     void selectionChanged();
     void rowsChanged();
     void copy( const QStringList& files );
     void rootChanged( const QString & newPath );
+    void readFindResult( const QStringList& result );
 signals:
     void copyFiles( const QStringList& files, const QString& dest, bool left );
 private slots:
@@ -108,8 +111,9 @@ private:
     bool noDrive;
     QFileInfoList drives;
     QString zipOutputDir;
-    QVector<QPair<QProcess*,QPair<QString, bool > > > zipVector;//delete thread,path,left or right panel
-    QVector<QPair<QProcess*,QPair<QString, bool > > > unzipVector;//delete thread,path,left or right panel
+    QVector<QPair<QProcess*,QPair<QString, bool > > > zipVector;//zip process,path,left or right panel
+    QVector<QPair<QProcess*,QPair<QString, bool > > > unzipVector;//unzip process,path,left or right panel
+    QVector<QPair<findTask*,QPair<QString, bool > > > findVector;//find process,path,left or right panel
     MainWindow* mainW;
     bool left;
     bool driveJustLoaded;
