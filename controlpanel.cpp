@@ -169,14 +169,14 @@ void ControlPanel::cpButtonClicked( bool /*checked*/ )
     if( leftPanel->lastFocus() > rightPanel->lastFocus() )
     {
         QStringList list = leftPanel->selectedFiles();
-        qDebug()<<list;
+        //qDebug()<<list;
         if( list.count() > 0 )
             copyFiles( list, rightPanel->curDir(), true );
     }
     else
     {
         QStringList list = rightPanel->selectedFiles();
-        qDebug()<<list;
+        //qDebug()<<list;
         if( list.count() > 0 )
             copyFiles( list, leftPanel->curDir(), false );
     }

@@ -629,34 +629,11 @@ void FMPanel::editFinished()
             dirList->setFocus();*/
     #endif
     #ifdef Q_WS_WIN
-            //TODO: there is a problem with updates cause the zip can take a lot of time
-            QFileInfo fileInfo( currentFile );
-            QStringList args;
-            args<<"/c"<<"dir"<<"/b"<<"/s"<<pathEdit->text();
-            qDebug()<<args;
-            QProcess* proc = new QProcess();
-            proc->setReadChannel( QProcess::StandardOutput );
-            proc->setReadChannelMode( QProcess::SeparateChannels );
-            proc->setWorkingDirectory( currentDir );
-            connect( proc, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( zipTaskFinished( int , QProcess::ExitStatus ) ));
-            //zipVector.append(QPair<QProcess *,QPair<QString, bool> >( proc, QPair<QString, bool>( output, true)) );
-            proc->start( "cmd.exe", args );
-            if(!proc->waitForFinished())
-            {
-                 qDebug() << "Dir failed:" << proc->errorString();
-            }
-            else
-            {
-                QString result = proc->readAll();
-                QStringList list = result.split("\n");
-                list.removeLast();
-                for( int i=0; i<list.count(); i++ )
-                {
-                    list[i].chop(1);
-                }
-                foundList->clear();
-                foundList->addItems( list );
-            }
+            findTask* ftask = new findTask( currentDir,pathEdit->text() );
+            findVector.append(QPair<findTask *,QPair<QString, bool> >( ftask, QPair<QString, bool>( pathEdit->text(), true)) );
+            connect( ftask, SIGNAL( finished() ), this, SLOT( findTaskFinished() ));
+            connect( ftask, SIGNAL( getSearchResult( const QStringList& ) ), this, SLOT( readFindResult( const QStringList& ) ));
+            ftask->run();
             setPathEditText( currentDir );
             dirList->setFocus();
     #endif
@@ -665,6 +642,12 @@ void FMPanel::editFinished()
         }
     }
     mode = None;
+    return;
+}
+
+void FMPanel::readFindResult( const QStringList& result )
+{
+    foundList->addItems( result );
     return;
 }
 
@@ -755,6 +738,21 @@ void FMPanel::unzipTaskFinished( int /*exitCode*/, QProcess::ExitStatus /*exitSt
     mainW->updateStatus();
 }
 
+void FMPanel::findTaskFinished( )
+{
+    qDebug()<<__FILE__<<__LINE__;
+    for(int i=0; i < findVector.size(); i++ )
+    {
+        if( findVector[i].first->isFinished() )
+        {
+            delete findVector[i].first;
+            findVector.remove(i);
+            i--;
+        }
+    }
+    mainW->updateStatus();
+}
+
 QStringList FMPanel::getStatus()
 {
     QStringList list;
@@ -777,6 +775,18 @@ QStringList FMPanel::getStatus()
             text.append(" is running.");
             list << text;
         }
+    }
+    for(int i=0; i < findVector.size(); i++ )
+    {
+        //qDebug()<<__FILE__<<__LINE__;
+        //if( findVector[i].first->isRunning() )
+        //{
+            qDebug()<<__FILE__<<__LINE__;
+            QString text("Search for ");
+            text.append( findVector[i].second.first );
+            text.append(" is running.");
+            list << text;
+        //}
     }
     return list;
 }
