@@ -427,6 +427,7 @@ void ControlPanel::disableButtons()
 #endif    
     mkdirButton->setDisabled( true );
     bookmarkButton->setDisabled( true );
+    searchButton->setDisabled( true );
 }
 
 void ControlPanel::enableButtons()
@@ -439,6 +440,7 @@ void ControlPanel::enableButtons()
 #endif
     mkdirButton->setEnabled( true );
     bookmarkButton->setEnabled( true );
+    searchButton->setEnabled( true );
 }
 
 void ControlPanel::stopAnimation()

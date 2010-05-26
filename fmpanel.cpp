@@ -602,33 +602,6 @@ void FMPanel::editFinished()
         case Search:
         {
             mode = None;
-    #if defined(Q_WS_MAC) || defined(Q_OS_LINUX)
-            //TODO: implement find functionality
-            /*QString output;
-            output.append( zipOutputDir );
-            output.append("/");
-            output.append(pathEdit->text());
-            QStringList selF = selectedFiles();
-            QStringList shortF;
-            QString name;
-            foreach( name, selF)
-            {
-                QFileInfo fileInfo( name );
-                shortF.append( fileInfo.fileName() );
-            }
-            QStringList args;
-            args<<"-r"<<"-u"<<output<<shortF;
-            //qDebug()<<args;
-            QProcess* proc = new QProcess();
-            proc->setWorkingDirectory( currentDir );
-            connect( proc, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( zipTaskFinished( int , QProcess::ExitStatus ) ));
-            zipVector.append(QPair<QProcess *,QPair<QString, bool> >( proc, QPair<QString, bool>( output, true)) );
-            proc->start( "zip", args );
-            reload();
-            setPathEditText( currentDir );
-            dirList->setFocus();*/
-    #endif
-    #ifdef Q_WS_WIN
             findTask* ftask = new findTask( currentDir,pathEdit->text() );
             findVector.append(QPair<findTask *,QPair<QString, bool> >( ftask, QPair<QString, bool>( pathEdit->text(), true)) );
             connect( ftask, SIGNAL( finished() ), this, SLOT( findTaskFinished() ));
@@ -636,7 +609,6 @@ void FMPanel::editFinished()
             ftask->run();
             setPathEditText( currentDir );
             dirList->setFocus();
-    #endif
             mainW->updateStatus();
             break;
         }
