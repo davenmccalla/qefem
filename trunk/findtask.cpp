@@ -40,7 +40,7 @@ void findTask::run()
 
     if (!process->waitForFinished())
         return;
-    qDebug()<<process->readLine();
+    //qDebug()<<process->readLine();
 #elif defined(Q_OS_LINUX)
 #endif
 }
@@ -55,7 +55,7 @@ void findTask::readFindResult()
     {
         list[j].chop(1);
     }
-    qDebug()<<list;
+    //qDebug()<<list;
     emit getSearchResult( list );
     return;
 }

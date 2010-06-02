@@ -102,6 +102,8 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     connect(dirList, SIGNAL(copyFiles(const QStringList&)),this,SLOT( copy(const QStringList& ) ));
     //connect(dirList->model(), SIGNAL( rowChange()),this,SLOT(rowsChanged()));
     connect(dirList, SIGNAL( rootPathChanged ( const QString& )),this, SLOT( rootChanged ( const QString& ) ));
+    foundList->clear();
+    foundList->addItem("Clear list");
 }
 
 FMPanel::~FMPanel()
@@ -144,12 +146,25 @@ void FMPanel::foundListClicked( QListWidgetItem *item )
     if( item != NULL )
     {
         lastClick = QTime::currentTime ();
-        QFileInfo inf(item->text());
-        qDebug()<<item->text();
-        setPathEditText( item->text() );
-        currentDir.clear();
-        currentDir.append( inf.absoluteDir().absolutePath() );
-        dirList->setRootPath( inf.absoluteDir().absolutePath() );
+        if( item->text() == "Clear list")
+        {
+            foundList->clear();
+            foundList->addItem("Clear list");
+        #if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
+            tab->setTabText( 4, "Found");
+        #else
+            tab->setTabText( 3, "Found");
+        #endif
+        }
+        else
+        {
+            QFileInfo inf(item->text());
+            qDebug()<<item->text();
+            setPathEditText( item->text() );
+            currentDir.clear();
+            currentDir.append( inf.absoluteDir().absolutePath() );
+            dirList->setRootPath( inf.absoluteDir().absolutePath() );
+        }
         //setPathEditText( currentDir );
     }
 }
@@ -620,6 +635,14 @@ void FMPanel::editFinished()
 void FMPanel::readFindResult( const QStringList& result )
 {
     foundList->addItems( result );
+    QString tabText("Found(");
+    tabText.append( QString().setNum( foundList->count()-1 ) );
+    tabText.append(")");
+#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
+    tab->setTabText( 4, tabText);
+#else
+    tab->setTabText( 3, tabText);
+#endif
     return;
 }
 
