@@ -29,11 +29,14 @@ public:
     findTask(const QString& dirName, const QString& pattern);
     ~findTask();
     void run();
+    bool isEnded();
 private slots:
     void readFindResult();
+    void findTaskFinished( int exit, QProcess::ExitStatus status);
 signals:
     void getSearchResult( const QStringList& result );
 private:
+    bool ended;
     QProcess* process;
     QStringList args;
 };

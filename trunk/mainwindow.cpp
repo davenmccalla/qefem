@@ -154,6 +154,10 @@ void MainWindow::updateStatus( )
     {
         controlPanel->stopAnimation();
     }
+    else
+    {
+        controlPanel->startAnimation();
+    }
 }
 
 void MainWindow::stopAnimation()
