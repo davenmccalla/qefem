@@ -20,8 +20,9 @@ findTask::findTask(const QString& dirName, const QString& pattern)
     process->setReadChannelMode( QProcess::SeparateChannels );
     process->setWorkingDirectory( dirName );
     //process->setWorkingDirectory( "/usr/bin" );
-    //connect( process, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( findTaskFinished( int , QProcess::ExitStatus ) ));
+    connect( process, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( findTaskFinished( int , QProcess::ExitStatus ) ));
     connect( process, SIGNAL(readyRead ()), this, SLOT( readFindResult() ));
+    ended=false;
 }
 
 findTask::~findTask()
@@ -33,13 +34,22 @@ void findTask::run()
 {
 #ifdef Q_WS_WIN
     process->start("cmd.exe", args);
+    if (!process->waitForStarted())
+    {
+        emit finished();
+        return;
+    }
 #elif defined(Q_WS_MAC)
     process->start("find", args);
     if (!process->waitForStarted())
+    {
+        emit finished();
         return;
+    }
 
-    if (!process->waitForFinished())
-        return;
+    process->waitForFinished(600000);
+    emit finished();
+    //    return;
     //qDebug()<<process->readLine();
 #elif defined(Q_OS_LINUX)
 #endif
@@ -57,5 +67,16 @@ void findTask::readFindResult()
     }
     //qDebug()<<list;
     emit getSearchResult( list );
+    return;
+}
+
+bool findTask::isEnded()
+{
+    return ended;
+}
+
+void findTask::findTaskFinished( int exit, QProcess::ExitStatus status)
+{
+    emit finished();
     return;
 }

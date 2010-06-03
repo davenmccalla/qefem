@@ -735,10 +735,9 @@ void FMPanel::unzipTaskFinished( int /*exitCode*/, QProcess::ExitStatus /*exitSt
 
 void FMPanel::findTaskFinished( )
 {
-    qDebug()<<__FILE__<<__LINE__;
     for(int i=0; i < findVector.size(); i++ )
     {
-        if( findVector[i].first->isFinished() )
+        if( !findVector[i].first->isRunning() )
         {
             delete findVector[i].first;
             findVector.remove(i);
@@ -773,15 +772,14 @@ QStringList FMPanel::getStatus()
     }
     for(int i=0; i < findVector.size(); i++ )
     {
-        //qDebug()<<__FILE__<<__LINE__;
-        //if( findVector[i].first->isRunning() )
-        //{
+        if( !findVector[i].first->isFinished() )
+        {
             qDebug()<<__FILE__<<__LINE__;
             QString text("Search for ");
             text.append( findVector[i].second.first );
             text.append(" is running.");
             list << text;
-        //}
+        }
     }
     return list;
 }

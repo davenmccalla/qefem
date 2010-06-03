@@ -450,7 +450,10 @@ void ControlPanel::stopAnimation()
 
 void ControlPanel::startAnimation()
 {
-    movie->start();
+    if( movie->state() != QMovie::Running )
+    {
+        movie->start();
+    }
 }
 
 void ControlPanel::askCopyOverwrite( const QString& path )
