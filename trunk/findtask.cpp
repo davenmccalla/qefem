@@ -15,19 +15,19 @@ findTask::findTask(const QString& dirName, const QString& pattern)
 #elif defined(Q_OS_LINUX)
 #endif
     qDebug()<<args;
-    process = new QProcess();
+    process = QSharedPointer<QProcess>(new QProcess());
     process->setReadChannel( QProcess::StandardOutput );
     process->setReadChannelMode( QProcess::SeparateChannels );
     process->setWorkingDirectory( dirName );
     //process->setWorkingDirectory( "/usr/bin" );
-    connect( process, SIGNAL(finished( int , QProcess::ExitStatus )), this, SLOT( findTaskFinished( int , QProcess::ExitStatus ) ));
-    connect( process, SIGNAL(readyRead ()), this, SLOT( readFindResult() ));
+    connect( process.data(), SIGNAL(finished(int,QProcess::ExitStatus )), this, SLOT(findTaskFinished(int,QProcess::ExitStatus) ));
+    connect( process.data(), SIGNAL(readyRead()),this,SLOT(readFindResult()));
     ended=false;
 }
 
 findTask::~findTask()
 {
-    delete process;
+    //delete process;
 }
 
 void findTask::run()

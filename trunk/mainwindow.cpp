@@ -37,62 +37,62 @@ MainWindow::MainWindow(QWidget *parent)
     qt_set_sequence_auto_mnemonic( true );
 #endif
     qDebug()<<QLibraryInfo::location( QLibraryInfo::PluginsPath );
-    contentWidget = new QWidget( this );
+    contentWidget = QPointer<QWidget>(new QWidget(this));
     contentWidget->setWindowFlags( Qt::SubWindow );
-    wholeLayout = new QVBoxLayout();
-    listLayout = new QHBoxLayout();
+    wholeLayout = QSharedPointer<QVBoxLayout>(new QVBoxLayout());
+    listLayout = QPointer<QHBoxLayout>(new QHBoxLayout());
     wholeLayout->setContentsMargins( 2, 2, 2, 2 );
     listLayout->setContentsMargins( 2, 2, 2, 2 );
     wholeLayout->setSpacing(2);
     listLayout->setSpacing(2);
-    rightPanel = new FMPanel( this, false, contentWidget );
-    leftPanel = new FMPanel( this, true, contentWidget );        
-    alt1 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_1),
-                              this);
-    connect( alt1, SIGNAL(activated()), this, SLOT(alt1Pressed()));
-    alt2 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_2),
-                              this);
-    connect( alt2, SIGNAL(activated()), this, SLOT(alt2Pressed()));
-    alt3 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_3),
-                              this);
-    connect( alt3, SIGNAL(activated()), this, SLOT(alt3Pressed()));
-    alt4 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_4),
-                              this);
-    connect( alt4, SIGNAL(activated()), this, SLOT(alt4Pressed()));
-    alt5 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_5),
-                              this);
-    connect( alt5, SIGNAL(activated()), this, SLOT(alt5Pressed()));
-    alt6 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_6),
-                              this);
-    connect( alt6, SIGNAL(activated()), this, SLOT(alt6Pressed()));
-    alt7 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_7),
-                              this);
-    connect( alt7, SIGNAL(activated()), this, SLOT(alt7Pressed()));
-    alt8 = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_8),
-                              this);
-    connect( alt8, SIGNAL(activated()), this, SLOT(alt8Pressed()));
+    rightPanel = QPointer<FMPanel>(new FMPanel( this, false, contentWidget.data() ));
+    leftPanel = QPointer<FMPanel>(new FMPanel( this, true, contentWidget.data() ));
+    alt1 = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_1),
+                              this));
+    connect( alt1.data(), SIGNAL(activated()), this, SLOT(alt1Pressed()));
+    alt2 = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_2),
+                              this));
+    connect( alt2.data(), SIGNAL(activated()), this, SLOT(alt2Pressed()));
+    alt3 = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_3),
+                              this));
+    connect( alt3.data(), SIGNAL(activated()), this, SLOT(alt3Pressed()));
+    alt4 = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_4),
+                              this));
+    connect( alt4.data(), SIGNAL(activated()), this, SLOT(alt4Pressed()));
+    alt5 = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_5),
+                              this));
+    connect( alt5.data(), SIGNAL(activated()), this, SLOT(alt5Pressed()));
+    alt6 = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_6),
+                              this));
+    connect( alt6.data(), SIGNAL(activated()), this, SLOT(alt6Pressed()));
+    alt7 = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_7),
+                              this));
+    connect( alt7.data(), SIGNAL(activated()), this, SLOT(alt7Pressed()));
+    alt8 = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_8),
+                              this));
+    connect( alt8.data(), SIGNAL(activated()), this, SLOT(alt8Pressed()));
 
-    altE = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_E),
-                              this);
-    connect( altE, SIGNAL(activated()), this, SLOT(altEPressed()));
+    altE = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_E),
+                              this));
+    connect( altE.data(), SIGNAL(activated()), this, SLOT(altEPressed()));
 
-    altT = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_T),
-                              this);
-    connect( altT, SIGNAL(activated()), this, SLOT(altTPressed()));
+    altT = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_T),
+                              this));
+    connect( altT.data(), SIGNAL(activated()), this, SLOT(altTPressed()));
 
-    ctrlC = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C),
-                              this);    
-    connect( ctrlC, SIGNAL(activated()), this, SLOT(ctrlCPressed()));
-    ctrlV = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V),
-                              this);
-    connect( ctrlV, SIGNAL(activated()), this, SLOT(ctrlVPressed()));    
-    listLayout->addWidget( leftPanel );
-    listLayout->addWidget( rightPanel );    
-    controlPanel = new ControlPanel( this, leftPanel, rightPanel );    
-    wholeLayout->addWidget( controlPanel );
-    wholeLayout->addLayout( listLayout );
-    contentWidget->setLayout( wholeLayout );    
-    statusList = new QListWidget( contentWidget );
+    ctrlC = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C),
+                              this));
+    connect( ctrlC.data(), SIGNAL(activated()), this, SLOT(ctrlCPressed()));
+    ctrlV = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V),
+                              this));
+    connect( ctrlV.data(), SIGNAL(activated()), this, SLOT(ctrlVPressed()));
+    listLayout->addWidget( leftPanel.data() );
+    listLayout->addWidget( rightPanel.data() );
+    controlPanel =QPointer<ControlPanel>(new ControlPanel(this,leftPanel.data(),rightPanel.data()));
+    wholeLayout->addWidget( controlPanel.data() );
+    wholeLayout->addLayout( listLayout.data() );
+    contentWidget->setLayout( wholeLayout.data() );
+    statusList = QSharedPointer<QListWidget>(new QListWidget(contentWidget.data()));
     statusList->setVisible( false );    
 #if defined(Q_WS_WIN)||defined(Q_WS_MAC)||defined(Q_WS_X11)
     contentWidget->setMinimumSize(600,320);
@@ -107,15 +107,15 @@ MainWindow::MainWindow(QWidget *parent)
 #endif               
     rightPanel->setDirListFocus();
 //signals slots        
-    connect(rightPanel, SIGNAL(copyFiles( const QStringList&, const QString& , bool )),this,SLOT( copyFiles( const QStringList&, const QString& , bool ) ));
-    connect(leftPanel, SIGNAL(copyFiles( const QStringList&, const QString& , bool )),this,SLOT(copyFiles( const QStringList&, const QString& , bool ) ));    
+    connect(rightPanel.data(), SIGNAL(copyFiles(const QStringList&,const QString&,bool)),this,SLOT( copyFiles(const QStringList&,const QString& ,bool) ));
+    connect(leftPanel.data(), SIGNAL(copyFiles(const QStringList&,const QString&,bool)),this,SLOT(copyFiles(const QStringList&,const QString& ,bool) ));
 }
 
 MainWindow::~MainWindow()
 {
-    delete wholeLayout;
-    delete alt1;
-    delete alt2;
+    //delete wholeLayout;
+    //delete alt1;
+    //delete alt2;
 }
 
 void MainWindow::resizeEvent ( QResizeEvent * /*event*/ )
@@ -129,8 +129,8 @@ void MainWindow::showStatus( )
     //wholeLayout->removeItem( listLayout );
     //wholeLayout->addWidget( statusBrowser );
     statusList->setVisible( true );
-    wholeLayout->removeItem( listLayout );
-    wholeLayout->addWidget( statusList );
+    wholeLayout->removeItem( listLayout.data() );
+    wholeLayout->addWidget( statusList.data() );
     //statusTimer.start(1000);
     controlPanel->disableButtons();
 }
@@ -138,8 +138,8 @@ void MainWindow::showStatus( )
 void MainWindow::closeStatus( )
 {
     statusList->setVisible( false );
-    wholeLayout->removeWidget( statusList );
-    wholeLayout->addLayout( listLayout );
+    wholeLayout->removeWidget( statusList.data() );
+    wholeLayout->addLayout( listLayout.data() );
     //statusTimer.stop();
     controlPanel->enableButtons();
 }

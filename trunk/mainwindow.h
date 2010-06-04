@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QTextBrowser>
 #include <QTimer>
 #include <QShortcut>
+#include <QPointer>
 #include "fmpanel.h"
 #include "controlpanel.h"
 
@@ -64,27 +65,27 @@ protected:
     void resizeEvent( QResizeEvent * event );
     void keyPressEvent( QKeyEvent * event );
 private:
-    QVBoxLayout *wholeLayout;
-    QHBoxLayout *listLayout;
-    FMPanel* rightPanel;
-    FMPanel* leftPanel;
-    QWidget* contentWidget;
-    ControlPanel* controlPanel;
-    QListWidget* statusList;
+    QSharedPointer<QVBoxLayout> wholeLayout;
+    QPointer<QHBoxLayout> listLayout;
+    QPointer<FMPanel> rightPanel;
+    QPointer<FMPanel> leftPanel;
+    QPointer<QWidget> contentWidget;
+    QPointer<ControlPanel> controlPanel;
+    QSharedPointer<QListWidget> statusList;
     //QTextBrowser* statusBrowser;
     QTimer statusTimer;
-    QShortcut* alt1;
-    QShortcut* alt2;
-    QShortcut* alt3;
-    QShortcut* alt4;
-    QShortcut* alt5;
-    QShortcut* alt6;
-    QShortcut* alt7;
-    QShortcut* alt8;
-    QShortcut* altE;
-    QShortcut* altT;
-    QShortcut* ctrlC;
-    QShortcut* ctrlV;
+    QSharedPointer<QShortcut> alt1;
+    QSharedPointer<QShortcut> alt2;
+    QSharedPointer<QShortcut> alt3;
+    QSharedPointer<QShortcut> alt4;
+    QSharedPointer<QShortcut> alt5;
+    QSharedPointer<QShortcut> alt6;
+    QSharedPointer<QShortcut> alt7;
+    QSharedPointer<QShortcut> alt8;
+    QSharedPointer<QShortcut> altE;
+    QSharedPointer<QShortcut> altT;
+    QSharedPointer<QShortcut> ctrlC;
+    QSharedPointer<QShortcut> ctrlV;
 };
 
 #endif // MAINWINDOW_H
