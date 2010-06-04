@@ -160,6 +160,7 @@ void FMListView::setRootPath( const QString& path )
     }
     else
     {
+        //TODO: add watcher to different thread slows down the responsiveness
         watcher.removePath( rootDir );
         rootDir.clear();
         rootDir.append( path );

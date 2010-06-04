@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include <QThread>
 #include <QProcess>
+#include <QSharedPointer>
 
 class findTask : public QThread
 {
@@ -37,7 +38,7 @@ signals:
     void getSearchResult( const QStringList& result );
 private:
     bool ended;
-    QProcess* process;
+    QSharedPointer<QProcess> process;
     QStringList args;
 };
 
