@@ -6,13 +6,20 @@ findTask::findTask(const QString& dirName, const QString& pattern)
 #ifdef Q_WS_WIN
     args<<"/c"<<"dir"<<"/b"<<"/s"<<pattern;
 #elif defined(Q_WS_MAC)
-    //find /Users/karimpinter/ -name "*.txt" -print
+    //find /Users/kp/ -name "*.txt" -print
     QString pat;
     pat.append("\"");
     pat.append(pattern);
     pat.append("\"");
     args<<dirName<<"-name"<<pat<<"-print";
 #elif defined(Q_OS_LINUX)
+    QString pat;
+    pat.append("find ");
+    pat.append(dirName);
+    pat.append(" -name ");
+    pat.append(pattern);
+    pat.append(" -print");
+    args<<pat;
 #endif
     qDebug()<<args;
     process = QSharedPointer<QProcess>(new QProcess());
@@ -49,23 +56,32 @@ void findTask::run()
 
     process->waitForFinished(600000);
     emit finished();
-    //    return;
-    //qDebug()<<process->readLine();
 #elif defined(Q_OS_LINUX)
+    qDebug()<<args;
+    process->start(args[0]);
+    if (!process->waitForStarted())
+    {
+        emit finished();
+        return;
+    }
 #endif
 }
 
 void findTask::readFindResult()
 {
     QStringList list;
+    qDebug()<<"1";
     QString result = process->readAll();
+    qDebug()<<result;
     list = result.split("\n");
     list.removeLast();
+#ifndef Q_OS_LINUX
     for( int j=0; j<list.count(); j++ )
     {
         list[j].chop(1);
     }
-    //qDebug()<<list;
+#endif
+    qDebug()<<list;
     emit getSearchResult( list );
     return;
 }
