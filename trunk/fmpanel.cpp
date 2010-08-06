@@ -735,15 +735,15 @@ void FMPanel::unzipTaskFinished( int /*exitCode*/, QProcess::ExitStatus /*exitSt
 
 void FMPanel::findTaskFinished( )
 {
-    for(int i=0; i < findVector.size(); i++ )
-    {
+    /*for(int i=0; i < findVector.size(); i++ )
+    {    
         if( !findVector[i].first->isRunning() )
         {
             delete findVector[i].first;
             findVector.remove(i);
             i--;
         }
-    }
+    }*/
     mainW->updateStatus();
 }
 

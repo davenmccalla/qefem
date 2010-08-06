@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "bookmarklistview.h"
 #include "historylistview.h"
 #include "drivelistview.h"
-#include "findTask.h"
+#include "findtask.h"
 #include <QObject>
 #include <QWidget>
 #include <QHBoxLayout>
