@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QLibraryInfo>
 
 #include "mainwindow.h"
+#include "defines.h"
 
 #ifdef Q_WS_MAC
 extern void qt_set_sequence_auto_mnemonic(bool b);
@@ -99,7 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
     setMinimumSize(600,320);
     setGeometry(100,100,900,480);    
 #endif
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
+#if defined(QEFEM_MAEMO_DEV)
     setWindowState(Qt::WindowFullScreen);
     contentWidget->setMinimumSize(800,480);
     setMinimumSize(800,480);

@@ -1,0 +1,14 @@
+qefem (0.6.1) unstable; urgency=low
+
+  * Detailed description added to deb package
+  * Button label changed to Rn from Rename
+  * Open button is disabled when status is visible
+
+ -- Karim Pinter <pinterkarimandras@gmail.com>  Wed, 30 Sep 2010 10:22:00 +0200
+
+qefem (0.6) unstable; urgency=low
+
+  * Initial release 
+
+ -- Karim Pinter <pinterkarimandras@gmail.com>  Wed, 29 Sep 2010 17:02:35 +0200
+

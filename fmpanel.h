@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "historylistview.h"
 #include "drivelistview.h"
 #include "findtask.h"
+#include "defines.h"
 #include <QObject>
 #include <QWidget>
 #include <QHBoxLayout>
@@ -67,7 +68,14 @@ public:
     QString curDir();
     QString curFile();
     void addBookmark( const QString& path );
+#if defined(QEFEM_MAEMO_DEV)
+    void showPathEdit();
+    void hidePathEdit();
+#endif
 public slots:
+#if defined(QEFEM_MAEMO_DEV) || defined(Q_OS_LINUX)
+    void openSelected();
+#endif
     void reload();
     void driveReload();
     void zipTaskFinished( int exitCode, QProcess::ExitStatus exitStatus );
@@ -88,6 +96,7 @@ private slots:
     void dirDoubleClicked( const QModelIndex &  index );
     void editFinished();
     void highlightMoved();
+    void listGotFocus();
 private:
     void setPathEditText(const QString text);
     void focusInEvent ( QFocusEvent * event );
@@ -97,7 +106,7 @@ private:
     bookmarkListView *blist;
     historyListView *hlist;
     QListWidget *foundList;
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
+#if !defined(QEFEM_MAEMO_DEV) && !defined(Q_OS_LINUX)
     driveListView *dlist;
 #endif
     QHBoxLayout *listLayout;

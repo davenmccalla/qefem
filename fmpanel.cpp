@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "fmpanel.h"
 #include "mainwindow.h"
+#include "defines.h"
 #include <QDirModel>
 #include <QDir>
 #include <QMessageBox>
@@ -42,29 +43,36 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     blist = new bookmarkListView();
     blist->setSelectionMode( QAbstractItemView::NoSelection );
     blist->setEditTriggers( QAbstractItemView::NoEditTriggers );
+#if !defined(QEFEM_MAEMO_DEV)
     hlist = new historyListView( left );
     hlist->setSelectionMode( QAbstractItemView::NoSelection );
     hlist->setEditTriggers( QAbstractItemView::NoEditTriggers );
+#endif
     foundList = new QListWidget( this );
     foundList->setSelectionMode( QAbstractItemView::NoSelection );
     foundList->setEditTriggers( QAbstractItemView::NoEditTriggers );    
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
+#if !defined(QEFEM_MAEMO_DEV) && !defined(Q_OS_LINUX)
     dlist = new driveListView();
 #endif    
     dirList = new FMListView();
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
+#if !defined(QEFEM_MAEMO_DEV) && !defined(Q_OS_LINUX)
     tab->addTab(dlist,"Drives");
 #endif    
     tab->addTab(dirList,"Files");
+#if !defined(QEFEM_MAEMO_DEV)
     tab->addTab(hlist,"History");
+#endif
     tab->addTab(blist,"Bookmarks");
     tab->addTab(foundList,"Found");
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) || defined(Q_OS_LINUX) 
+#if defined(QEFEM_MAEMO_DEV) || defined(Q_OS_LINUX)
     tab->setCurrentIndex(0);
 #else
     tab->setCurrentIndex(1);
 #endif    
     pathEdit = new QLineEdit();
+#if defined(QEFEM_MAEMO_DEV)
+    pathEdit->setVisible( false );
+#endif
     wholeLayout->setContentsMargins( 0, 0, 0, 0 );
     wholeLayout->setSpacing(0);
     wholeLayout->addWidget( tab );
@@ -76,7 +84,7 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
     currentDir.append(QDir::homePath());
     currentFile.clear();
     currentFile.append(QDir::homePath());
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(QEFEM_MAEMO_DEV)
 #if !defined(Q_OS_LINUX)
     //tab->setToolTip("Drive tab shows the drives. Files tab shows the files. History shows the last 128 visited directories. Bookmark tab shows bookmarks.");
 #else
@@ -84,22 +92,23 @@ FMPanel::FMPanel( MainWindow* aMainW, bool aLeft, QWidget * parent, Qt::WindowFl
 #endif
 #endif
     //setup signals and slots
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
+#if !defined(QEFEM_MAEMO_DEV) && !defined(Q_OS_LINUX)
     connect(dlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( driveClicked( const QModelIndex & ) ));
     connect(dlist, SIGNAL(activated( const QModelIndex& )), this, SLOT( driveClicked( const QModelIndex & ) ));
-#endif
-    connect(blist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
-    connect(blist, SIGNAL(activated( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
     connect(hlist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
     connect(hlist, SIGNAL(activated( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
-    connect(foundList, SIGNAL(itemDoubleClicked ( QListWidgetItem *)), this, SLOT( foundListClicked( QListWidgetItem * ) ));
-    connect(foundList, SIGNAL(itemClicked ( QListWidgetItem *)), this, SLOT( foundListClicked( QListWidgetItem * ) ));
     connect(dirList, SIGNAL(clicked( const QModelIndex& )), this, SLOT( dirClicked( const QModelIndex & ) ));
     connect(dirList, SIGNAL(activated( const QModelIndex& )), this, SLOT( dirDoubleClicked( const QModelIndex & ) ));
     connect(dirList, SIGNAL(entered( const QModelIndex& )), this, SLOT( dirClicked( const QModelIndex & ) ));
+#endif
+    connect(blist, SIGNAL(clicked( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
+    connect(blist, SIGNAL(activated( const QModelIndex& )), this, SLOT( listClicked( const QModelIndex & ) ));
+    connect(foundList, SIGNAL(itemDoubleClicked ( QListWidgetItem *)), this, SLOT( foundListClicked( QListWidgetItem * ) ));
+    connect(foundList, SIGNAL(itemClicked ( QListWidgetItem *)), this, SLOT( foundListClicked( QListWidgetItem * ) ));
     connect(pathEdit, SIGNAL(editingFinished()),this,SLOT( editFinished() ));
     connect(dirList, SIGNAL(keyUpOrDownPressed()),this,SLOT( highlightMoved() ));
     connect(dirList, SIGNAL(copyFiles(const QStringList&)),this,SLOT( copy(const QStringList& ) ));
+    connect(dirList, SIGNAL(focusGained()),this,SLOT( listGotFocus() ));
     //connect(dirList->model(), SIGNAL( rowChange()),this,SLOT(rowsChanged()));
     connect(dirList, SIGNAL( rootPathChanged ( const QString& )),this, SLOT( rootChanged ( const QString& ) ));
     foundList->clear();
@@ -111,9 +120,95 @@ FMPanel::~FMPanel()
     delete wholeLayout;
 }
 
+#if defined(QEFEM_MAEMO_DEV)
+void FMPanel::openSelected()
+{
+    switch( tab->currentIndex() )
+    {
+    case 0://this is the directory list
+        {
+        QStringList list = dirList->selectedFiles();
+        // for some reason the first .. are never returned in the list
+        // TODO: fix this
+        if( list.count() == 0 )
+        {
+            QDir dir(currentDir);
+            dir.cdUp();
+            currentFile.clear();
+            currentDir.clear();
+            currentDir.append( dir.absolutePath() );
+            dirList->setRootPath( currentDir );
+            return;
+        }
+        if( list.at(0).isEmpty() || list.at(0).at(0)=='/' )
+        {
+            return;
+        }
+        if( list.at(0).at(0)=='.' && list.at(0).at(1)=='.' )
+        {
+            QDir dir(currentDir);
+            dir.cdUp();
+            currentFile.clear();
+            currentDir.clear();
+            currentDir.append( dir.absolutePath() );
+            dirList->setRootPath( currentDir );
+            return;
+        }
+        QString selectedFile( currentDir );
+        selectedFile.append("/");
+        selectedFile.append( list.at(0) );
+        QFileInfo inf( selectedFile ) ;
+        //isAbsolute()
+        //isBundle()
+        if( inf.isDir() )
+        {
+            //mainW->startAnimation();
+            currentFile.clear();
+            //TODO check the size
+            currentDir.clear();
+            currentDir.append( inf.absoluteFilePath() );
+            dirList->setRootPath( currentDir );
+            return;
+        }
+        if( inf.isExecutable() )
+        {
+            QProcess::startDetached( inf.absoluteFilePath() );
+        }
+        if( inf.isFile() )
+        {
+            QString url("file:///");
+            url.append( inf.filePath() );
+            //qDebug()<<url;
+            QDesktopServices::openUrl( url );
+        }
+        currentDir.clear();
+        currentDir.append( inf.absolutePath() );
+        dirList->setRootPath( currentDir );
+        break;
+        }
+    case 1://bookmark tab
+        {
+        break;
+        }
+    case 2://found tab
+        {
+        break;
+        }
+    default:
+        {
+        }
+    }
+}
+#endif    
+
+void FMPanel::listGotFocus()
+{
+    lastClick = QTime::currentTime();
+}
+
 void FMPanel::listClicked( const QModelIndex &index )
 {
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) || defined(Q_OS_LINUX)
+#if defined(QEFEM_MAEMO_DEV) || defined(Q_OS_LINUX)
     tab->setCurrentIndex(0);
 #else
     tab->setCurrentIndex(1);
@@ -136,7 +231,7 @@ void FMPanel::listClicked( const QModelIndex &index )
 
 void FMPanel::foundListClicked( QListWidgetItem *item )
 {
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) || defined(Q_OS_LINUX)
+#if defined(QEFEM_MAEMO_DEV) || defined(Q_OS_LINUX)
     tab->setCurrentIndex(0);
 #else
     tab->setCurrentIndex(1);
@@ -150,10 +245,14 @@ void FMPanel::foundListClicked( QListWidgetItem *item )
         {
             foundList->clear();
             foundList->addItem("Clear list");
-        #if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
+        #if !defined(QEFEM_MAEMO_DEV) && !defined(Q_OS_LINUX)
             tab->setTabText( 4, "Found");
         #else
+            #ifdef QEFEM_MAEMO_DEV
+            tab->setTabText( 2, "Found");
+            #else
             tab->setTabText( 3, "Found");
+            #endif
         #endif
         }
         else
@@ -467,6 +566,9 @@ void FMPanel::setEditMode( EditMode emode )
 
 void FMPanel::editFinished()
 {
+#if defined(QEFEM_MAEMO_DEV)
+    hidePathEdit();
+#endif
     switch( mode )
     {
         case None:
@@ -638,10 +740,14 @@ void FMPanel::readFindResult( const QStringList& result )
     QString tabText("Found(");
     tabText.append( QString().setNum( foundList->count()-1 ) );
     tabText.append(")");
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
+#if !defined(Q_OS_LINUX)
     tab->setTabText( 4, tabText);
 #else
+#ifdef QEFEM_MAEMO_DEV
+    tab->setTabText( 2, tabText);
+#else
     tab->setTabText( 3, tabText);
+#endif
 #endif
     return;
 }
@@ -798,7 +904,7 @@ void FMPanel::setDirListFocus()
 {
     dirList->setFocus(Qt::ShortcutFocusReason);
     lastClick = QTime::currentTime();
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON) || defined(Q_OS_LINUX)
+#if defined(QEFEM_MAEMO_DEV) || defined(Q_OS_LINUX)
     tab->setCurrentIndex(0);
 #else
     tab->setCurrentIndex(1);
@@ -807,7 +913,7 @@ void FMPanel::setDirListFocus()
 
 void FMPanel::setDriveListFocus()
 {
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON) && !defined(Q_OS_LINUX)
+#if !defined(QEFEM_MAEMO_DEV) && !defined(Q_OS_LINUX)
     dirList->setFocus(Qt::ShortcutFocusReason);
     lastClick = QTime::currentTime();
     tab->setCurrentIndex(0);
@@ -818,7 +924,7 @@ void FMPanel::setHistoryFocus()
 {
     dirList->setFocus(Qt::ShortcutFocusReason);
     lastClick = QTime::currentTime();
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)|| defined(Q_OS_LINUX)
+#if defined(QEFEM_MAEMO_DEV) || defined(Q_OS_LINUX)
     tab->setCurrentIndex(1);
 #else
     tab->setCurrentIndex(2);
@@ -829,7 +935,7 @@ void FMPanel::setBookmarkFocus()
 {
     dirList->setFocus(Qt::ShortcutFocusReason);
     lastClick = QTime::currentTime();
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO) || defined(Q_WS_HILDON)|| defined(Q_OS_LINUX)
+#if defined(QEFEM_MAEMO_DEV) || defined(Q_OS_LINUX)
     tab->setCurrentIndex(2);
 #else
     tab->setCurrentIndex(3);
@@ -892,8 +998,9 @@ void FMPanel::rootChanged ( const QString & newPath )
 
     mainW->stopAnimation();
 
+#ifndef QEFEM_MAEMO_DEV
     hlist->addHistoryItem( newPath );
-
+#endif
     currentDir.clear();
     currentDir.append( newPath );
     currentFile.clear();
@@ -912,3 +1019,17 @@ void FMPanel::addBookmark( const QString& path )
     blist->addBookmark( path );
     #endif
 }
+
+#if defined(QEFEM_MAEMO_DEV)
+void FMPanel::showPathEdit()
+{
+    pathEdit->setVisible( true );
+}
+
+void FMPanel::hidePathEdit()
+{
+    pathEdit->setVisible( false );
+}
+
+#endif
+

@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "copytask.h"
 #include "deletetask.h"
 #include "global.h"
+#include "defines.h"
 #include <QDir>
 #include <QProcess>
 #include <QDebug>
@@ -39,20 +40,24 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     commandLayout->setContentsMargins( 2, 2, 2, 2 );
     commandLayout->setSpacing(1);
     cpButton = new QPushButton( "&Copy" );
+#if defined(QEFEM_MAEMO_DEV)
     rnButton = new QPushButton( "&Rename" );
+#else
+    rnButton = new QPushButton( "&Rn" );
+#endif
     delButton = new QPushButton( "&Del" );
     searchButton = new QPushButton( "&Find" );
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(QEFEM_MAEMO_DEV)
     zipButton = new QPushButton( "&Zip" );
 #endif
     mkdirButton = new QPushButton( "&Mkdir" );
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
+#if defined(QEFEM_MAEMO_DEV)
     bookmarkButton = new QPushButton( "&Bmark" );
 #else    
     bookmarkButton = new QPushButton( "&Bookmark" );
 #endif    
     statusButton = new QPushButton( "&Status" );
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(QEFEM_MAEMO_DEV)
     //animation->setToolTip("When this animation is rotating its indicating that some file operation is going on.");
     cpButton->setToolTip("This copies the selected file or directory to the other panels current directory.");
     rnButton->setToolTip("This renames the selected file, directory or multiple file renaming doesn't work.");
@@ -83,13 +88,15 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     commandLayout->addWidget( rnButton );
     commandLayout->addWidget( delButton );
     commandLayout->addWidget( mkdirButton );
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(QEFEM_MAEMO_DEV)
     commandLayout->addWidget( zipButton );
 #endif    
     commandLayout->addWidget( bookmarkButton );
     commandLayout->addWidget( searchButton );
     commandLayout->addWidget( statusButton );
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
+#if defined(QEFEM_MAEMO_DEV)
+    openButton = new QPushButton( "O&pen" );
+    commandLayout->addWidget( openButton );
     exitButton = new QPushButton( "E&xit" );
     commandLayout->addWidget( exitButton );
 #endif    
@@ -97,14 +104,15 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     connect(cpButton, SIGNAL(clicked( bool )), this, SLOT( cpButtonClicked( bool ) ));
     connect(rnButton, SIGNAL(clicked( bool )), this, SLOT( rnButtonClicked( bool ) ));
     connect(delButton, SIGNAL(clicked( bool )), this, SLOT( delButtonClicked( bool ) ));
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(QEFEM_MAEMO_DEV)
     connect(zipButton, SIGNAL(clicked( bool )), this, SLOT( zipButtonClicked( bool ) ));
 #endif
     connect(mkdirButton, SIGNAL(clicked( bool )), this, SLOT( mkdirButtonClicked( bool ) ));
     connect(statusButton, SIGNAL(clicked( bool )), this, SLOT( statusButtonClicked( bool ) ));
     connect(bookmarkButton, SIGNAL(clicked( bool )), this, SLOT( bookmarkButtonClicked( bool ) ));
     connect(searchButton, SIGNAL(clicked( bool )), this, SLOT( searchButtonClicked( bool ) ));
-#if defined(Q_WS_MAEMO_5) || defined(HB_Q_WS_MAEMO)||defined(Q_WS_HILDON)
+#if defined(QEFEM_MAEMO_DEV)
+    connect(openButton, SIGNAL(clicked( bool )), this, SLOT( openButtonClicked( bool ) ));
     connect(exitButton, SIGNAL(clicked( bool )), this, SLOT( exitButtonClicked( bool ) ));
 #endif
     setLayout( commandLayout );
@@ -188,10 +196,16 @@ void ControlPanel::rnButtonClicked( bool /*checked*/ )
     movie->start();
     if( leftPanel->lastFocus() > rightPanel->lastFocus() )
     {
+    #if defined(QEFEM_MAEMO_DEV)
+        leftPanel->showPathEdit();
+    #endif
         leftPanel->setEditMode( FMPanel::Rename );
     }
     else
     {
+    #if defined(QEFEM_MAEMO_DEV)
+        rightPanel->showPathEdit();
+    #endif
         rightPanel->setEditMode( FMPanel::Rename );
     }
 }
@@ -237,10 +251,16 @@ void ControlPanel::mkdirButtonClicked( bool /*checked*/ )
     movie->start();
     if( leftPanel->lastFocus() > rightPanel->lastFocus() )
     {
+        #if defined(QEFEM_MAEMO_DEV)
+        leftPanel->showPathEdit();
+        #endif
         leftPanel->setEditMode( FMPanel::MkDir );
     }
     else
     {
+        #if defined(QEFEM_MAEMO_DEV)
+        rightPanel->showPathEdit();
+        #endif
         rightPanel->setEditMode( FMPanel::MkDir );
     }
 }
@@ -264,21 +284,38 @@ void ControlPanel::searchButtonClicked( bool /*checked*/ )
     movie->start();
     if( leftPanel->lastFocus() > rightPanel->lastFocus() )
     {
+        #if defined(QEFEM_MAEMO_DEV)
+        leftPanel->showPathEdit();
+        #endif
         leftPanel->setEditMode( FMPanel::Search );
     }
     else
     {
+        #if defined(QEFEM_MAEMO_DEV)
+        rightPanel->showPathEdit();
+        #endif
         rightPanel->setEditMode( FMPanel::Search );
     }
 
 }
-
+#if defined(QEFEM_MAEMO_DEV)
+void ControlPanel::openButtonClicked( bool /*checked*/ )
+{
+    if( leftPanel->lastFocus() > rightPanel->lastFocus() )
+    {
+        leftPanel->openSelected();
+    }
+    else
+    {
+        rightPanel->openSelected();
+    }
+}
 
 void ControlPanel::exitButtonClicked( bool /*checked*/ )
 {
     QCoreApplication::exit(0);
 }
-
+#endif
 void ControlPanel::copyDirs(const QString& dirName, const QString& dest, bool left )
 {
     CopyTask *ct = new CopyTask( dirName, dest, CopyTask::Dir );
@@ -422,12 +459,15 @@ void ControlPanel::disableButtons()
     cpButton->setDisabled( true );
     rnButton->setDisabled( true );
     delButton->setDisabled( true );
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(QEFEM_MAEMO_DEV)
     zipButton->setDisabled( true );
 #endif    
     mkdirButton->setDisabled( true );
     bookmarkButton->setDisabled( true );
     searchButton->setDisabled( true );
+#if defined(QEFEM_MAEMO_DEV)
+    openButton->setDisabled( true );
+#endif
 }
 
 void ControlPanel::enableButtons()
@@ -435,12 +475,15 @@ void ControlPanel::enableButtons()
     cpButton->setEnabled( true );
     rnButton->setEnabled( true );
     delButton->setEnabled( true );
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO) && !defined(Q_WS_HILDON)
+#if !defined(QEFEM_MAEMO_DEV)
     zipButton->setEnabled( true );
 #endif
     mkdirButton->setEnabled( true );
     bookmarkButton->setEnabled( true );
     searchButton->setEnabled( true );
+#if defined(QEFEM_MAEMO_DEV)
+    openButton->setEnabled( true );
+#endif
 }
 
 void ControlPanel::stopAnimation()

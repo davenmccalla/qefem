@@ -46,6 +46,7 @@ signals:
     void keyUpOrDownPressed();
     void copyFiles( const QStringList& files );
     void rootPathChanged ( const QString& );
+    void focusGained();
 public slots:
     void setRootPath( const QString& path );
 #ifdef Q_WS_MAC

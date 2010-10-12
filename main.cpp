@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
         dir.mkdir( dirName );
     }
     QApplication a(argc, argv);
+    a.setDoubleClickInterval(600);
     MainWindow w;
     w.show();
     return a.exec();

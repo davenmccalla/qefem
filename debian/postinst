@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# see: dh_installdeb(1)
+
+case "$1" in
+    configure)
+          #Update application icon
+          gtk-update-icon-cache -f /usr/share/icons/hicolor
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0
