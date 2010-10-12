@@ -41,9 +41,9 @@ ControlPanel::ControlPanel( MainWindow* aMainW, FMPanel* aLeftPanel, FMPanel* aR
     commandLayout->setSpacing(1);
     cpButton = new QPushButton( "&Copy" );
 #if defined(QEFEM_MAEMO_DEV)
-    rnButton = new QPushButton( "&Rename" );
-#else
     rnButton = new QPushButton( "&Rn" );
+#else
+    rnButton = new QPushButton( "&Rename" );
 #endif
     delButton = new QPushButton( "&Del" );
     searchButton = new QPushButton( "&Find" );
