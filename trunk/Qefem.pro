@@ -27,6 +27,11 @@ HEADERS += mainwindow.h \
     findtask.h \
     defines.h
 RESOURCES += qefem.qrc
-win32:RC_FILE = qefem.rc
+win32:
+    {
+    RC_FILE = qefem.rc
+    SOURCES += drivelistview.cpp
+    HEADERS += drivelistview.h
+    }
 OTHER_FILES += readme.txt \
     bugstofix.txt
