@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "fmpanel.h"
 #include "copytask.h"
 #include "deletetask.h"
+#include "defines.h"
 //#include "mainwindow.h"
 
 class MainWindow;
@@ -57,7 +58,10 @@ private slots:
     void mkdirButtonClicked( bool checked );
     void statusButtonClicked( bool checked );
     void bookmarkButtonClicked( bool checked );
+#if defined(QEFEM_MAEMO_DEV)
     void exitButtonClicked( bool checked );
+    void openButtonClicked( bool checked );
+#endif
     void searchButtonClicked( bool /*checked*/ );
 public:
     void copyDirs( const QString& dirName, const QString& dest, bool left );
@@ -76,7 +80,10 @@ private:
     QPushButton *statusButton;
     QPushButton *bookmarkButton;
     QPushButton *searchButton;
+#if defined(QEFEM_MAEMO_DEV)
     QPushButton *exitButton;
+    QPushButton *openButton;
+#endif
     FMPanel* leftPanel;
     FMPanel* rightPanel;
     MainWindow* mainW;

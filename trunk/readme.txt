@@ -1,9 +1,12 @@
 QeFeM
 
-(0.5 beta)
+(0.6 beta)
 Qt based filemanager with two panels. The file actions are running in a separate thread, the spinning icon on the left indicates running actions.
 
 To use zip functionality on Win please install 7z from www.7-zip.org.
+
+Dev blog:
+http://qefem.blogspot.com
 
 Use case:
 Have you ever compared the time difference of the command line and any GUI file manager copy and delete?

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=0.6
+Encoding=UTF-8
+Name=qefem
+Exec=/usr/bin/qefem
+Icon=qefem
+X-Window-Icon=qefem
+X-Window-Icon-Dimmed=qefem

@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "fmlistview.h"
+#include "defines.h"
 #include <QDebug>
 #include <QShortcut>
 #include <QUrl>
@@ -37,7 +38,7 @@ FMListView::FMListView( QWidget *parent) :
     QListView(parent)
 {    
     freeSpace.clear();
-#if !defined(Q_WS_MAEMO_5) && !defined(HB_Q_WS_MAEMO)&& !defined(Q_WS_HILDON)
+#if !defined(QEFEM_MAEMO_DEV)
     setDragEnabled ( true );
     setDragDropMode( QAbstractItemView::DragDrop );
     setAcceptDrops( true );
@@ -201,6 +202,13 @@ void FMListView::setRootPath( const QString& path )
         if( item != NULL )
             mod->appendRow( item );
     }
+#ifdef QEFEM_MAEMO_DEV
+    QStandardItem *item = NULL;
+    item = new QStandardItem( "" );
+    mod->appendRow( item );
+    item = new QStandardItem( style()->standardIcon( QStyle::SP_MessageBoxInformation ), rootDir );
+    mod->appendRow( item );
+#endif
     if(( changed )&&( this->hasFocus() ))
     {        
         curIndex = model()->index(0,0);
@@ -303,6 +311,7 @@ void FMListView::focusInEvent( QFocusEvent * event )
         curIndex = model()->index(0,0);
     }
     selectionModel()->setCurrentIndex( curIndex, QItemSelectionModel::Select );
+    emit focusGained();
 }
 
 void FMListView::focusOutEvent( QFocusEvent * event )

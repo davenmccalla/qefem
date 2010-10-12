@@ -49,5 +49,15 @@ dpkg-deb --build debian
 
 package making on maemo:
 http://wiki.forum.nokia.com/index.php/Creating_Debian_packages_for_Maemo_5_Qt_applications_and_showing_in_the_application_menu
-copy binary to DEBIAN/usr/bin
-dpkg-deb -b QefemApplication
+
+To check contents
+dpkg --contents ../qefem_0.5-1_armel.deb
+
+To get info of the package
+dpkg -L ../qefem_0.6_armel.deb
+
+To build binary package:
+dpkg-buildpackage -rfakeroot -uc -b -mpinterkarimandras@gmail.com -epinterkarimandras@gmail.com
+
+To make a source relese to maemo garage:
+dpkg-buildpackage -rfakeroot -sa -S -mpinterkarimandras@gmail.com -epinterkarimandras@gmail.com

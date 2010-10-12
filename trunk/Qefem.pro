@@ -1,7 +1,8 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-11-16T10:30:54
 # -------------------------------------------------
-TARGET = Qefem
+TARGET = qefem
+#DESTDIR = ./debian/qefem/usr/bin
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
@@ -10,7 +11,6 @@ SOURCES += main.cpp \
     copytask.cpp \
     deletetask.cpp \
     fmlistview.cpp \
-    drivelistview.cpp \
     bookmarklistview.cpp \
     historylistview.cpp \
     global.cpp \
@@ -21,11 +21,11 @@ HEADERS += mainwindow.h \
     copytask.h \
     deletetask.h \
     fmlistview.h \
-    drivelistview.h \
     bookmarklistview.h \
     historylistview.h \
     global.h \
-    findtask.h
+    findtask.h \
+    defines.h
 RESOURCES += qefem.qrc
 win32:RC_FILE = qefem.rc
 OTHER_FILES += readme.txt \
