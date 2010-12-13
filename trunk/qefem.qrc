@@ -2,4 +2,7 @@
     <qresource prefix="/images">
         <file>spiral.gif</file>
     </qresource>
+    <qresource prefix="/help">
+        <file>qefem_help.html</file>
+    </qresource>
 </RCC>
