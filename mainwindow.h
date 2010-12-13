@@ -46,6 +46,8 @@ public:
     QString rightCurrentDir();
     QString leftCurrentFile();
     QString rightCurrentFile();
+    QString getEditor(QStringList& list);
+    QString getTerminal(QStringList& list);
 public slots:
     void updateStatus( );
     void alt1Pressed();
@@ -58,12 +60,13 @@ public slots:
     void alt8Pressed();
     void altEPressed();
     void altTPressed();
+    void altQPressed();
     void copyFiles( const QStringList& files, const QString& dest, bool left );
     void ctrlCPressed();
     void ctrlVPressed();
+    void helpPressed();
 protected:
     void resizeEvent( QResizeEvent * event );
-    void keyPressEvent( QKeyEvent * event );
 private:
     QSharedPointer<QVBoxLayout> wholeLayout;
     QPointer<QHBoxLayout> listLayout;
@@ -84,8 +87,10 @@ private:
     QSharedPointer<QShortcut> alt8;
     QSharedPointer<QShortcut> altE;
     QSharedPointer<QShortcut> altT;
+    QSharedPointer<QShortcut> altQ;
     QSharedPointer<QShortcut> ctrlC;
     QSharedPointer<QShortcut> ctrlV;
+    QSharedPointer<QShortcut> help;
 };
 
 #endif // MAINWINDOW_H

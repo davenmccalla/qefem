@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QApplication>
 #include <QClipboard>
 #include <QLibraryInfo>
+#include <QDesktopServices>
 
 #include "mainwindow.h"
 #include "defines.h"
@@ -37,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
 #ifdef Q_WS_MAC
     qt_set_sequence_auto_mnemonic( true );
 #endif
-    qDebug()<<QLibraryInfo::location( QLibraryInfo::PluginsPath );
+    //qDebug()<<QLibraryInfo::location( QLibraryInfo::PluginsPath );
     contentWidget = QPointer<QWidget>(new QWidget(this));
     contentWidget->setWindowFlags( Qt::SubWindow );
     wholeLayout = QSharedPointer<QVBoxLayout>(new QVBoxLayout());
@@ -81,12 +82,19 @@ MainWindow::MainWindow(QWidget *parent)
                               this));
     connect( altT.data(), SIGNAL(activated()), this, SLOT(altTPressed()));
 
+    altQ = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::ALT + Qt::Key_Q),
+                              this));
+    connect( altQ.data(), SIGNAL(activated()), this, SLOT(altQPressed()));
+
     ctrlC = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C),
                               this));
     connect( ctrlC.data(), SIGNAL(activated()), this, SLOT(ctrlCPressed()));
     ctrlV = QSharedPointer<QShortcut>(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V),
                               this));
     connect( ctrlV.data(), SIGNAL(activated()), this, SLOT(ctrlVPressed()));
+    help = QSharedPointer<QShortcut>(new QShortcut(QKeySequence::HelpContents,
+                              this));
+    connect( help.data(), SIGNAL(activated()), this, SLOT(helpPressed()));
     listLayout->addWidget( leftPanel.data() );
     listLayout->addWidget( rightPanel.data() );
     controlPanel =QPointer<ControlPanel>(new ControlPanel(this,leftPanel.data(),rightPanel.data()));
@@ -110,6 +118,31 @@ MainWindow::MainWindow(QWidget *parent)
 //signals slots        
     connect(rightPanel.data(), SIGNAL(copyFiles(const QStringList&,const QString&,bool)),this,SLOT( copyFiles(const QStringList&,const QString& ,bool) ));
     connect(leftPanel.data(), SIGNAL(copyFiles(const QStringList&,const QString&,bool)),this,SLOT(copyFiles(const QStringList&,const QString& ,bool) ));
+//init settings
+    QString fileName(QDir::homePath());
+    fileName.append("/.Qefem/qefem.ini");
+    QFile file(fileName);
+    if( !file.exists() )
+    {
+        QSettings settings(fileName, QSettings::IniFormat);
+        #ifdef Q_WS_WIN
+        settings.setValue("editor","notepad.exe");
+        settings.setValue("editorargs","");
+        settings.setValue("terminal","cmd.exe");
+        settings.setValue("terminalargs","");
+        #elif defined(Q_WS_MAC)
+        settings.setValue("editor","open");
+        settings.setValue("editorargs","-e");
+        settings.setValue("terminal","/Applications/Utilities/Terminal.app");
+        settings.setValue("terminalargs","");
+        #elif defined(Q_OS_LINUX)
+        //NOTE: this will not work on Maemo or Meego
+        settings.setValue("editor","/usr/bin/gedit");
+        settings.setValue("editorargs","");
+        settings.setValue("terminal","/usr/bin/gnome-terminal");
+        settings.setValue("terminalargs","");
+        #endif
+    }
 }
 
 MainWindow::~MainWindow()
@@ -238,7 +271,6 @@ void MainWindow::copyFiles( const QStringList& files, const QString& dest, bool 
 
 void MainWindow::ctrlCPressed()
 {
-    qDebug()<<"ctrl c";
     QClipboard *clipboard = QApplication::clipboard();
     QString str("file://");
 #ifdef Q_WS_WIN
@@ -246,14 +278,12 @@ void MainWindow::ctrlCPressed()
 #endif
     if( leftPanel->lastFocus() > rightPanel->lastFocus() )
     {
-        qDebug()<<"Left panel :"<<leftPanel->curFile();
         if( leftPanel->curFile().isEmpty() )
             return;
         str.append( leftPanel->curFile() );
     }
     else
     {
-        qDebug()<<"Right panel :"<<rightPanel->curFile();
         if( rightPanel->curFile().isEmpty() )
             return;
         str.append( rightPanel->curFile() );
@@ -261,7 +291,6 @@ void MainWindow::ctrlCPressed()
     QUrl url;
     url.setUrl( str );
     QList<QUrl> urls;
-    qDebug()<< url;
     urls << str;
     QMimeData* mime = new QMimeData();
     mime->clear();
@@ -271,13 +300,11 @@ void MainWindow::ctrlCPressed()
 
 void MainWindow::ctrlVPressed()
 {
-    qDebug()<<"ctrl v";
     //TODO check for overwriting
     const QClipboard *clipboard = QApplication::clipboard();
     const QMimeData *mimeData = clipboard->mimeData();
     if( !mimeData->hasUrls() )
         return;
-    qDebug()<< mimeData->urls()[0].toString();
     QStringList files;
     int i;
     for( i=0; i < mimeData->urls().count(); i++ )
@@ -291,7 +318,6 @@ void MainWindow::ctrlVPressed()
             file.remove( 0, 7 );
             #endif
             files.append( file );
-            qDebug()<<file;
         }
     }
     if( i > 0 )
@@ -307,21 +333,23 @@ void MainWindow::ctrlVPressed()
     }
 }
 
-void MainWindow::keyPressEvent( QKeyEvent * event )
+void  MainWindow::helpPressed()
 {
-    switch (event->key()) {
-    case Qt::Key_F1:
-    case Qt::Key_Help:
-        qDebug()<<"Help!!!";
-        break;
-    default:
-        QMainWindow::keyPressEvent(event);
+    QString url("file:///");
+    QString fileName(QDir::homePath());
+    fileName.append("/.Qefem/qefem_help.html");
+    if(!QFile::exists(fileName))
+    {
+        QFile::copy(":/help/qefem_help.html",fileName);
     }
+    url.append(fileName);
+    QDesktopServices::openUrl( url );
 }
 
 void  MainWindow::altEPressed()
 {
     QStringList list;
+    QString editor(getEditor( list ));
     if( leftPanel->lastFocus() > rightPanel->lastFocus() )
     {
         QFileInfo fileToOpen( leftPanel->curFile() );
@@ -340,13 +368,7 @@ void  MainWindow::altEPressed()
     }
     if( list.count() > 0 )
     {
-    #if defined(Q_WS_WIN)
-        QProcess::startDetached( "notepad.exe", list );
-    #endif
-    #if defined(Q_WS_MAC)
-        list.insert( 0, "-e");
-        QProcess::startDetached( "open", list );
-    #endif
+        QProcess::startDetached( editor, list );
     }
 }
 
@@ -354,6 +376,7 @@ void  MainWindow::altTPressed()
 {
     QStringList list;
     QString dir;
+    QString terminal(getTerminal( list ));
     dir.clear();
     if( leftPanel->lastFocus() > rightPanel->lastFocus() )
     {
@@ -365,18 +388,42 @@ void  MainWindow::altTPressed()
     }
     if( dir.length() > 0 )
     {
-    #if defined(Q_WS_WIN)
-        QProcess::startDetached( "cmd.exe", list, dir );
-    #endif
-    #if defined(Q_WS_MAC)
-        list.append( "-n" );
-        list.append("/Applications/Utilities/Terminal.app");
-        //list.append("--args");
-        //list.append("cd");
-        //4list.append(dir);
-        //list.append("&");
-        QProcess::startDetached( "open", list, dir );
-        //TODO: add terminal opening on OSX
-    #endif
+        QProcess::startDetached( terminal, list, dir );
     }
 }
+
+void  MainWindow::altQPressed()
+{
+    QStringList list;
+    QString fileName(QDir::homePath());
+    fileName.append("/.Qefem/qefem.ini");
+    QString editor(getEditor(list));
+    list.append(fileName);
+    #if defined(Q_WS_WIN)
+        QProcess::startDetached( editor, list );
+    #endif
+    #if defined(Q_WS_MAC)
+        QProcess::startDetached( editor, list );
+    #endif
+}
+
+QString MainWindow::getEditor(QStringList& list)
+{
+    QString fileName(QDir::homePath());
+    fileName.append("/.Qefem/qefem.ini");
+    QSettings settings(fileName, QSettings::IniFormat);
+    QString args(settings.value("editorargs").toString());
+    list.append( args.split(" ", QString::SkipEmptyParts) );
+    return settings.value("editor").toString();
+}
+
+QString MainWindow::getTerminal(QStringList& list)
+{
+    QString fileName(QDir::homePath());
+    fileName.append("/.Qefem/qefem.ini");
+    QSettings settings(fileName, QSettings::IniFormat);
+    QString args(settings.value("terminalargs").toString());
+    list.append( args.split(" ", QString::SkipEmptyParts) );
+    return settings.value("terminal").toString();
+}
+
